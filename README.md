@@ -24,7 +24,7 @@ Beyond this, GROOVE has some very powerful capabilities:
 
 ## Developers
 
-See the [list of contributors](.DEVELOPERS.md).
+See the [list of contributors](./DEVELOPERS.md).
 
 ## License
 
