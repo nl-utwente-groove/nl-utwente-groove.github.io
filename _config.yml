@@ -1,5 +1,5 @@
-title: GROOVE: A tool for graph transformation and state space exploration
-description: Tool overview
+title: GROOVE - A tool for graph transformation and state space exploration
+description: Tool home page
 plugins:
   - jekyll-relative-links
 theme: jekyll-theme-minimal
