@@ -1,5 +1,5 @@
-title: GROOVE - A tool for graph transformation and state space exploration
-description: Tool home page
+title: GROOVE - A tool for graph transformation and verification
+description: GROOVE home page
 plugins:
   - jekyll-relative-links
 theme: jekyll-theme-minimal
@@ -7,6 +7,5 @@ relative_links:
   enabled: true
   collections: true
 include:
-  - CONTRIBUTING.md
   - README.md
   - LICENSE.md
