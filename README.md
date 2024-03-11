@@ -22,6 +22,10 @@ Beyond this, GROOVE has some very powerful capabilities:
 
 ## Sample rule systems
 
+## Developers
+
+See the [list of contributors](.DEVELOPERS.md).
+
 ## License
 
 See the [License File](./LICENSE.md).
