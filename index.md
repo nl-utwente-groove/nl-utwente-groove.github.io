@@ -1,3 +1,12 @@
+---
+title: "GROOVE tool overview"
+keywords: groove homepage
+tags: [getting_started]
+sidebar: main_sidebar
+permalink: index.html
+summary: Bla bla.
+---
+
 ## Intro
 
 GROOVE is a tool that will enable you to quickly and easily create graph transformation rules and apply them.
