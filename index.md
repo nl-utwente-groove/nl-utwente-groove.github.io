@@ -1,7 +1,7 @@
 ---
 title: "GROOVE tool overview"
 keywords: groove homepage
-tags: [getting_started]
+tags: [overview]
 sidebar: main_sidebar
 permalink: index.html
 summary: Bla bla.
