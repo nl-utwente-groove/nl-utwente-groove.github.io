@@ -18,8 +18,8 @@ keywords:  # used in metadata for findability
 
 The user manual currently consists of two pdf documents, unfortunately both quite outdated with respect to the current feature set:
 
-- [Full user manual](../../../usermanual/usermanual.pdf)
-- [Quick reference chart](../../../usermanual/quick-reference.pdf)
+- [Full user manual](/../../../usermanual/blob/master/usermanual.pdf)
+- [Quick reference chart](/../../../usermanual/blob/master/quick-reference.pdf)
 
 Further help is available within the Simulator tool: when editing graphs or control programs, the right-hand side panel displays a range of options. Hovering on the options gives you further information about how to use them. Here are two example screenshots:
 
