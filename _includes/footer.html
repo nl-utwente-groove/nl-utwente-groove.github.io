@@ -1,11 +1,22 @@
 <footer>
-            <div class="row">
-                <div class="col-lg-12 footer">
-               &copy;{{ site.time | date: "%Y"  }} {{site.company_name}}. All rights reserved. <br />
-{% if page.last_updated %}<span>Page last updated:</span> {{page.last_updated}}<br/>{% endif %} Site last generated: {{ site.time | date: "%b %-d, %Y"  }} <br />
-<p><img src="{{ "images/UT_Logo_Black_EN.bmp" }}" style="width: 5cm;" alt="University of Twente logo"/></p>
-                </div>
-            </div>
+    <div class="row">
+        <div class="col-lg-12 footer" style="margin-top:-30pt;">
+            <span style="float:left; vertical-align:bottom; text-align: left; width: 7cm;">
+				The development of GROOVE was assisted by the use of the Yourkit Java Profiler
+				<p>
+				<a href="http://www.yourkit.com">
+					<img src="{{ "images/yjp.gif" }}" style="width: 4cm;" alt="Yourkit Profiler logo" type="image/gif">
+			    </a>
+				</p>	
+			</span>
+            <span style="float:right; vertical-align:bottom; text-align: right;">
+				&copy;{{ site.time | date: "%Y"  }} {{site.company_name}}. All rights reserved. <br />
+				{% if page.last_updated %}<span>Page last updated:</span> {{page.last_updated}} <br/>{% endif %}
+				Site last generated: {{ site.time | date: "%b %-d, %Y"  }} <br />
+				<p><img src="{{ "images/UT_Logo_Black_EN.bmp" }}" style="width: 5cm;" alt="University of Twente logo"/></p>
+			</span>
+        </div>
+    </div>
 </footer>
 
 {% comment %} Copyright 2021 Google LLC {% endcomment %}

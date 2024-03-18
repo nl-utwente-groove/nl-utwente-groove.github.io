@@ -1,6 +1,6 @@
 ---
 title: # required
-    "GROOVE development team"
+    "Sample GROOVE rule systems"
 # tags: # optional, need to be included in _data/tags_doc.yml and have a page in tags/
 # 	[overview]
 # keywords: # optional, used in metadata for findability
@@ -10,31 +10,10 @@ sidebar: # required
     home_sidebar
 # summary: # optional
 permalink: # required, must match filename.html
-    DEVELOPERS.html
+    samples.html
 datatable: # optional, true for jQueries, see https://www.datatables.net/
     false
 toc: # optional, false to exclude from initial table of contents
     false
 ---
-
-## Project lead
-
-- [Arend Rensink](mailto:arend.rensink@utwente.nl)
-
-## Former developers
-
-- Eduardo Zambon
-- Iovka Boneva
-- Harmen Kastenberg
-- Maarten de Mol
-- Tom Staijen
-
-## Additional contributions by
-
-- Amir Hossein Ghamarian
-- Frank van Es
-- Gijs Kant
-- Olaf Keijsers
-
-and many others…
 

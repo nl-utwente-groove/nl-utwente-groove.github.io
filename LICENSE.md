@@ -1,7 +1,21 @@
-# License for the GROOVE code and associated resources
+---
+title:
+    "License for GROOVE code and associated resources"
+summary:
+sidebar:
+    home_sidebar
+permalink:
+    LICENSE.html
+toc: 
+    false
+last_updated:
+    false
+datatable: # optional, true for jQueries, see https://www.datatables.net/
+    false
+tags:      # need to be included in _data/tags_doc.yml and have a page in tags/
+keywords:  # used in metadata for findability
+---
 
-Copyright University of Twente
-    
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
 You may obtain a copy of the License at

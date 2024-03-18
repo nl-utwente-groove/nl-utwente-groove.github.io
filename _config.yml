@@ -10,11 +10,6 @@ relative_links:
   enabled: true
   collections: true
 
-include:
-  - README.md
-  - LICENSE.md
-  - DEVELOPERS.md
-
 repository: nl-utwente-groove/nl-utwente-groove.github.io
 
 output: web
@@ -72,6 +67,14 @@ collections:
   tooltips:
     output: false
 # collections are declared here. this renders the content in _tooltips and processes it, but doesn't output it as actual files in the output unless you change output to true
+
+#.navgoco:
+#  accordion: false
+#
+#navgoco:
+#  accordion: false
+#
+#accordion: false
 
 defaults:
   -

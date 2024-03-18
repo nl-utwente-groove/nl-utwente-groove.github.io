@@ -326,11 +326,12 @@ a.accordion-toggle, a.accordion-collapsed {
 }
 
 .nav > li {
-    margin: 1px 0;
+    margin: 2px 0;
 }
 
 .nav > li li {
-    margin: 2px 0;
+    padding-left: 10px;
+    margin: 1px 0;
 }
 
 .nav a {
