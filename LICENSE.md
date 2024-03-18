@@ -1,11 +1,11 @@
 ---
 title:
     "License for GROOVE code and associated resources"
+permalink:
+    LICENSE.html
 summary:
 sidebar:
     home_sidebar
-permalink:
-    LICENSE.html
 toc: 
     false
 last_updated:

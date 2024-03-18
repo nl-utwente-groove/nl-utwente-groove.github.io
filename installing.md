@@ -21,10 +21,11 @@ Prior to github, GROOVE was hosted on SourceForge: <https://sf.net/projects/groo
 
 ## Requirements
 
-Under all circumstances, you need Java on your machine to run GROOVE. The currently required minimum version is Java 17.
-MAC users need to get the Open JDK.
+- You need Java on your machine to run GROOVE. The currently required minimum version is Java 17.
 
-For the instructions below to work, the JVM needs to be on your system path. [Instructions can be found here](https://www.java.com/en/download/help/path.html).
+- MAC users need to get the Open JDK.
+
+- For the instructions under [Running][#running] to work, the JVM needs to be on your system path. [Instructions can be found here](https://www.java.com/en/download/help/path.html).
 
 ## Stand-alone installation
 
@@ -32,7 +33,9 @@ For the instructions below to work, the JVM needs to be on your system path. [In
 
 - Unpack the zip in a directory of your choice. This will result in a `bin` subdirectory containing the runnable `jar`s (which are essentially empty, merely containing the metadata to find the runnable in the `groove` jar), and a `lib` subdirectory containing all actual libraries, that is, the `groove` jar together with all required dependencies.
 
-- Invoke the `Simulator.jar` by going to the `bin` subdirectory, either in a GUI-based file explorer or in a command-line window. In the GUI-based explorer, double-click `Simulator.jar` to invoke it; in command-line mode, type
+## <a name="running"></a> Running
+
+Invoke the `Simulator.jar` by going to the `bin` subdirectory, either in a GUI-based file explorer or in a command-line window. In the GUI-based explorer, double-click `Simulator.jar` to invoke it; in command-line mode, type
 
   `java -jar Simulator.jar`
 

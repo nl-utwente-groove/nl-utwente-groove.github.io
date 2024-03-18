@@ -1,19 +1,18 @@
 ---
 title: # required
     "GROOVE development team"
-# tags: # optional, need to be included in _data/tags_doc.yml and have a page in tags/
-# 	[overview]
-# keywords: # optional, used in metadata for findability
-# 	groove home
-# last_updated: # optional, appears in footer
-sidebar: # required
-    home_sidebar
-# summary: # optional
 permalink: # required, must match filename.html
     DEVELOPERS.html
-datatable: # optional, true for jQueries, see https://www.datatables.net/
+summary:
+sidebar:
+    home_sidebar
+toc: 
     false
-toc: # optional, false to exclude from initial table of contents
+last_updated:
+    false
+tags:      # need to be included in _data/tags_doc.yml and have a page in tags/
+keywords:  # used in metadata for findability
+datatable: # optional, true for jQueries, see https://www.datatables.net/
     false
 ---
 
