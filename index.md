@@ -1,24 +1,25 @@
 ---
-title: # required
-    "GROOVE tool web site"
-tags: # optional, need to be included in _data/tags_doc.yml and have a page in tags/
-    [overview]
-keywords: # optional, used in metadata for findability
-    groove home
-# last_updated: # optional, appears in footer
-sidebar: # required
-    home_sidebar
-summary: # optional
-    "This web site is the starting point for information on GROOVE, a stand-alone tool for graph transformation and verification" # optional
-permalink: # required, must match filename.html
+title:
+    "GROOVE home page"
+summary:
+    "First impressions: key capabilities, runnable components and screenshots"
+permalink:
     index.html
+summary:
+sidebar:
+    home_sidebar
+toc: 
+    true
+last_updated:
+    false
 datatable: # optional, true for jQueries, see https://www.datatables.net/
     false
-toc: # optional, false to exclude from initial table of contents
-    false
+tags:      # need to be included in _data/tags_doc.yml and have a page in tags/
+keywords:  # used in metadata for findability
+    home screenshot
 ---
 
-## Intro
+## Introduction
 
 GROOVE is a modelling and verification tool that will enable you to quickly and easily create graph transformation rules and apply them.
 Its strength lies in state space generation: once you have defined a start graph and a set of transformation
@@ -34,7 +35,25 @@ Beyond "simple" graphs and rules, GROOVE has some very powerful capabilities:
 5. _Advanced state space exploration strategies._
 6. _Model checking._
 
-Here are some screenshots, just to give you an idea:
+## <a name="runnable">Runnable components</a>
+
+The GROOVE tool set has a number of runnable components:
+
+- **Simulator.** A GUI that allows creation and graphical editing of Graph Transformation Systems (GTSs), and integrates the functionality of the Generator (see below). In addition, the Simulator allows the user to interactively explore the state space, by manually applying rules to a host graph.
+
+- **Generator.** A command line tool that generates the state space of an existing GTS. The state space is stored as a Labelled Transition System (LTS), where each state is a graph and transitions are labelled by the rule applications. The strategy according to which the state space is explored (e.g., depth-first, breadth-first, etc) can be set as a parameter.
+
+- **Viewer.** A GUI that allows viewing of individual graphs (host graphs, rules or type graphs) outside the context of a GTS.
+
+- **Imager.** A tool that converts individual graphs (host graphs, rules or type graphs) to an image format such as JPG, GIF, SVG or PDF, which can in turn be included into other documents. The Imager can be invoked as a command-line tool or with a GUI.
+
+<!--- Not available right now
+    Model Checker. A command line tool that checks if properties expressed in CTL temporal logic hold in a state space model produced by the Generator.
+--->
+
+## <a name="screenshots">Screenshots</a>
+
+Here are some screenshots of the Simulator, just to give you a first idea of the capabilities of GROOVE:
 
 <figure>
     <img src="/images/solitaire.png"
@@ -53,19 +72,3 @@ Here are some screenshots, just to give you an idea:
          alt="Sierpinski triangle, 5th iteration">
     <figcaption>Sierpinski triangle arising as the result of a repeated (5x) rule application</figcaption>
 </figure>
-
-## Downloading and installing
-
-## Tutorials
-
-## User manual
-
-## Sample rule systems
-
-## Developers
-
-See the [list of contributors](./DEVELOPERS).
-
-## License
-
-See the [License File](./LICENSE.md).
