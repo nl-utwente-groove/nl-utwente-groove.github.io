@@ -34,11 +34,11 @@ Prior to github, GROOVE was hosted on SourceForge: <https://sf.net/projects/groo
 
 - Unpack the zip in a directory of your choice. This will result in a `bin` subdirectory containing the runnable `jar`s (which are essentially empty, merely containing the metadata to find the runnable in the `groove` jar), and a `lib` subdirectory containing all actual libraries, that is, the `groove` jar together with all required dependencies.
 
-## <a name="running">Running</a>
+## Running<a name="running"></a>
 
-All the [runnable components](../index#runnable) of GROOVE are available as JAR files in the `bin` subdirectory of your installation. For instance, `Runnable` can be invoked by:
+All the [runnable components](../index#runnable) of GROOVE are available as JAR files in the `bin` subdirectory of your installation. For instance, `Runnable` can be invoked as follows:
 
-- Going to the `bin` subdirectory, either in a file explorer window or in a command-line window
+- G to the `bin` subdirectory, either in a file explorer window or in a command-line window
 
 - From the file explorer, double-click `Runnable.jar` to invoke it
 
@@ -52,7 +52,7 @@ All the [runnable components](../index#runnable) of GROOVE are available as JAR 
 
 ## Maven package
 
-You can also download the compiled GROOVE jar (without dependencies), as well as the source and documentation, from Maven Central: see
+You can also download the compiled GROOVE jar (without dependencies), as well as the source files and documentation, from Maven Central: see
 
 - either <https://mvnrepository.com/artifact/nl.utwente.groove>
 
@@ -60,4 +60,4 @@ You can also download the compiled GROOVE jar (without dependencies), as well as
 
 ## Source code
 
-GROOVE is open source and can be found at <https://github.com/nl-groove-utwente/code>.
+GROOVE is open source; the development version can be found (packaged as Eclipse Maven project) at <https://github.com/nl-groove-utwente/code>.

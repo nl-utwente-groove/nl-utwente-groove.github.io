@@ -10,7 +10,7 @@ entries:
         -   title: Home
             url: /index.html
             output: web
-    -   title: Running
+    -   title: Installing
         output: web
         folderitems:
         -   title: Installation
@@ -28,14 +28,23 @@ entries:
         -   title: User manual
             url: /manual.html
             output: web
+    -   title: Researching
+        output: web
+        folderitems:
+        -   title: Publications
+            url: /publications.html
+            output: web
     -   title: Developing
         output: web
         folderitems:
-        -   title: Developement team
-            url: /DEVELOPERS.html
+        -   title: Contact
+            url: /contact.html
             output: web
         -   title: License
             url: /LICENSE.html
+            output: web
+        -   title: Developement team
+            url: /DEVELOPERS.html
             output: web
 
 # Copyright 2021 Google LLC

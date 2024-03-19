@@ -15,9 +15,7 @@ datatable: # optional, true for jQueries, see https://www.datatables.net/
 tags:      # need to be included in _data/tags_doc.yml and have a page in tags/
 keywords:  # used in metadata for findability
 ---
-{% capture usermanual_url %}{{site.data.defs.groove_url}}/usermanual/blob/master{% endcapture %}
-
-- {% data defs.groove_url %}
+{% capture usermanual_url %}{{site.data.defs.groove_git}}/usermanual/blob/master{% endcapture %}
 
 The user manual currently consists of two pdf documents, unfortunately both quite outdated with respect to the current feature set:
 
