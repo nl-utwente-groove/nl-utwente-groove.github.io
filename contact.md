@@ -17,13 +17,14 @@ tags:      # need to be included in _data/tags_doc.yml and have a page in tags/
 keywords:  # used in metadata for findability
     issues forum discussions wiki feedback contact
 ---
-{% assign url = site.data.defs.groove_git %}
-GROOVE is hosted on [github]({{url}}); please use the available (default) github functionality to provide us with feedback, to report issues or to ask question. We'd love to hear from you!
+{% assign groove_url = site.data.defs.groove_url %}
 
-- [Discussion]({{url}}/../orgs/nl-utwente-groove/discussions): Your questions and our answers
+GROOVE is hosted on [github]({{groove_url}}); please use the available (default) github functionality to provide us with feedback, to report issues or to ask question. We'd love to hear from you!
 
-- [Issues]({{url}}/code/issues): Please report your bugs and feature requests
+- [Discussion]({{groove_url}}/../orgs/nl-utwente-groove/discussions): Your questions and our answers
 
-- [Wiki]({{url}}/code/wiki): Information about the code base - currently rather empty...
+- [Issues]({{groove_url}}/code/issues): Please report your bugs and feature requests
+
+- [Wiki]({{groove_url}}/code/wiki): Information about the code base - currently rather empty...
 
 You can also always mail the project lead, [Arend Rensink](mailto:arend.rensink@utwente.nl), with questions and comments.

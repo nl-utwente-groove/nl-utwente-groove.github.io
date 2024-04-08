@@ -18,8 +18,6 @@ keywords:  # used in metadata for findability
     requirements, installing, running, maven
 ---
 
-Prior to github, GROOVE was hosted on SourceForge: <https://sf.net/projects/groove>. For now, the installation still uses their service - this will eventually move to github.
-
 ## Requirements
 
 - You need Java on your machine to run GROOVE. The currently required minimum version is Java 17.
@@ -30,7 +28,7 @@ Prior to github, GROOVE was hosted on SourceForge: <https://sf.net/projects/groo
 
 ## Stand-alone installation
 
-- To install GROOVE, download the library (as a `zip`-file) [here](https://sourceforge.net/projects/groove/files/latest/download)
+- To install GROOVE, download the library (as a `zip`-file) [here](https://github.com/nl-utwente-groove/code/releases/latest)
 
 - Unpack the zip in a directory of your choice. This will result in a `bin` subdirectory containing the runnable `jar`s (which are essentially empty, merely containing the metadata to find the runnable in the `groove` jar), and a `lib` subdirectory containing all actual libraries, that is, the `groove` jar together with all required dependencies.
 
@@ -60,4 +58,11 @@ You can also download the compiled GROOVE jar (without dependencies), as well as
 
 ## Source code
 
-GROOVE is open source; the development version can be found (packaged as Eclipse Maven project) at <https://github.com/nl-groove-utwente/code>.
+GROOVE is open source; the development version can be found (formatted as Eclipse Maven project) at <https://github.com/nl-groove-utwente/code>.
+
+## Prior versions
+
+Prior to release 6.8.0, GROOVE was maintained on [Sourceforge](https://sf.net). Older versions of the tool can be found [there](https://sf.net/projects/groove).
+ 
+
+
