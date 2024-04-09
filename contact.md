@@ -17,7 +17,7 @@ tags:      # need to be included in _data/tags_doc.yml and have a page in tags/
 keywords:  # used in metadata for findability
     issues forum discussions wiki feedback contact
 ---
-{% assign groove_url = site.data.defs.groove_url %}
+{% assign groove_url = site.groove_url %}
 
 GROOVE is hosted on [github]({{groove_url}}); please use the available (default) github functionality to provide us with feedback, to report issues or to ask question. We'd love to hear from you!
 
