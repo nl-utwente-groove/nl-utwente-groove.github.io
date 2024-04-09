@@ -19,7 +19,7 @@ usermanual_suffix:
   /usermanual/blob/master
 ---
 {% capture usermanual_url %}
-  {{site.groove_git}}{{page.usermanual_suffix}}
+  {{site.data.defs.groove_url}}{{page.usermanual_suffix}}
 {% endcapture %}
 
 The user manual currently consists of two pdf documents, unfortunately both quite outdated with respect to the current feature set:
