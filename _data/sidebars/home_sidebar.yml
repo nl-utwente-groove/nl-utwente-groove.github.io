@@ -16,6 +16,9 @@ entries:
         -   title: Installation
             url: /installing.html
             output: web
+        -   title: MacOS issues
+            url: /mac.html
+            output: web
     -   title: Using
         output: web
         folderitems:
