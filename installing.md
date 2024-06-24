@@ -36,7 +36,7 @@ keywords:  # used in metadata for findability
 
 All the [runnable components](../index#runnable) of GROOVE are available as JAR files in the `bin` subdirectory of your installation. For instance, `Runnable` can be invoked as follows:
 
-- G to the `bin` subdirectory, either in a file explorer window or in a command-line window
+- Go to the `bin` subdirectory, either in a file explorer window or in a command-line window
 
 - From the file explorer, double-click `Runnable.jar` to invoke it
 
@@ -47,6 +47,8 @@ All the [runnable components](../index#runnable) of GROOVE are available as JAR 
   The components that are meant to be invoked from the command line, in particular the Generator and the Imager, have a number of options, which can be queried by 
 
   `java -jar Runnable.jar -h`
+
+- Mac users may run into errors due to incompatible accessibility settings; see [this page](../mac)
 
 ## Maven package
 
@@ -62,7 +64,7 @@ GROOVE is open source; the development version can be found (formatted as Eclips
 
 ## Prior versions
 
-Prior to release 6.8.0, GROOVE was maintained on [Sourceforge](https://sf.net). Older versions of the tool can be found [there](https://sf.net/projects/groove).
+Prior to release 6.8.0, GROOVE was hosted on [Sourceforge](https://sf.net). Older versions of the tool can be found [there](https://sf.net/projects/groove).
  
 
 
