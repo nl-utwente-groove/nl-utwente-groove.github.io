@@ -9,16 +9,17 @@ To host locally on a Windows machine
 
 - To be sure you have all required development tools, you might need to run
 
-```
-sudo apt-get install -y build-essential
-```
+    ```
+    sudo apt-get install -y build-essential
+    ```
 
   (see https://stackoverflow.com/questions/62965073/gemextbuilderror-error-failed-to-build-gem-native-extension-keep-getting)
 
 - Invoke bundler with
 
+```
     bundle install --path ~/.gem
-
+```
 
   to avoid gems being installed in the possibly inaccessible `/etc/var/gem` directory (see https://stackoverflow.com/questions/16031061/force-bundler-to-install-gems-in-user-s-home-directory)
 
@@ -32,6 +33,6 @@ gem "webrick"
 
 - To get a webserver with the page up and running, invoke (see https://michaelriedl.com/2021/06/11/testing-jekyll.html)
 
-```
-bundle exec jekyll serve
-```
+  ```
+  bundle exec jekyll serve
+  ```
