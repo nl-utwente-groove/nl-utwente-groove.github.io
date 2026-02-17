@@ -13,15 +13,14 @@ To host locally on a Windows machine
 sudo apt-get install -y build-essential
 ```
 
-(see https://stackoverflow.com/questions/62965073/gemextbuilderror-error-failed-to-build-gem-native-extension-keep-getting)
+  (see https://stackoverflow.com/questions/62965073/gemextbuilderror-error-failed-to-build-gem-native-extension-keep-getting)
 
 - Invoke bundler with
 
-```
-bundle install --path ~/.gem
-```
+    bundle install --path ~/.gem
 
-to avoid gems being installed in the possibly inaccessible `/etc/var/gem` directory (see https://stackoverflow.com/questions/16031061/force-bundler-to-install-gems-in-user-s-home-directory)
+
+  to avoid gems being installed in the possibly inaccessible `/etc/var/gem` directory (see https://stackoverflow.com/questions/16031061/force-bundler-to-install-gems-in-user-s-home-directory)
 
 - You need a Gemfile, for which the following will do (see https://michaelriedl.com/2021/06/11/testing-jekyll.html):
 
