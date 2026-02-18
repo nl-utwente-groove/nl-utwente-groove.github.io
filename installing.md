@@ -60,7 +60,7 @@ You can also download the compiled GROOVE jar (without dependencies), as well as
 
 ## Source code
 
-GROOVE is open source; the development version can be found (formatted as Eclipse Maven project) at <https://github.com/nl-groove-utwente/code>.
+GROOVE is open source; the development version can be found (formatted as Eclipse Maven project) at <https://github.com/nl-utwente-groove/code>.
 
 ## Prior versions
 
