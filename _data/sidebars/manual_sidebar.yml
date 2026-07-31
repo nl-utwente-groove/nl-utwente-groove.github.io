@@ -28,6 +28,21 @@ entries:
         -   title: Import and export
             url: /manual_io.html
             output: web
+    -   title: Reference
+        output: web
+        folderitems:
+        -   title: Aspect prefixes
+            url: /manual_ref_prefixes.html
+            output: web
+        -   title: Data operations
+            url: /manual_ref_operators.html
+            output: web
+        -   title: Control grammar
+            url: /manual_ref_control.html
+            output: web
+        -   title: Strategies and acceptors
+            url: /manual_ref_exploration.html
+            output: web
     -   title: Main site
         output: web
         folderitems:

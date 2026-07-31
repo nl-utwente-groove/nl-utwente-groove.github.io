@@ -37,6 +37,15 @@ This is the web edition of the GROOVE user manual, which supersedes the legacy P
 | [Exploration and verification](manual_verification.html) | Exploration strategies and model checking | 7.5.3 |
 | [Import and export](manual_io.html) | Storage formats, and exchanging graphs and grammars with other tools | 7.5.3 |
 
+## Reference pages
+
+In addition to the chapters, the manual contains reference pages that are *generated from the GROOVE source code*, so they cannot drift out of date:
+
+- [Aspect prefixes](manual_ref_prefixes.html) — the complete label syntax for host graphs, rules and type graphs
+- [Data operations](manual_ref_operators.html) — all built-in operations on the data sorts
+- [Control grammar](manual_ref_control.html) — the full grammar of the control language
+- [Strategies and acceptors](manual_ref_exploration.html) — the named vocabulary of the legacy exploration options
+
 ## Legacy PDF documents
 
 The previous edition of the user manual consists of two PDF documents, both quite outdated with respect to the current feature set:

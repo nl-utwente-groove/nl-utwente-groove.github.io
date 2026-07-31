@@ -36,7 +36,7 @@ Throughout this chapter, figures therefore come in pairs: the *edit view* on the
 | `rem:` | graphs, rules | remark (comment) |
 | `:` | graphs, rules | initial colon: the rest of the label is taken literally |
 
-This is not the complete list; further prefixes are introduced in the [Advanced rule features](manual_advanced.html) chapter. The full, authoritative overview is always available in the Simulator itself: the right-hand panel of the graph editor lists every prefix with a usage explanation.
+This is not the complete list; further prefixes are introduced in the [Advanced rule features](manual_advanced.html) chapter, and the generated [aspect prefixes reference](manual_ref_prefixes.html) gives the full overview. The same information is available in the Simulator itself: the right-hand panel of the graph editor lists every prefix with a usage explanation.
 
 ## Graphs
 

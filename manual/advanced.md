@@ -118,7 +118,7 @@ Expressions use conventional infix syntax:
 | `bool` | `!` (not), `&` (and), <code>&#124;</code> (or), `==` `!=` |
 | `string` | `+` (concatenation), lexicographic `<` `<=` `>` `>=`, `==` `!=` |
 
-Beyond the operator symbols, named operations are called in functional style, e.g. `max(x,y)`, `abs(x)`, `length(s)`, `substring(s,i,j)`, `ite(b,x,y)` (if-then-else), and conversions such as `toInt(s)` or casts `(real) x`. The complete list of operations per sort is documented in the editor's syntax help panel.
+Beyond the operator symbols, named operations are called in functional style, e.g. `max(x,y)`, `abs(x)`, `length(s)`, `substring(s,i,j)`, `ite(b,x,y)` (if-then-else), and conversions such as `toInt(s)` or casts `(real) x`. The complete list of operations per sort is given in the generated [data operations reference](manual_ref_operators.html), and in the editor's syntax help panel.
 
 ### The underlying product-node notation
 

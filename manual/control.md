@@ -20,7 +20,7 @@ keywords:  # used in metadata for findability
 
 Control is about scheduling rule applications: it determines, in every state, which actions may be applied next. It is a much stronger mechanism than rule priorities (see [Graphs and rules](manual_basics.html#rule-properties)). Control is specified in the form of one or more *control programs* — resources with extension `.gcp` — written in a small imperative language described in this chapter.
 
-The authoritative syntax reference is built into the tool: the control editor in the Simulator shows every construct of the language, with explanations, in its right-hand help panel.
+The full grammar of the language is given in the generated [control grammar reference](manual_ref_control.html); the same information is built into the tool, in the right-hand help panel of the control editor in the Simulator.
 
 ## Programs and terminology
 

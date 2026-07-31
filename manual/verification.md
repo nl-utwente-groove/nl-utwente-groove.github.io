@@ -68,7 +68,7 @@ Further options include:
 - `-l dir` — log the generation process;
 - `-r num` — stop after `num` result states.
 
-Invoke `Generator -h` for the complete list. The older options `-s` (strategy) and `-a` (acceptor) are still recognised but deprecated in favour of `-x`; their vocabulary of named *strategies* (`bfs`, `dfs`, `linear`, `random`, `uptorule:…`, `cnbound:…`, `cebound:…`, `ltl:…`) and *acceptors* (`final`, `inv:[!]id`, `ruleapp:id`, `formula:f`, `any`, `cycle`, `none`) maps onto combinations of the configuration keys above.
+Invoke `Generator -h` for the complete list. The older options `-s` (strategy) and `-a` (acceptor) are still recognised but deprecated in favour of `-x`; their vocabulary of named *strategies* and *acceptors*, listed in the generated [strategies and acceptors reference](manual_ref_exploration.html), maps onto combinations of the configuration keys above.
 
 ## Model checking
 
