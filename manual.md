@@ -24,18 +24,18 @@ usermanual_suffix:
   {{site.groove_url}}{{page.usermanual_suffix}}
 {% endcapture %}
 
-This is the web edition of the GROOVE user manual. It is being migrated, chapter by chapter, from the legacy PDF manual; in the process, each chapter is updated to reflect the current feature set of the tool. Chapters that have not yet been migrated are marked as such, and for those the legacy PDF remains the best (if outdated) source.
+This is the web edition of the GROOVE user manual, which supersedes the legacy PDF manual. All chapters have been rewritten against the current feature set of the tool; the status column below records the tool version against which each chapter was last checked.
 
 ## Chapters
 
-| Chapter | Contents | Status |
+| Chapter | Contents | Checked against |
 | :--- | :--- | :--- |
-| [Introduction](manual_introduction.html) | What GROOVE is, the concepts behind it, and the components of the tool set | up to date |
-| [Graphs and rules](manual_basics.html) | Editing host graphs and transformation rules | up to date |
-| [Advanced rule features](manual_advanced.html) | Wildcards, regular expressions, attributes, parameters, quantification, typing and system properties | up to date |
-| [Control language](manual_control.html) | Programming the order of rule applications | up to date |
-| [Exploration and verification](manual_verification.html) | Exploration strategies and model checking | up to date |
-| [Import and export](manual_io.html) | Exchanging graphs and grammars with other formats and tools | *not yet migrated* |
+| [Introduction](manual_introduction.html) | What GROOVE is, the concepts behind it, and the components of the tool set | 7.5.3 |
+| [Graphs and rules](manual_basics.html) | Editing host graphs and transformation rules | 7.5.3 |
+| [Advanced rule features](manual_advanced.html) | Wildcards, regular expressions, attributes, parameters, quantification, typing and system properties | 7.5.3 |
+| [Control language](manual_control.html) | Programming the order of rule applications | 7.5.3 |
+| [Exploration and verification](manual_verification.html) | Exploration strategies and model checking | 7.5.3 |
+| [Import and export](manual_io.html) | Storage formats, and exchanging graphs and grammars with other tools | 7.5.3 |
 
 ## Legacy PDF documents
 
