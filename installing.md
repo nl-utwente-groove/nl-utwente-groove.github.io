@@ -24,7 +24,7 @@ keywords:  # used in metadata for findability
 
 - MAC users need to get the Open JDK.
 
-- For the instructions under [Running][#running] to work, the JVM needs to be on your system path. [Instructions can be found here](https://www.java.com/en/download/help/path.html).
+- For the instructions under [Running](#running) to work, the JVM needs to be on your system path. [Instructions can be found here](https://www.java.com/en/download/help/path.html).
 
 ## Stand-alone installation
 
