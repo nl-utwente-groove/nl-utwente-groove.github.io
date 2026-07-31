@@ -37,6 +37,26 @@
                 <string>223 153 74 36</string>
             </attr>
         </node>
+        <node id="n1">
+            <attr name="layout">
+                <string>15 70 46 36</string>
+            </attr>
+        </node>
+        <edge to="n1" from="n1">
+            <attr name="label">
+                <string>cnew:</string>
+            </attr>
+        </edge>
+        <edge to="n1" from="n1">
+            <attr name="label">
+                <string>type:E</string>
+            </attr>
+        </edge>
+        <edge to="n1" from="n533">
+            <attr name="label">
+                <string>e</string>
+            </attr>
+        </edge>
         <edge to="n534" from="n534">
             <attr name="label">
                 <string>not:</string>
