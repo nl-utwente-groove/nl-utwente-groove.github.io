@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <gxl xmlns="http://www.gupro.de/GXL/gxl-1.0.dtd">
-    <graph edgemode="directed" edgeids="false" role="rule" id="attribute-rule">
+    <graph edgemode="directed" edgeids="false" role="rule" id="count-flowers">
         <attr name="enabled">
             <string>false</string>
         </attr>
@@ -9,52 +9,67 @@
         </attr>
         <node id="n0">
             <attr name="layout">
-                <string>30 60 190 51</string>
+                <string>30 40 130 51</string>
             </attr>
         </node>
         <node id="n1">
             <attr name="layout">
-                <string>310 40 48 36</string>
+                <string>260 40 55 30</string>
             </attr>
         </node>
         <node id="n2">
             <attr name="layout">
-                <string>310 150 52 30</string>
+                <string>120 140 62 36</string>
+            </attr>
+        </node>
+        <node id="n3">
+            <attr name="layout">
+                <string>390 45 48 30</string>
             </attr>
         </node>
         <edge to="n0" from="n0">
             <attr name="label">
-                <string>type:Account</string>
+                <string>type:Plant</string>
             </attr>
         </edge>
         <edge to="n0" from="n0">
             <attr name="label">
-                <string>test:balance &gt;= x</string>
-            </attr>
-        </edge>
-        <edge to="n0" from="n0">
-            <attr name="label">
-                <string>let:balance = balance - x</string>
+                <string>let:flowers = n</string>
             </attr>
         </edge>
         <edge to="n1" from="n1">
             <attr name="label">
-                <string>type:ATM</string>
+                <string>forall:</string>
             </attr>
         </edge>
         <edge to="n2" from="n2">
             <attr name="label">
-                <string>real:</string>
+                <string>type:Flower</string>
             </attr>
         </edge>
-        <edge to="n2" from="n2">
+        <edge to="n3" from="n3">
             <attr name="label">
-                <string>id:x</string>
+                <string>int:</string>
             </attr>
         </edge>
-        <edge to="n2" from="n1">
+        <edge to="n3" from="n3">
             <attr name="label">
-                <string>del:amount</string>
+                <string>id:n</string>
+            </attr>
+        </edge>
+        <edge to="n2" from="n0">
+            <attr name="label">
+                <string>has</string>
+            </attr>
+        </edge>
+        <edge to="n1" from="n2">
+            <attr name="label">
+                <string>at</string>
+            </attr>
+        </edge>
+        <edge to="n3" from="n1">
+            <attr name="label">
+                <string>count</string>
             </attr>
         </edge>
     </graph>

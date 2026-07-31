@@ -32,7 +32,7 @@ This is the web edition of the GROOVE user manual. It is being migrated, chapter
 | :--- | :--- | :--- |
 | [Introduction](manual_introduction.html) | What GROOVE is, the concepts behind it, and the components of the tool set | up to date |
 | [Graphs and rules](manual_basics.html) | Editing host graphs and transformation rules | up to date |
-| [Advanced rule features](manual_advanced.html) | Attributes, quantification, typing and rule properties | *not yet migrated* |
+| [Advanced rule features](manual_advanced.html) | Wildcards, regular expressions, attributes, parameters, quantification, typing and system properties | up to date |
 | [Control language](manual_control.html) | Programming the order of rule applications | *not yet migrated* |
 | [Exploration and verification](manual_verification.html) | Exploration strategies and model checking | *not yet migrated* |
 | [Import and export](manual_io.html) | Exchanging graphs and grammars with other formats and tools | *not yet migrated* |
