@@ -4,8 +4,9 @@ title: # required
 permalink: # required, must match filename.html
     manual.html
 summary:
+    "Entry point of the web edition of the user manual"
 sidebar:
-    home_sidebar
+    manual_sidebar
 toc: 
     false
 last_updated:
@@ -14,6 +15,7 @@ datatable: # optional, true for jQueries, see https://www.datatables.net/
     false
 tags:      # need to be included in _data/tags_doc.yml and have a page in tags/
 keywords:  # used in metadata for findability
+    manual, documentation, reference
 
 usermanual_suffix:
   /usermanual/blob/master
@@ -22,10 +24,27 @@ usermanual_suffix:
   {{site.groove_url}}{{page.usermanual_suffix}}
 {% endcapture %}
 
-The user manual currently consists of two pdf documents, unfortunately both quite outdated with respect to the current feature set:
+This is the web edition of the GROOVE user manual. It is being migrated, chapter by chapter, from the legacy PDF manual; in the process, each chapter is updated to reflect the current feature set of the tool. Chapters that have not yet been migrated are marked as such, and for those the legacy PDF remains the best (if outdated) source.
+
+## Chapters
+
+| Chapter | Contents | Status |
+| :--- | :--- | :--- |
+| [Introduction](manual_introduction.html) | What GROOVE is, the concepts behind it, and the components of the tool set | up to date |
+| [Graphs and rules](manual_basics.html) | Editing host graphs and transformation rules | *not yet migrated* |
+| [Advanced rule features](manual_advanced.html) | Attributes, quantification, typing and rule properties | *not yet migrated* |
+| [Control language](manual_control.html) | Programming the order of rule applications | *not yet migrated* |
+| [Exploration and verification](manual_verification.html) | Exploration strategies and model checking | *not yet migrated* |
+| [Import and export](manual_io.html) | Exchanging graphs and grammars with other formats and tools | *not yet migrated* |
+
+## Legacy PDF documents
+
+The previous edition of the user manual consists of two PDF documents, both quite outdated with respect to the current feature set:
 
 - [Full user manual]({{usermanual_url}}/usermanual.pdf)
 - [Quick reference chart]({{usermanual_url}}/quick-reference.pdf)
+
+## Help within the tool
 
 Further help is available within the Simulator tool: when editing graphs or control programs, the right-hand side panel displays a range of options. Hovering on the options gives you further information about how to use them. Here are two example screenshots:
 

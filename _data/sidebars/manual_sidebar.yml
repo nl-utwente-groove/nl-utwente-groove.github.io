@@ -1,0 +1,45 @@
+# Sidebar for the user manual pages. The sidebar code loops through sections here and provides the appropriate formatting.
+
+entries:
+-   title: Sidebar
+    levels: one
+    folders:
+    -   title: User manual
+        output: web
+        folderitems:
+        -   title: About this manual
+            url: /manual.html
+            output: web
+        -   title: Introduction
+            url: /manual_introduction.html
+            output: web
+        -   title: Graphs and rules
+            url: /manual_basics.html
+            output: web
+        -   title: Advanced rule features
+            url: /manual_advanced.html
+            output: web
+        -   title: Control language
+            url: /manual_control.html
+            output: web
+        -   title: Exploration and verification
+            url: /manual_verification.html
+            output: web
+        -   title: Import and export
+            url: /manual_io.html
+            output: web
+    -   title: Main site
+        output: web
+        folderitems:
+        -   title: Home
+            url: /index.html
+            output: web
+        -   title: Installation
+            url: /installing.html
+            output: web
+        -   title: Tutorials
+            url: /tutorials.html
+            output: web
+        -   title: Sample rule systems
+            url: /samples.html
+            output: web
