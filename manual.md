@@ -34,7 +34,7 @@ This is the web edition of the GROOVE user manual. It is being migrated, chapter
 | [Graphs and rules](manual_basics.html) | Editing host graphs and transformation rules | up to date |
 | [Advanced rule features](manual_advanced.html) | Wildcards, regular expressions, attributes, parameters, quantification, typing and system properties | up to date |
 | [Control language](manual_control.html) | Programming the order of rule applications | up to date |
-| [Exploration and verification](manual_verification.html) | Exploration strategies and model checking | *not yet migrated* |
+| [Exploration and verification](manual_verification.html) | Exploration strategies and model checking | up to date |
 | [Import and export](manual_io.html) | Exchanging graphs and grammars with other formats and tools | *not yet migrated* |
 
 ## Legacy PDF documents
