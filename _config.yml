@@ -35,6 +35,8 @@ port: 4000
 
 exclude:
   - .gitignore
+  - manual/graphs.gps
+  - manual/make-figures.sh
 # these are the files and directories that jekyll will exclude from the build
 
 feedback_subject_line: GROOVE tool overview
