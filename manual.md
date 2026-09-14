@@ -48,10 +48,9 @@ In addition to the chapters, the manual contains reference pages that are *gener
 
 ## Legacy PDF documents
 
-The previous edition of the user manual consists of two PDF documents, both quite outdated with respect to the current feature set:
+The previous edition of the user manual is a PDF document, quite outdated with respect to the current feature set:
 
 - [Full user manual]({{usermanual_url}}/usermanual.pdf)
-- [Quick reference chart]({{usermanual_url}}/quick-reference.pdf)
 
 ## Help within the tool
 
