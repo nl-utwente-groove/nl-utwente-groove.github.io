@@ -114,6 +114,8 @@
       if (isTest(r[0])) return;
       releases[r[0]] = { date: r[1], source: r[2] };
       if (r[2] === 'github' && (!firstGitHub || r[1] < firstGitHub)) firstGitHub = r[1];
+      // a release without downloads yet still gets its row and its series
+      total(r[0]);
     });
 
     var versions = Object.keys(totals).sort(compareVersions);
@@ -355,8 +357,8 @@
 
   // The legend is HTML rather than Chart.js's own, which cannot put the
   // totals on a row of their own or draw them as lines: the totals first,
-  // then the version series with the lumped older versions last. Clicking
-  // an item hides or shows its dataset.
+  // then the version series from newest to oldest, which puts the lumped
+  // older versions last. Clicking an item hides or shows its dataset.
   function buildLegend(c) {
     var legend = root.querySelector('.dl-legend');
     if (!legend) return;
@@ -365,9 +367,7 @@
     c.data.datasets.forEach(function (d, i) {
       (d.type === 'line' ? lines : bars).push(i);
     });
-    // the lumped segment is the first bar dataset when present
-    if (bars.length && c.data.datasets[bars[0]].label === 'earlier versions') bars.push(bars.shift());
-    [lines, bars].forEach(function (indices) {
+    [lines, bars.reverse()].forEach(function (indices) {
       var row = document.createElement('div');
       row.className = 'dl-legend-row';
       indices.forEach(function (i) {
