@@ -38,3 +38,19 @@ Known cases are:
 
 - `Magnet`, an application for automatic resizing and positioning windows on the screen
 - `Voice Over`, a screen reader available on MacOS
+
+## A blocked installer<a name="blocked"></a>
+
+The GROOVE installers are not code-signed, so MacOS blocks the `.dmg` the first time it is run, with the message *"Apple could not verify "GROOVE" is free of malware"* or *"GROOVE is damaged and can't be opened"*. Nothing is wrong with the file: the installers are built automatically from the public source code.
+
+1. Open the `.dmg` and drag GROOVE to Applications as usual.
+2. Try to open GROOVE once, and dismiss the warning with `Done` (not `Move to Trash`).
+3. Open `System Settings` &rarr; `Privacy & Security`, scroll down to the message about GROOVE, click `Open Anyway` and confirm with your password.
+
+If MacOS says the app is damaged, or no `Open Anyway` button appears, run this in a terminal instead, and then open GROOVE normally:
+
+```
+xattr -dr com.apple.quarantine /Applications/GROOVE.app
+```
+
+The `zip` archives (see [the installation page](installing.html)) need no installer and trigger none of these warnings, but they require Java 21 or newer.

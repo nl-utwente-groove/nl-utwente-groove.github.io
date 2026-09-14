@@ -47,9 +47,7 @@ The GROOVE tool set has a number of runnable components:
 
 - **Imager.** A tool that converts individual graphs (host graphs, rules or type graphs) to an image format such as JPG, GIF, SVG or PDF, which can in turn be included into other documents. The Imager can be invoked as a command-line tool or with a GUI.
 
-<!--- Not available right now
-    Model Checker. A command line tool that checks if properties expressed in CTL temporal logic hold in a state space model produced by the Generator.
---->
+- **ModelChecker.** A command line tool that generates the state space of an existing GTS and checks whether properties expressed in CTL temporal logic hold in it.
 
 ## <a name="screenshots">Screenshots</a>
 

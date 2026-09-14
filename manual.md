@@ -16,13 +16,7 @@ datatable: # optional, true for jQueries, see https://www.datatables.net/
 tags:      # need to be included in _data/tags_doc.yml and have a page in tags/
 keywords:  # used in metadata for findability
     manual, documentation, reference
-
-usermanual_suffix:
-  /usermanual/blob/master
 ---
-{% capture usermanual_url %}
-  {{site.groove_url}}{{page.usermanual_suffix}}
-{% endcapture %}
 
 This is the web edition of the GROOVE user manual, which supersedes the legacy PDF manual. All chapters have been rewritten against the current feature set of the tool; the status column below records the tool version against which each chapter was last checked.
 
@@ -45,13 +39,6 @@ In addition to the chapters, the manual contains reference pages that are *gener
 - [Data operations](manual_ref_operators.html) — all built-in operations on the data sorts
 - [Control grammar](manual_ref_control.html) — the full grammar of the control language
 - [Strategies and acceptors](manual_ref_exploration.html) — the named vocabulary of the legacy exploration options
-
-## Legacy PDF documents
-
-The previous edition of the user manual consists of two PDF documents, both quite outdated with respect to the current feature set:
-
-- [Full user manual]({{usermanual_url}}/usermanual.pdf)
-- [Quick reference chart]({{usermanual_url}}/quick-reference.pdf)
 
 ## Help within the tool
 
