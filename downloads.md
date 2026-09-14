@@ -25,6 +25,7 @@ keywords:  # used in metadata for findability
 .dl-swatch-line, .dl-swatch-box { display: inline-block; width: 32px; margin-right: 5px; vertical-align: middle; }
 .dl-swatch-line { border-top: 2px solid #333; }
 .dl-swatch-box { height: 12px; }
+.dl-table th { text-align: left; }
 </style>
 
 <div id="downloads" markdown="1">

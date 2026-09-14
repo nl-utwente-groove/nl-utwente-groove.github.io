@@ -189,7 +189,7 @@
 
     var versions = data.versions.slice().reverse();
     var html = '<thead><tr><th>Release</th><th>Date</th><th>SourceForge</th><th>GitHub</th><th>Total</th></tr></thead><tbody>' +
-      '<tr><td><b>all releases</b></td><td></td><td>' + format(sfTotal) + '</td><td>' + format(ghTotal) +
+      '<tr><td><b>All</b></td><td></td><td>' + format(sfTotal) + '</td><td>' + format(ghTotal) +
       '</td><td><b>' + format(sfTotal + ghTotal) + '</b></td></tr>';
     versions.forEach(function (v, i) {
       var t = data.totals[v], r = data.releases[v];
