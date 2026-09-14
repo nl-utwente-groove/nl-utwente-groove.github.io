@@ -18,7 +18,7 @@ keywords:
     aspect, prefix, syntax, reference
 ---
 
-*This page is generated from the GROOVE 7.5.3 source code by `manual/make-refs.sh`; do not edit it by hand.*
+*This page is generated from the GROOVE 7.5.4-SNAPSHOT source code by `manual/make-refs.sh`; do not edit it by hand.*
 
 The tables below list the complete label syntax for the three kinds of aspect graph, as also shown in the help panel of the graph editor in the Simulator. Optional parts are shown in square brackets.
 
@@ -30,7 +30,7 @@ The tables below list the complete label syntax for the three kinds of aspect gr
 | :--- | :--- |
 | <code>sort:constant</code> | Constant value node Represents value constant of sort sort ; sort - one of the primitive sorts bool, int, real, user or string; constant - literal value of sort sort |
 | <code>color:(rgb&#124;name)</code> | Node type colour Sets the colour of the nodes and outgoing edges upon rule application. ; rgb - comma-seperated list of three colour dimensions, with range 0..255; name - color name |
-| <code>id:name</code> | Node identifier Assigns the (graph-local) name name to this node. When multiple start graphs are enabled, nodes with the same identifier will be merged. ; name - the declared name for this node; must be unique within the graph |
+| <code>id:name</code> | Node identifier Assigns the (graph-local) name name to this node. Nodes with the same identifier will be merged, both within a single graph and across multiple enabled start graphs; their types must coincide. ; name - the declared name for this node |
 | <code>let:field=constant</code> | Initialisation Sets the attribute field field to the initial value constant ; field - field name; constant - literal value of a primitive sort (one of the primitive sorts bool, int, real, user or string) |
 | <code>rem:</code> | Declares a remark node, to be used for documentation |
 | <code>rem:text</code> | Places a remark on an arbitrary node, to be used for documentation |
@@ -41,6 +41,7 @@ The tables below list the complete label syntax for the three kinds of aspect gr
 | :--- | :--- |
 | <code>regexpr</code> | Regular expression path Tests for a path satisfying regexpr. To specify a regular label containing non-standard characters, prefix with ':'. ; regexpr - regular expression; for syntax see the appropriate tab |
 | <code>:free</code> | Literal edge label Specifies a free-labelled edge, where free may be an arbitrary string Only for use in untyped rule systems ; free - a string of arbitrary characters |
+| <code>mult=count:label</code> | Parallel edge multiplicity Declares the label-edge to stand for count parallel copies. Only allowed if the semantics grammar property is SPO-multi or DPO. ; count - number of parallel copies; a positive constant; label - edge label text; identifier with optional hyphens |
 | <code>rem:text</code> | Declares a remark edge with (free-formatted) label text |
 
 ## Rules

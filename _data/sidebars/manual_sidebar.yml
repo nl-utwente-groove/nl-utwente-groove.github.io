@@ -40,7 +40,7 @@ entries:
         -   title: Control grammar
             url: /manual_ref_control.html
             output: web
-        -   title: Strategies and acceptors
+        -   title: Exploration keys
             url: /manual_ref_exploration.html
             output: web
     -   title: Main site

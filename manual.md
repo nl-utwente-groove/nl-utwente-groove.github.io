@@ -38,7 +38,7 @@ In addition to the chapters, the manual contains reference pages that are *gener
 - [Aspect prefixes](manual_ref_prefixes.html) — the complete label syntax for host graphs, rules and type graphs
 - [Data operations](manual_ref_operators.html) — all built-in operations on the data sorts
 - [Control grammar](manual_ref_control.html) — the full grammar of the control language
-- [Strategies and acceptors](manual_ref_exploration.html) — the named vocabulary of the legacy exploration options
+- [Exploration keys](manual_ref_exploration.html) — the keys and values of the exploration configuration, and the legacy `-s`/`-a` options
 
 ## Help within the tool
 
