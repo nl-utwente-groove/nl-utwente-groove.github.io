@@ -53,6 +53,18 @@ The distinction between types and flags matters in two ways:
 - Type labels are partially ordered by *subtyping* (inheritance), if a type graph is used. This affects rule matching: a type label in a rule also matches all its subtypes in the host graph. See [Advanced rule features](manual_advanced.html).
 - In the presence of a type graph, every node must have exactly one type label.
 
+### Parallel edges
+
+Whether a graph may contain *parallel edges* — several edges with the same label between the same two nodes — depends on the transformation semantics of the grammar, set by the `semantics` system property (see [Advanced rule features](manual_advanced.html#system-properties)). Under the classic `SPO-simple` semantics, graphs are *simple*: an edge is fully determined by its label and end nodes, so adding an edge that is already present changes nothing. Under `SPO-multi` (the default for grammars created with GROOVE 8.0.0 or later) and `DPO`, host graphs are *multigraphs*, in which the parallel copies of an edge are distinct and counted.
+
+In the edit view, a bundle of parallel copies is written as a single edge with the prefix `mult=k:`, where `k` is a positive constant; the display view shows the bundle as one edge with the suffix `(xk)`, and so does the state display during exploration. The prefix is allowed on binary edges, on flags (`mult=2:flag:f`) and on attribute assignments (`mult=2:let:f=5`, see the next chapter), but not on type labels, since the type of a node is not an edge of the host graph. For instance, the buffer below holds two copies of one item, which is also its first:
+
+| Edit view | Display view |
+| :---: | :---: |
+| ![](images/manual/parallel-edges-edit.svg) | ![](images/manual/parallel-edges-display.svg) |
+
+Rules do not use `mult=`: in a rule, every edge with a role of its own stands for a single copy, so parallel copies are matched, deleted and created one at a time; see [Rules](#rules).
+
 ### Graph label syntax
 
 Type labels and flags must be identifiers: strings starting with a letter or underscore and containing only letters, digits, underscores and dollar signs. The same is recommended (though not enforced) for edge labels. To use an arbitrary label, start it (in the edit view) with a colon: everything after the initial colon is taken literally, and the colon itself is not part of the label. Whitespace other than simple spaces, such as tabs and newlines, cannot be part of a label.
@@ -80,6 +92,14 @@ The following example rule contains all of the element kinds listed above:
 | ![](images/manual/simple-rule-edit.svg) | ![](images/manual/simple-rule-display.svg) |
 
 Note that, among other things, this rule deletes and creates type labels; this is forbidden in the presence of a type graph (see [Advanced rule features](manual_advanced.html)).
+
+In a multigraph grammar (see [Parallel edges](#parallel-edges)), rule edges with the same label between the same nodes but with different roles stand for distinct parallel copies: a reader `holds` next to a creator `new:holds` adds a second copy to the one that is matched, and a reader next to an eraser `del:holds`, as in the following rule, deletes one copy while another is preserved.
+
+| Edit view | Display view |
+| :---: | :---: |
+| ![](images/manual/parallel-rule-edit.svg) | ![](images/manual/parallel-rule-display.svg) |
+
+Under `SPO-multi` semantics the reader and the eraser may still be matched to the same host edge, which is then deleted (deletion wins), so the rule also applies to a buffer holding a single copy. Under `DPO` semantics this is forbidden, and the rule requires two copies; see [Injectivities](#injectivities) below.
 
 ### Rule label syntax
 
@@ -125,7 +145,7 @@ A rule can *merge* nodes: this is specified by an edge labelled `new:=` between 
 
 ### Injectivities
 
-In general, rules are *not* matched injectively: distinct LHS nodes may be matched by the same host graph node. (Injectivity can also be imposed per rule or for the whole grammar through the rule and system properties; see [Rule properties](#rule-properties) below.) Local injectivity is enforced by an edge labelled `!=` (or equivalently `not:=`): the end nodes of such an edge always have distinct images. As for mergers, the direction of the edge is irrelevant. For instance, the following rule specifies that a couple may only marry if they do not share a parent:
+In general, rules are *not* matched injectively: distinct LHS nodes may be matched by the same host graph node. (Injectivity can also be imposed per rule or for the whole grammar through the rule and system properties; see [Rule properties](#rule-properties) below.) Local injectivity is enforced by an edge labelled `!=` (or equivalently `not:=`): the end nodes of such an edge always have distinct images. As for mergers, the direction of the edge is irrelevant. Under `DPO` semantics (see [Advanced rule features](manual_advanced.html#system-properties)), matching is moreover injective for erasers: distinct eraser edges are matched by distinct host edges, and an eraser node may not share its image with any other matched node, whichever quantification levels the nodes belong to. For instance, the following rule specifies that a couple may only marry if they do not share a parent:
 
 | Edit view | Display view |
 | :---: | :---: |

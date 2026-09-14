@@ -289,8 +289,10 @@ Besides its rules, graphs and control programs, a grammar has global *system pro
 | `valueOracle` | (none) | Source of values for unbound `ask:` parameters |
 | `userOperations` | (empty) | Class(es) whose `@UserOperation`-annotated static methods become data operations |
 | `matchInjective` | `false` | Enforces injective matching for all rules (overrides the rule property) |
-| `parallelEdges` | `false` | Allows parallel edges in host graphs (multigraphs instead of simple graphs) |
-| `checkDangling` | `false` | Forbids matches that would leave dangling edges (DPO-style deletion) |
+| `semantics` | `SPO-multi` | Transformation semantics: `SPO-simple` (simple graphs), `SPO-multi` (multigraphs, deletion wins) or `DPO` (multigraphs under the gluing condition) |
+| `regExpMatching` | `faithful` | Whether a composite regular expression must be witnessed by a path that survives the rule's own erasures (`faithful`) or by any path (`sloppy`); only relevant under `DPO` |
+| `matchBound` | `10000` | Upper bound on the number of matches in a single state; beyond it, exploration halts with the state flagged (`0` disables the bound) |
+| `checkDangling` | `false` | Forbids matches that would leave dangling edges; implied by `DPO` |
 | `checkCreatorEdges` | `false` | Treats creator edges as implicit NACs |
 | `rhsIsNAC` | `false` | Treats each entire RHS as an implicit NAC |
 | `checkIsomorphism` | `true` | Collapses states up to isomorphism |
@@ -302,15 +304,13 @@ Besides its rules, graphs and control programs, a grammar has global *system pro
 | `actionPolicy` | (empty) | Per-action policy (`off`, `silent`, `error`, `remove`) for forbidden/invariant properties |
 | `typePolicy` | `error` | Handling of dynamic type constraint violations: `off`, `error` or `remove` |
 | `deadlockPolicy` | `off` | Handling of deadlocked states: `off` or `error` |
-| `exploration` | (empty) | Default exploration configuration for this grammar |
+| `exploration` | (empty) | Name of the `explore` settings resource holding the grammar's exploration configuration (see [Exploration and verification](manual_verification.html)) |
 | `storeOutParameters` | `false` | Stores output parameters for implicit group calls in transition arguments |
 | `controlLabels` | (empty) | List of rare labels, used to optimise matching |
 | `commonLabels` | (empty) | List of frequent labels, used to optimise matching |
 | `transitionParameters` | `some` | Shows rule arguments in transition labels: `false`, `some` or `true` |
 | `loopsAsLabels` | `true` | Displays binary self-edges as node labels |
 | `useStoredNodeIDs` | `false` | Bases node numbers on the node identities stored in the graph files |
-| `ecoreOrdering` | `none` | Encoding of ordered many-valued features on Ecore import/export (`none` or `index`) |
-| `ecoreUseIdentifiers` | `false` | Uses `xmi:id` values as node identifiers on Ecore import |
 
 (The properties `grooveVersion`, `grammarVersion` and `location` are maintained automatically and not user-editable.)
 
@@ -318,11 +318,15 @@ Some of these deserve a fuller explanation:
 
 - **Match injectivity.** Matches are in general non-injective (see [the previous chapter](manual_basics.html#injectivities)). Setting `matchInjective` enforces injectivity for all rules at once; in this way, GROOVE can simulate rule systems designed for tools that always impose injectivity.
 
-- **Dangling edge check.** When GROOVE deletes a node, all incident edges are deleted with it, whether or not the rule mentions them — the *SPO* (single-pushout) approach. In the *DPO* (double-pushout) approach, a rule is inapplicable if a deleted node has an incident edge not explicitly deleted as well. Setting `checkDangling` mimics this behaviour.
+- **Transformation semantics.** The `semantics` property fixes two things at once: whether host graphs are simple graphs or multigraphs (see [Parallel edges](manual_basics.html#parallel-edges)), and how rules are applied. Under the *SPO* (single-pushout) approach of `SPO-simple` and `SPO-multi`, a match may identify a deleted element with a preserved one, in which case deletion wins, and deleting a node deletes all its incident edges with it, whether or not the rule mentions them. Under the *DPO* (double-pushout) approach of `DPO`, a match must satisfy the *gluing condition*: the identification condition, under which erasers are matched injectively (see [Injectivities](manual_basics.html#injectivities)), and the dangling condition, under which a rule is inapplicable if a deleted node has an incident edge that is not explicitly deleted as well. `SPO-multi` is the default for grammars created with GROOVE 8.0.0 or later; a grammar saved by an older version keeps the simple-graph semantics it was written under, by being pinned to `SPO-simple` when loaded, and is asked to be saved again.
 
-- **Creator edge check.** Edges have no identity of their own in simple graphs: adding an edge that is already present leaves the graph unchanged. Setting `checkCreatorEdges` adds an implicit embargo for every creator edge, making the rule inapplicable in that situation instead.
+- **Dangling edge check.** Setting `checkDangling` imposes the dangling condition of DPO on its own, under either SPO semantics; `DPO` implies it.
 
-- **Parallel edges.** Alternatively, setting `parallelEdges` makes host graphs *multigraphs*, in which several edges with the same label may connect the same pair of nodes.
+- **Creator edge check.** Setting `checkCreatorEdges` adds an implicit embargo for every creator edge, making the rule inapplicable if the edge is already present. In simple graphs, where adding an edge that is already present would leave the graph unchanged, this distinguishes a real change from a no-op; in multigraphs, where a created edge is always a fresh copy, it forbids adding a further copy. A rule that both reads and creates the same edge can then never be applied, which GROOVE reports as a warning.
+
+- **Regular expression matching.** Under `DPO`, a *composite* regular expression (one not matched by a single host edge; see [Regular expressions](#regular-expressions)) must, with `regExpMatching=faithful`, be witnessed by a path that the rule's own erasures leave intact; `sloppy` accepts any witness path. Under the SPO semantics any witness path counts regardless.
+
+- **Match bound.** Rules with many matches in a single state, for instance through amalgamation, can exhaust memory; `matchBound` caps their number. When the cap is exceeded, the state is flagged as an error state and exploration halts, rather than continuing with a truncated state space.
 
 - **Treating RHSs as NACs.** In applications where graphs are only ever extended — notably model transformation — a rule should typically be applied only once per match, which without deletion can only be prevented by a NAC. Setting `rhsIsNAC` adds the RHS as an implicit NAC to every rule.
 
