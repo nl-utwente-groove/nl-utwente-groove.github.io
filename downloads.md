@@ -24,25 +24,29 @@ keywords:  # used in metadata for findability
 
 <div style="position: relative; height: 420px;"><canvas></canvas></div>
 
-<p class="dl-controls">Series shown separately: the
+<p class="dl-controls">Period:
+<select class="dl-period"><option value="10" selected>the last 10 years</option><option value="all">since 2007</option></select>
+&nbsp; Series shown separately: the
 <select class="dl-recent"><option>3</option><option selected>5</option><option>8</option><option>12</option><option value="all">all</option></select>
 most recent minor versions.</p>
 
-Downloads per month, stacked by minor version series: the most recent series
-each have their own colour, all older versions are grey. Solid parts are downloads
-from [SourceForge](https://sourceforge.net/projects/groove/files/stats/timeline),
-hatched parts downloads from the [GitHub releases](https://github.com/nl-utwente-groove/code/releases).
-The line is the cumulative total. Click a legend entry to hide or show a series; the
-last month is still incomplete.
+Downloads of the releases per month, from SourceForge and GitHub together, stacked by
+minor version series: the most recent series each have their own colour, all older
+versions are grey. The line is the cumulative total since 2007. Hovering over a month
+gives the numbers per series and per site; clicking a legend entry hides or shows a
+series. The last month is still incomplete. Downloads of the documentation, the sample
+grammars and other files that belong to no release are not included.
 
-GitHub keeps only a cumulative download counter per file, so the GitHub numbers
-are reconstructed by sampling the counters daily and differencing the samples. The
-downloads before the first sample (the dashed line) cannot be placed in time; they
-are included in the cumulative line from that day and in the table below. The
-GitHub counters also count every automated fetch of a file (continuous-integration
-runs, mirrors, scanners); nothing is filtered. SourceForge additionally records
-the country and operating system of each download; that breakdown is on
-[SourceForge's own statistics page](https://sourceforge.net/projects/groove/files/stats/timeline).
+The releases moved from [SourceForge](https://sourceforge.net/projects/groove/files/stats/timeline)
+to [GitHub](https://github.com/nl-utwente-groove/code/releases) with version 6.8.0
+(first dashed line); the releases since are on both sites. GitHub keeps only a cumulative
+download counter per file, so the GitHub numbers are reconstructed by sampling the
+counters daily and differencing the samples. The downloads before the first sample
+(second dashed line) cannot be placed in time; they are included in the cumulative line
+from that day and in the table below. The GitHub counters also count every automated
+fetch of a file (continuous-integration runs, mirrors, scanners); nothing is filtered.
+SourceForge additionally records the country and operating system of each download; that
+breakdown is on [SourceForge's own statistics page](https://sourceforge.net/projects/groove/files/stats/timeline).
 
 The data are collected in the repository
 [nl-utwente-groove/download-stats](https://github.com/nl-utwente-groove/download-stats),
@@ -50,11 +54,9 @@ whose README describes the files and their caveats.
 
 ## Totals per release
 
-Versions 6.8.1 and later are available from both sites; the versions before that only from
-SourceForge. The last row counts the files that belong to no release: documentation, sample
-grammars and old files.
-
 <table class="dl-table"></table>
+
+<p><a href="#" class="dl-expand"></a></p>
 
 </div>
 

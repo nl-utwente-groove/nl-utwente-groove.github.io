@@ -1,9 +1,10 @@
 // Renders the download statistics page: a monthly chart of the downloads of
-// GROOVE from SourceForge (since 2007) and GitHub (sampled since September
-// 2026), stacked by minor version series, and a table of totals per release.
-// The data are the two CSV files of nl-utwente-groove/download-stats, read
-// from raw.githubusercontent.com; that repository's README documents them.
-// Needs Chart.js (UMD build) loaded before this script.
+// the GROOVE releases from SourceForge (since 2007) and GitHub (sampled
+// since September 2026), stacked by minor version series, and a table of
+// totals per release. The data are the CSV files of
+// nl-utwente-groove/download-stats, read from raw.githubusercontent.com;
+// that repository's README documents them. Needs Chart.js (UMD build)
+// loaded before this script.
 (function () {
   'use strict';
 
@@ -13,12 +14,14 @@
     'https://raw.githubusercontent.com/nl-utwente-groove/download-stats/main/';
   // Okabe-Ito for up to five recent series, oldest first; grey for the rest
   var COLOURS = ['#0072b2', '#56b4e9', '#009e73', '#e69f00', '#d55e00'];
-  var EARLIER = '#8c8c8c', OTHER = '#c8c8c8';
+  var EARLIER = '#8c8c8c';
+  // rows of the table shown before expanding it
+  var ROWS = 10;
 
   var chart = null;
 
-  Promise.all([fetchCsv('snapshots.csv'), fetchCsv('sourceforge-monthly.csv')])
-    .then(function (files) { render(derive(files[0], files[1])); })
+  Promise.all([fetchCsv('snapshots.csv'), fetchCsv('sourceforge-monthly.csv'), fetchCsv('releases.csv')])
+    .then(function (files) { render(derive(files[0], files[1], files[2])); })
     .catch(function (e) {
       root.querySelector('.dl-summary').textContent =
         'The download statistics could not be loaded (' + e.message + ').';
@@ -43,6 +46,8 @@
     return m ? m[1] : null;
   }
 
+  function isTest(version) { return /^99\./.test(version); }
+
   function compareVersions(a, b) {
     var x = a.split('.').map(Number), y = b.split('.').map(Number);
     for (var i = 0; i < Math.max(x.length, y.length); i++) {
@@ -51,27 +56,28 @@
     return 0;
   }
 
-  // Turns the two files into monthly counts per version and source. GitHub
+  // Turns the files into monthly counts per version and source. GitHub
   // downloads of a month are the differences of consecutive daily counter
   // samples; a counter that dropped was re-uploaded and starts again at zero.
   // The counts of the very first sampling day accumulated since the release
   // was published and cannot be placed in months: they are kept apart as the
-  // backlog, dated to the first sampling day.
-  function derive(gh, sf) {
-    var monthly = {};   // month -> version|'' -> {sf, gh}
-    var totals = {};    // version|'' -> {sf, gh, backlog}
+  // backlog, dated to the first sampling day. Files that belong to no
+  // release only count towards `other`.
+  function derive(gh, sf, rel) {
+    var monthly = {};   // month -> version -> {sf, gh}
+    var totals = {};    // version -> {sf, gh, backlog}
+    var other = 0;
     var firstDay = null, lastDay = null;
     function total(version) {
-      var v = version || '';
-      return totals[v] || (totals[v] = { sf: 0, gh: 0, backlog: 0 });
+      return totals[version] || (totals[version] = { sf: 0, gh: 0, backlog: 0 });
     }
     function add(month, version, source, n) {
       if (!n) return;
-      var v = version || '';
+      if (!version) { other += n; return; }
       var m = monthly[month] || (monthly[month] = {});
-      var c = m[v] || (m[v] = { sf: 0, gh: 0 });
+      var c = m[version] || (m[version] = { sf: 0, gh: 0 });
       c[source] += n;
-      total(v)[source] += n;
+      total(version)[source] += n;
     }
 
     sf.forEach(function (r) { add(r[0], versionOf(r[1]), 'sf', +r[2]); });
@@ -102,19 +108,32 @@
       });
     });
 
-    var months = Object.keys(monthly).sort();
+    var releases = {};   // version -> {date, source}
+    var firstGitHub = null;
+    rel.forEach(function (r) {
+      if (isTest(r[0])) return;
+      releases[r[0]] = { date: r[1], source: r[2] };
+      if (r[2] === 'github' && (!firstGitHub || r[1] < firstGitHub)) firstGitHub = r[1];
+    });
+
+    var versions = Object.keys(totals).sort(compareVersions);
     var minors = [];
-    Object.keys(totals).filter(Boolean).sort(compareVersions).forEach(function (v) {
+    versions.forEach(function (v) {
       var m = minorOf(v);
       if (minors.indexOf(m) < 0) minors.push(m);
     });
+    var months = Object.keys(monthly).sort();
     return {
       monthly: monthly,
       totals: totals,
+      other: other,
+      versions: versions,
       minors: minors,
+      releases: releases,
       months: monthRange(months[0], months[months.length - 1]),
       firstDay: firstDay,
       lastDay: lastDay,
+      firstGitHub: firstGitHub,
       backlog: backlog
     };
   }
@@ -142,60 +161,69 @@
     return 'hsl(' + Math.round(300 * i / (n - 1)) + ', 60%, 45%)';
   }
 
-  // diagonal hatching in the series colour, for the GitHub part of a stack
-  function hatch(colour) {
-    var c = document.createElement('canvas');
-    c.width = c.height = 8;
-    var g = c.getContext('2d');
-    g.fillStyle = colour;
-    g.fillRect(0, 0, 8, 8);
-    g.strokeStyle = 'rgba(255,255,255,0.7)';
-    g.lineWidth = 2;
-    g.beginPath(); g.moveTo(-2, 6); g.lineTo(6, -2); g.moveTo(2, 10); g.lineTo(10, 2); g.stroke();
-    return g.createPattern(c, 'repeat');
-  }
-
   function render(data) {
     var sfTotal = 0, ghTotal = 0;
-    Object.keys(data.totals).forEach(function (v) {
+    data.versions.forEach(function (v) {
       sfTotal += data.totals[v].sf;
       ghTotal += data.totals[v].gh + data.totals[v].backlog;
     });
     root.querySelector('.dl-summary').innerHTML =
-      '<b>' + format(sfTotal + ghTotal) + ' downloads</b> since ' + monthName(data.months[0]) +
-      ': ' + format(sfTotal) + ' from SourceForge and ' + format(ghTotal) + ' from GitHub' +
-      ' (GitHub counters sampled since ' + data.firstDay + ', last sample ' + data.lastDay + ').';
+      '<b>' + format(sfTotal + ghTotal) + ' downloads of the releases</b> since ' +
+      monthName(data.months[0]) + ': ' + format(sfTotal) + ' from SourceForge and ' +
+      format(ghTotal) + ' from GitHub (GitHub counters sampled since ' + data.firstDay +
+      ', last sample ' + data.lastDay + '). A further ' + format(data.other) +
+      ' downloads of documentation, sample grammars and other files are not counted.';
 
-    var select = root.querySelector('.dl-recent');
-    function recentCount() {
-      var v = select ? select.value : '5';
-      return v === 'all' ? data.minors.length : Math.min(+v, data.minors.length);
+    var recentSelect = root.querySelector('.dl-recent');
+    var periodSelect = root.querySelector('.dl-period');
+    function redraw() {
+      var r = recentSelect ? recentSelect.value : '5';
+      var p = periodSelect ? periodSelect.value : '10';
+      drawChart(data,
+        r === 'all' ? data.minors.length : Math.min(+r, data.minors.length),
+        p === 'all' ? data.months.length : Math.min(12 * +p, data.months.length));
     }
-    drawChart(data, recentCount());
-    if (select) select.addEventListener('change', function () { drawChart(data, recentCount()); });
+    redraw();
+    if (recentSelect) recentSelect.addEventListener('change', redraw);
+    if (periodSelect) periodSelect.addEventListener('change', redraw);
 
-    var versions = Object.keys(data.totals).filter(Boolean).sort(compareVersions).reverse();
-    var rows = versions.map(function (v) {
-      var t = data.totals[v];
-      return [v, t.sf, t.gh + t.backlog];
+    var versions = data.versions.slice().reverse();
+    var html = '<thead><tr><th>Release</th><th>Date</th><th>SourceForge</th><th>GitHub</th><th>Total</th></tr></thead><tbody>' +
+      '<tr><td><b>all releases</b></td><td></td><td>' + format(sfTotal) + '</td><td>' + format(ghTotal) +
+      '</td><td><b>' + format(sfTotal + ghTotal) + '</b></td></tr>';
+    versions.forEach(function (v, i) {
+      var t = data.totals[v], r = data.releases[v];
+      html += '<tr' + (i >= ROWS ? ' class="dl-more" hidden' : '') + '><td>' + v + '</td><td>' +
+        (r ? r.date : '') + '</td><td>' + format(t.sf) + '</td><td>' + format(t.gh + t.backlog) +
+        '</td><td><b>' + format(t.sf + t.gh + t.backlog) + '</b></td></tr>';
     });
-    var o = data.totals[''] || { sf: 0, gh: 0, backlog: 0 };
-    rows.push(['other files', o.sf, o.gh + o.backlog]);
-    var html = '<thead><tr><th>Release</th><th>SourceForge</th><th>GitHub</th><th>total</th></tr></thead><tbody>';
-    rows.forEach(function (r) {
-      html += '<tr><td>' + r[0] + '</td><td>' + format(r[1]) + '</td><td>' + format(r[2]) +
-        '</td><td><b>' + format(r[1] + r[2]) + '</b></td></tr>';
-    });
-    html += '<tr><td><b>all</b></td><td>' + format(sfTotal) + '</td><td>' + format(ghTotal) +
-      '</td><td><b>' + format(sfTotal + ghTotal) + '</b></td></tr></tbody>';
-    root.querySelector('table').innerHTML = html;
+    root.querySelector('table').innerHTML = html + '</tbody>';
+
+    var expand = root.querySelector('.dl-expand');
+    if (expand && versions.length > ROWS) {
+      var expanded = false;
+      function label() {
+        expand.textContent = expanded ? 'Show only the ' + ROWS + ' most recent releases' :
+          'Show all ' + versions.length + ' releases';
+      }
+      label();
+      expand.addEventListener('click', function (e) {
+        e.preventDefault();
+        expanded = !expanded;
+        root.querySelectorAll('.dl-more').forEach(function (tr) { tr.hidden = !expanded; });
+        label();
+      });
+    }
   }
 
-  // Draws the monthly chart with the `recent` most recent minor series as
-  // separate segments, the older versions lumped, the non-release files as a
-  // segment of their own, and the cumulative total as a line.
-  function drawChart(data, recent) {
-    var months = data.months;
+  // Draws the chart of the last `span` months with the `recent` most recent
+  // minor series as separate segments, the older versions lumped, and the
+  // cumulative total (since the beginning, not since the start of the
+  // window) as a line.
+  function drawChart(data, recent, span) {
+    var all = data.months;
+    var start = all.length - span;
+    var months = all.slice(start);
     var recentMinors = data.minors.slice(data.minors.length - recent);
     // segments from the bottom of the stack up
     var segments = [];
@@ -205,9 +233,7 @@
     recentMinors.forEach(function (m, i) {
       segments.push({ key: m, label: 'version ' + m + '.x', colour: colour(i, recentMinors.length) });
     });
-    segments.push({ key: 'other', label: 'documentation, samples, other files', colour: OTHER });
     function segmentOf(version) {
-      if (!version) return 'other';
       var m = minorOf(version);
       return recentMinors.indexOf(m) < 0 ? 'earlier' : m;
     }
@@ -216,46 +242,62 @@
     segments.forEach(function (s) {
       series[s.key] = { sf: months.map(function () { return 0; }), gh: months.map(function () { return 0; }) };
     });
-    var cumulative = [], running = 0;
+    var cumulative = [], running = 0, windowed = [], sinceStart = 0;
     var backlogMonth = data.firstDay ? data.firstDay.slice(0, 7) : null;
-    months.forEach(function (month, i) {
-      var m = data.monthly[month] || {};
+    all.forEach(function (month, i) {
+      var m = data.monthly[month] || {}, n = 0;
       Object.keys(m).forEach(function (v) {
-        var s = series[segmentOf(v)];
-        s.sf[i] += m[v].sf;
-        s.gh[i] += m[v].gh;
-        running += m[v].sf + m[v].gh;
+        n += m[v].sf + m[v].gh;
+        if (i >= start) {
+          var s = series[segmentOf(v)];
+          s.sf[i - start] += m[v].sf;
+          s.gh[i - start] += m[v].gh;
+        }
       });
-      if (month === backlogMonth) running += data.backlog;
-      cumulative.push(running);
-    });
-
-    var datasets = [];
-    segments.forEach(function (s) {
-      datasets.push({ label: s.label, segment: s.key, source: 'SourceForge',
-        data: series[s.key].sf, backgroundColor: s.colour, stack: 'downloads', order: 2 });
-      if (series[s.key].gh.some(Boolean)) {
-        datasets.push({ label: s.label, segment: s.key, source: 'GitHub',
-          data: series[s.key].gh, backgroundColor: hatch(s.colour), stack: 'downloads', order: 2 });
+      if (month === backlogMonth) n += data.backlog;
+      running += n;
+      if (i >= start) {
+        sinceStart += n;
+        cumulative.push(running);
+        windowed.push(sinceStart);
       }
     });
-    datasets.push({ type: 'line', label: 'cumulative total', segment: 'total', yAxisID: 'y2',
-      data: cumulative, borderColor: '#333', borderWidth: 1.5, pointRadius: 0, order: 1 });
 
-    var samplingIndex = backlogMonth ? months.indexOf(backlogMonth) : -1;
+    var datasets = segments.map(function (s) {
+      return { label: s.label, sf: series[s.key].sf, gh: series[s.key].gh,
+        data: series[s.key].sf.map(function (n, i) { return n + series[s.key].gh[i]; }),
+        backgroundColor: s.colour, stack: 'downloads', order: 2 };
+    });
+    datasets.push({ type: 'line', label: 'total since 2007', yAxisID: 'y2',
+      data: cumulative, borderColor: '#333', borderWidth: 1.5, pointRadius: 0, order: 1 });
+    // a window shorter than the history also gets the total within it
+    if (start > 0) {
+      datasets.push({ type: 'line', label: 'total since ' + monthName(months[0]), yAxisID: 'y2',
+        data: windowed, borderColor: '#333', borderWidth: 1.5, borderDash: [6, 3], pointRadius: 0, order: 1 });
+    }
+
+    // dashed lines before the month the releases moved to GitHub and the
+    // month the GitHub counters were first sampled
+    var marks = [];
+    if (data.firstGitHub) marks.push({ month: data.firstGitHub.slice(0, 7), text: 'releases move to GitHub' });
+    if (backlogMonth) marks.push({ month: backlogMonth, text: 'GitHub counters sampled' });
     var marker = {
-      id: 'samplingMarker',
+      id: 'marks',
       afterDatasetsDraw: function (c) {
-        if (samplingIndex < 1) return;
-        // between the bar of the month before and the bar of the first month
-        var x = (c.scales.x.getPixelForValue(samplingIndex - 1) + c.scales.x.getPixelForValue(samplingIndex)) / 2;
         var area = c.chartArea, g = c.ctx;
         g.save();
-        g.strokeStyle = '#333'; g.setLineDash([4, 3]); g.lineWidth = 1;
-        g.beginPath(); g.moveTo(x, area.top); g.lineTo(x, area.bottom); g.stroke();
-        g.setLineDash([]);
-        g.fillStyle = '#333'; g.font = '11px sans-serif'; g.textAlign = 'right';
-        g.fillText('GitHub sampling', x - 4, area.top + 12);
+        g.strokeStyle = '#333'; g.fillStyle = '#333'; g.lineWidth = 1;
+        g.font = '11px sans-serif'; g.textAlign = 'right';
+        marks.forEach(function (mark, k) {
+          var i = months.indexOf(mark.month);
+          if (i < 1) return;
+          // between the bar of the month before and the bar of the month
+          var x = (c.scales.x.getPixelForValue(i - 1) + c.scales.x.getPixelForValue(i)) / 2;
+          g.setLineDash([4, 3]);
+          g.beginPath(); g.moveTo(x, area.top); g.lineTo(x, area.bottom); g.stroke();
+          g.setLineDash([]);
+          g.fillText(mark.text, x - 4, area.top + 12 + 14 * k);
+        });
         g.restore();
       }
     };
@@ -280,27 +322,27 @@
             title: { display: true, text: 'cumulative' } }
         },
         plugins: {
-          legend: {
-            // one entry per segment; toggling it hides both sources
-            labels: { filter: function (item, d) { return d.datasets[item.datasetIndex].source !== 'GitHub'; } },
-            onClick: function (e, item, legend) {
-              var c = legend.chart, key = c.data.datasets[item.datasetIndex].segment;
-              c.data.datasets.forEach(function (d, i) {
-                if (d.segment === key) c.setDatasetVisibility(i, !c.isDatasetVisible(i));
-              });
-              c.update();
-            }
-          },
+          legend: { onClick: function (e, item, legend) {
+            var c = legend.chart;
+            c.setDatasetVisibility(item.datasetIndex, !c.isDatasetVisible(item.datasetIndex));
+            c.update();
+          } },
           tooltip: {
             filter: function (item) { return item.raw > 0; },
             callbacks: {
               title: function (items) {
                 var l = items[0].label;
-                return monthName(l) + (l === months[months.length - 1] ? ' (incomplete)' : '');
+                return monthName(l) + (l === all[all.length - 1] ? ' (incomplete)' : '');
               },
               label: function (item) {
-                var d = item.dataset;
-                return d.label + (d.source ? ' (' + d.source + ')' : '') + ': ' + format(item.raw);
+                var d = item.dataset, i = item.dataIndex;
+                var s = d.label + ': ' + format(item.raw);
+                if (d.sf && d.sf[i] && d.gh[i]) {
+                  s += ' (SourceForge ' + format(d.sf[i]) + ', GitHub ' + format(d.gh[i]) + ')';
+                } else if (d.gh && d.gh[i]) {
+                  s += ' (GitHub)';
+                }
+                return s;
               },
               footer: function (items) {
                 var n = 0;
