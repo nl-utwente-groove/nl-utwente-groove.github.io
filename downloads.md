@@ -18,11 +18,21 @@ keywords:  # used in metadata for findability
     downloads, statistics, releases
 ---
 
+<style>
+.dl-legend { text-align: center; font-size: 12px; color: #666; line-height: 1.8; }
+.dl-legend-item { cursor: pointer; margin: 0 8px; white-space: nowrap; }
+.dl-legend-item.dl-hidden { text-decoration: line-through; opacity: 0.6; }
+.dl-swatch-line, .dl-swatch-box { display: inline-block; width: 32px; margin-right: 5px; vertical-align: middle; }
+.dl-swatch-line { border-top: 2px solid #333; }
+.dl-swatch-box { height: 12px; }
+</style>
+
 <div id="downloads" markdown="1">
 
 <p class="dl-summary">Loading the download statistics…</p>
 
-<div style="position: relative; height: 420px;"><canvas></canvas></div>
+<div class="dl-legend"></div>
+<div style="position: relative; height: 400px;"><canvas></canvas></div>
 
 <p class="dl-controls">Period:
 <select class="dl-period"><option value="10" selected>the last 10 years</option><option value="all">since 2007</option></select>

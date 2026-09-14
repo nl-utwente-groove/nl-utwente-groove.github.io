@@ -322,11 +322,7 @@
             title: { display: true, text: 'cumulative' } }
         },
         plugins: {
-          legend: { onClick: function (e, item, legend) {
-            var c = legend.chart;
-            c.setDatasetVisibility(item.datasetIndex, !c.isDatasetVisible(item.datasetIndex));
-            c.update();
-          } },
+          legend: { display: false },
           tooltip: {
             filter: function (item) { return item.raw > 0; },
             callbacks: {
@@ -353,6 +349,50 @@
           }
         }
       }
+    });
+    buildLegend(chart);
+  }
+
+  // The legend is HTML rather than Chart.js's own, which cannot put the
+  // totals on a row of their own or draw them as lines: the totals first,
+  // then the version series with the lumped older versions last. Clicking
+  // an item hides or shows its dataset.
+  function buildLegend(c) {
+    var legend = root.querySelector('.dl-legend');
+    if (!legend) return;
+    legend.innerHTML = '';
+    var lines = [], bars = [];
+    c.data.datasets.forEach(function (d, i) {
+      (d.type === 'line' ? lines : bars).push(i);
+    });
+    // the lumped segment is the first bar dataset when present
+    if (bars.length && c.data.datasets[bars[0]].label === 'earlier versions') bars.push(bars.shift());
+    [lines, bars].forEach(function (indices) {
+      var row = document.createElement('div');
+      row.className = 'dl-legend-row';
+      indices.forEach(function (i) {
+        var d = c.data.datasets[i];
+        var item = document.createElement('span');
+        item.className = 'dl-legend-item';
+        var swatch = document.createElement('span');
+        if (d.type === 'line') {
+          swatch.className = 'dl-swatch-line';
+          swatch.style.borderTopColor = d.borderColor;
+          if (d.borderDash) swatch.style.borderTopStyle = 'dashed';
+        } else {
+          swatch.className = 'dl-swatch-box';
+          swatch.style.backgroundColor = d.backgroundColor;
+        }
+        item.appendChild(swatch);
+        item.appendChild(document.createTextNode(d.label));
+        item.addEventListener('click', function () {
+          c.setDatasetVisibility(i, !c.isDatasetVisible(i));
+          item.classList.toggle('dl-hidden', !c.isDatasetVisible(i));
+          c.update();
+        });
+        row.appendChild(item);
+      });
+      legend.appendChild(row);
     });
   }
 })();
