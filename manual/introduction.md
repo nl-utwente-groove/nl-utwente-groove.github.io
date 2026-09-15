@@ -30,7 +30,7 @@ GROOVE is developed at the University of Twente and distributed as open source u
 
 The following terms are used throughout this manual and in the tool itself.
 
-- **Graph.** GROOVE works with directed, edge-labelled graphs. Nodes have no identity of their own visible in the visual representation; all information is in the (labelled) edges. Node labels as you see them on screen are in fact self-edges, displayed inside the node for readability. Graphs may in addition be *typed* (conform to a type graph) and carry *attributes* (data values such as integers and strings).
+- **Graph.** GROOVE works with directed, edge-labelled graphs — multigraphs, in which several edges with the same label may connect the same nodes, or simple graphs, depending on the grammar's transformation semantics. Nodes have no identity of their own visible in the visual representation; all information is in the (labelled) edges. Node labels as you see them on screen are in fact self-edges, displayed inside the node for readability. Graphs may in addition be *typed* (conform to a type graph) and carry *attributes* (data values such as integers and strings).
 
 - **Host graph.** A graph representing a state of the modelled system. One host graph is designated the *start graph*, the initial state of the exploration.
 
@@ -38,7 +38,7 @@ The following terms are used throughout this manual and in the tool itself.
 
 - **Graph grammar.** The complete collection of resources that together define a transformation system: rules, host graph(s), and optionally type graphs, control programs, Prolog programs and configuration properties. On disk, a grammar is a directory with extension `.gps` ("graph production system") holding one file per resource.
 
-- **Exploration.** The process of recursively applying all enabled rules to all reachable host graphs. The result is a *graph transition system* (GTS): a labelled transition system whose states are host graphs and whose transitions are rule applications. GROOVE collapses states that are isomorphic, which drastically reduces the size of the state space. The order and extent of exploration is determined by a selectable *exploration strategy*; see the [Exploration and verification](manual_verification.html) chapter.
+- **Exploration.** The process of recursively applying all enabled rules to all reachable host graphs. The result is a *graph transition system* (GTS): a labelled transition system whose states are host graphs and whose transitions are rule applications. GROOVE collapses states that are isomorphic, which drastically reduces the size of the state space. The order and extent of exploration is determined by an *exploration configuration*, composed from a small set of keys and stored with the grammar; see the [Exploration and verification](manual_verification.html) chapter.
 
 - **Control.** By default, all rules are always enabled, and rule application order is arbitrary. A *control program* constrains this, using a small imperative language with sequencing, choice, loops and function/recipe definitions; see the [Control language](manual_control.html) chapter.
 
@@ -48,9 +48,9 @@ The following terms are used throughout this manual and in the tool itself.
 
 A GROOVE installation offers the following runnable components:
 
-- **Simulator.** The main, GUI-based tool. It lets you create and edit grammars (host graphs, rules, type graphs, control programs), apply rules interactively, explore and inspect the state space, and run model checking — all visually. If you are new to GROOVE, this is the place to start.
+- **Simulator.** The main, GUI-based tool. It lets you create and edit grammars (host graphs, rules, type graphs, control programs), apply rules interactively, explore and inspect the state space, and run model checking — all visually. If you are new to GROOVE, this is the place to start. Problems in a grammar are reported in the error list and marked on the resources concerned; *errors* keep the grammar from being explored, whereas *warnings* (shown in orange) point out things that are probably not intended, such as a rule that can never be applied, but do not block. Graphs are drawn by one of two interchangeable backends; the yFiles backend, an optional add-on with its own layout algorithms, is described on the [installation page](installing.html#the-yfiles-add-on).
 
-- **Generator.** A command-line tool for state space exploration, without the overhead (and memory footprint) of the GUI. Its principal use is for large explorations and for scripted or batch experiments. The exploration strategy and other options are set through command-line parameters.
+- **Generator.** A command-line tool for state space exploration, without the overhead (and memory footprint) of the GUI. Its principal use is for large explorations and for scripted or batch experiments. It runs the exploration stored with the grammar, or one given on the command line; warnings of the grammar are printed before exploring.
 
 - **ModelChecker.** A command-line tool that explores a grammar's state space and checks CTL formulae against it.
 
@@ -58,7 +58,7 @@ A GROOVE installation offers the following runnable components:
 
 - **Imager.** A converter from GROOVE graphs and rules to image formats (among others PNG, SVG, PDF and TikZ), for inclusion in documents. It can be invoked from the command line or through a small GUI.
 
-Each component is available as a runnable jar in the `bin` subdirectory of the installation (`Simulator.jar`, `Generator.jar`, and so on); the command-line tools print a summary of their options when invoked with `-h`.
+The native installers register each component with the application menu of the platform; in the `zip` distribution, each is a runnable jar in the `bin` subdirectory (`Simulator.jar`, `Generator.jar`, and so on). The command-line tools print a summary of their options when invoked with `-h`.
 
 ## Downloading and installing
 
@@ -69,7 +69,7 @@ Releases are published on [GitHub]({{site.groove_url}}/code/releases/latest); at
 - [Graphs and rules](manual_basics.html) explains how to read and edit host graphs and transformation rules — the day-to-day basics of working with the Simulator.
 - [Advanced rule features](manual_advanced.html) covers data attributes, universally quantified (nested) rules, type graphs, and the available rule properties.
 - [Control language](manual_control.html) describes the language for programming the order of rule applications.
-- [Exploration and verification](manual_verification.html) covers exploration strategies, acceptors, and CTL/LTL model checking.
+- [Exploration and verification](manual_verification.html) covers configuring exploration, the Generator, and CTL/LTL model checking.
 - [Import and export](manual_io.html) describes the supported exchange formats, including Ecore/EMF models.
 
 ## Getting help
