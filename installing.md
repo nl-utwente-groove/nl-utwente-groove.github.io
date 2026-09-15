@@ -39,9 +39,10 @@ The installers save you the trouble of unpacking an archive, having the right Ja
 | Windows (x64) | `groove-x_y_z-windows-x64.msi` |
 | MacOS (Apple silicon) | `groove-x_y_z-macos-aarch64.dmg` |
 | MacOS (Intel) | `groove-x_y_z-macos-x64.dmg` |
-| Linux (x64) | `groove-x_y_z-linux-x64.deb` |
+| Linux (x64), Debian and Ubuntu | `groove-x_y_z-linux-x64.deb` |
+| Linux (x64), Fedora, RHEL and openSUSE | `groove-x_y_z-linux-x64.rpm` |
 
-The installers have few customisation options; among other things, they use a fixed, platform-default installation path. If you want more control, use the stand-alone installation below.
+On Linux, pick the package format of your distribution: `.deb` for Debian-based systems, `.rpm` for RPM-based ones. The installers have few customisation options; among other things, they use a fixed, platform-default installation path. If you want more control, use the stand-alone installation below.
 
 ### If Windows or MacOS blocks the installer<a name="blocked"></a>
 
@@ -51,7 +52,7 @@ The installers are not code-signed, so Windows and MacOS treat them as coming fr
 
 - **MacOS** (*"Apple could not verify GROOVE…"*): see [the MacOS page](../mac#blocked).
 
-- **Linux**: not affected.
+- **Linux**: neither package format is affected.
 
 The full instructions are also among the release assets, as `IF-WINDOWS-OR-MACOS-BLOCKS-THE-INSTALLER.txt`. If you cannot get the installer for your platform to work, please [file an issue]({{site.groove_url}}/code/issues) and use the stand-alone installation for the time being.
 
