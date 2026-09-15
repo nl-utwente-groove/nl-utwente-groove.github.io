@@ -2,3 +2,5 @@
 /Gemfile.lock
 /.bundle
 /_site
+/.claude/worktrees/
+/.claude/settings.local.json
