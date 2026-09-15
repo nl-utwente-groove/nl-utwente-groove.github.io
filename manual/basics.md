@@ -190,7 +190,7 @@ Apart from its graph structure, a rule also has *rule properties*, which can be 
 
 Some of these deserve further explanation:
 
-- **Priorities** provide a basic way to *schedule* rules: as long as a rule of higher priority is applicable, no lower-priority rule can be applied. Assigning different priorities also changes the rule tree in the Simulator, which then shows the rules grouped by priority. A typical use is a high-priority rule that merely tests for the presence of an `Error` node: it automatically halts the exploration of any branch in which another rule has introduced such a node. The `priorities` sample shows an example.
+- **Priorities** provide a basic way to *schedule* rules: as long as a rule of higher priority is applicable, no lower-priority rule can be applied. Assigning different priorities also changes the rule tree in the Simulator, which then shows the rules grouped by priority. A typical use is a high-priority rule that merely tests for the presence of an `Error` node: it automatically halts the exploration of any branch in which another rule has introduced such a node. The `priorities` sample shows an example. Priorities and control programs do not mix: once the actions carry more than one distinct priority, a control program may not call a prioritised action by name (see [Control language](manual_control.html#calls-and-expressions)).
 
 - **Enabledness.** A disabled rule is never scheduled for application. This is useful while developing a grammar, as it makes it easy to experiment with different versions of the same rule.
 

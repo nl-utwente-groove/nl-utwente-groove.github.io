@@ -30,7 +30,7 @@ Which control programs are in effect is determined by the `controlProgram` syste
 
     # *.any;
 
-meaning: apply any action, from any package, as long as possible. (In other words: a grammar without control explores all rules — the behaviour described in the previous chapters.)
+meaning: apply any action, from any package, as long as possible. (In other words: a grammar without control explores all rules — the behaviour described in the previous chapters.) A procedure declared in a program that is disabled, or that has errors, cannot be called from an enabled one; the error on such a call says which program the procedure lives in and why it is unavailable.
 
 Terminology used throughout:
 
@@ -43,6 +43,8 @@ Note that control is about scheduling *transformer* actions. Rules whose `action
 ## Calls and expressions
 
 The elementary building block of a control program is the *rule call*: the (possibly qualified) name of a rule, optionally with an argument list (see [Variables and arguments](#variables-and-arguments)). Where a rule name appears, only that rule is scheduled at that point; if the rule has no match, the call fails.
+
+Control and rule priorities (see [Graphs and rules](manual_basics.html#rule-properties)) do not mix: as soon as the actions of a grammar carry more than one distinct priority, an explicit call of a rule or recipe with a non-zero priority is a compile-time error ("Explicit call of prioritised rule not allowed"), since the call would override the scheduling the priorities express. Group calls (`any` and `other`, see [below](#group-calls-any-and-other)) honour the priorities. If all actions have the same priority, priorities have no effect and every action can be called explicitly.
 
 Control *expressions* are built from calls by the following operators:
 
@@ -104,6 +106,8 @@ Alternatively, output parameters can be received with assignment syntax: `x, y :
 
 A variable must be *bound* (by an output argument or an initialising declaration) before it can be used as an input.
 
+The value of a variable is part of the control state only while the variable is *live*, that is, while its value can still be read by a later call. Two states that differ only in the value of a variable that is never used again are therefore the same state; a program that receives an output parameter and does nothing with it does not blow up the state space.
+
 ## Group calls: any and other
 
 The keywords `any` and `other` act as wildcards over the available actions:
@@ -134,7 +138,7 @@ Parameters are declared like variables, with `out` marking output parameters. Pr
 The difference between the two kinds:
 
 - A **function** is a transparent abbreviation: its body's rule applications appear individually in the transition system, exactly as if the body had been written in place of the call.
-- A **recipe** is *atomic*: its entire execution is a single action, appearing as one transition, labelled with the recipe name (and arguments). Intermediate states are hidden, and only committed to the state space if the recipe completes successfully — a recipe that gets stuck halfway contributes nothing. Recipes are actions in the same sense as rules; they can, for instance, be covered by `any`/`other` group calls. An optional `priority n` clause assigns the recipe a preference in group calls.
+- A **recipe** is *atomic*: its entire execution is a single action, appearing as one transition, labelled with the recipe name (and arguments). Intermediate states are hidden, and only committed to the state space if the recipe completes successfully — a recipe that gets stuck halfway contributes nothing. Recipes are actions in the same sense as rules; they can, for instance, be covered by `any`/`other` group calls. An optional `priority n` clause gives the recipe a priority like that of a rule, with the same consequence: once the grammar's actions carry more than one distinct priority, a prioritised recipe may only be reached through group calls (see [Calls and expressions](#calls-and-expressions)). A recipe called with an input argument whose value is undefined is inapplicable. An output parameter of a recipe whose node is deleted by a later step of the recipe is undefined, and shown as `_` in the transition label; an output value computed by the final step of the recipe is reported as usual.
 
 ## Packages and imports
 
