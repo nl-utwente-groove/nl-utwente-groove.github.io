@@ -9,16 +9,16 @@
       ><path d="M0 0 L690 0 L690 394 L0 394 L0 0 Z"
       /></clipPath
       ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath2"
-      ><path d="M0 0 L0 21 L65 21 L65 0 Z"
+      ><path d="M0 0 L0 22 L65 22 L65 0 Z"
       /></clipPath
       ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath3"
-      ><path d="M208 161 L208 182 L273 182 L273 161 Z"
+      ><path d="M208 159 L208 181 L273 181 L273 159 Z"
       /></clipPath
       ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath4"
-      ><path d="M-32.5 -10 L-32.5 11 L32.5 11 L32.5 -10 Z"
+      ><path d="M-32.5 -10.5 L-32.5 11.5 L32.5 11.5 L32.5 -10.5 Z"
       /></clipPath
       ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath5"
-      ><path d="M-22.5 -1 L-22.5 20 L42.5 20 L42.5 -1 Z"
+      ><path d="M-22.5 -1.5 L-22.5 20.5 L42.5 20.5 L42.5 -1.5 Z"
       /></clipPath
       ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath6"
       ><path d="M0 0 L0 35 L88 35 L88 0 Z"
@@ -31,12 +31,12 @@
     ><rect x="0" width="690" height="394" y="0" clip-path="url(#clipPath1)" stroke="none"
     /></g
     ><g stroke-linecap="butt" font-family="'Segoe UI'" transform="translate(-126,-145)"
-    ><polygon points=" 272 171 262 176 266 171 262 166" stroke="none" clip-path="url(#clipPath3)"
-      /><polygon fill="none" points=" 272 171 262 176 266 171 262 166" clip-path="url(#clipPath3)"
-      /><path fill="none" d="M209 171 L266 171 M266 171" clip-path="url(#clipPath3)"
-      /><rect stroke-linecap="square" x="-11" y="-10" transform="translate(240.5,171)" clip-path="url(#clipPath4)" fill="white" width="22" height="20" stroke="none"
+    ><polygon points=" 272 169 262 174 266 169 262 164" stroke="none" clip-path="url(#clipPath3)"
+      /><polygon fill="none" points=" 272 169 262 174 266 169 262 164" clip-path="url(#clipPath3)"
+      /><path fill="none" d="M209 169.5 L266 169 M266 169" clip-path="url(#clipPath3)"
+      /><rect stroke-linecap="square" x="-11" y="-10" transform="translate(240.5,169.5)" clip-path="url(#clipPath4)" fill="white" width="22" height="20" stroke="none"
     /></g
-    ><g font-family="'Segoe UI'" font-size="13px" transform="translate(104.5,17)"
+    ><g font-family="'Segoe UI'" font-size="13px" transform="translate(104.5,15.5)"
     ><text x="0" xml:space="preserve" y="14" clip-path="url(#clipPath5)" stroke="none"
       >has</text
     ></g

@@ -21,16 +21,16 @@
       ><path d="M-48 -6.344 L-48 58.656 L31 58.656 L31 -6.344 Z"
       /></clipPath
       ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath6"
-      ><path d="M0 0 L0 29 L98 29 L98 0 Z"
+      ><path d="M0 0 L0 30 L98 30 L98 0 Z"
       /></clipPath
       ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath7"
-      ><path d="M134 81 L134 110 L232 110 L232 81 Z"
+      ><path d="M134 78 L134 108 L232 108 L232 78 Z"
       /></clipPath
       ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath8"
-      ><path d="M-49 -14 L-49 15 L49 15 L49 -14 Z"
+      ><path d="M-49 -14.5 L-49 15.5 L49 15.5 L49 -14.5 Z"
       /></clipPath
       ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath9"
-      ><path d="M-42 -5 L-42 24 L56 24 L56 -5 Z"
+      ><path d="M-42 -5.5 L-42 24.5 L56 24.5 L56 -5.5 Z"
       /></clipPath
       ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath10"
       ><path d="M0 0 L0 35 L52 35 L52 0 Z"
@@ -42,7 +42,7 @@
     ><g fill="white" font-family="'Segoe UI'" transform="translate(-62,-40)" stroke="white"
     ><rect x="0" width="556" height="242" y="0" clip-path="url(#clipPath1)" stroke="none"
     /></g
-    ><g font-style="italic" font-family="'Segoe UI'" transform="translate(-62,-40)" stroke-linecap="butt"
+    ><g stroke-linecap="butt" font-family="'Segoe UI'" transform="translate(-62,-40)"
     ><polygon points=" 90 99 80 104 84 99 80 94" stroke="none" clip-path="url(#clipPath3)"
       /><polygon fill="none" points=" 90 99 80 104 84 99 80 94" clip-path="url(#clipPath3)"
       /><path fill="none" d="M121 74 L121 41 L63 41 L63 99 L84 99 M84 99" clip-path="url(#clipPath3)"
@@ -55,13 +55,14 @@
       >start</text
     ></g
     ><g fill="red" stroke-width="5" font-family="'Segoe UI'" transform="translate(-62,-40)" stroke-linecap="butt" stroke="red"
-    ><polygon fill="none" points=" 139 95 149 90 145 95 149 100" clip-path="url(#clipPath7)"
-      /><path fill="none" stroke-dasharray="2,2" d="M227 95 L145 95 M145 95" stroke-dashoffset="1" clip-path="url(#clipPath7)"
+    ><polygon points=" 139 92 149 87 145 92 149 97" stroke="none" clip-path="url(#clipPath7)"
+      /><polygon fill="none" points=" 139 92 149 87 145 92 149 97" clip-path="url(#clipPath7)"
+      /><path fill="none" stroke-dasharray="2,2" d="M227 92.5 L145 92 M145 92" stroke-dashoffset="1" clip-path="url(#clipPath7)"
     /></g
-    ><g fill="white" font-family="'Segoe UI'" transform="translate(121,55)" stroke="white"
+    ><g fill="white" font-family="'Segoe UI'" transform="translate(121,52.5)" stroke="white"
     ><rect x="-8" width="16" height="20" y="-10" clip-path="url(#clipPath8)" stroke="none"
     /></g
-    ><g fill="red" font-size="13px" font-family="'Segoe UI'" transform="translate(114,46)" stroke="red"
+    ><g fill="red" font-size="13px" font-family="'Segoe UI'" transform="translate(114,43.5)" stroke="red"
     ><text x="0" xml:space="preserve" y="14" clip-path="url(#clipPath9)" stroke="none"
       >!in</text
     ></g

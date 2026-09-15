@@ -33,16 +33,16 @@
       ><path d="M-34.75 -14.5 L-34.75 32.5 L54.25 32.5 L54.25 -14.5 Z"
       /></clipPath
       ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath10"
-      ><path d="M0 0 L0 21 L52 21 L52 0 Z"
+      ><path d="M0 0 L0 22 L52 22 L52 0 Z"
       /></clipPath
       ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath11"
-      ><path d="M208 159 L208 180 L260 180 L260 159 Z"
+      ><path d="M208 159 L208 181 L260 181 L260 159 Z"
       /></clipPath
       ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath12"
-      ><path d="M-26 -10 L-26 11 L26 11 L26 -10 Z"
+      ><path d="M-26 -10.5 L-26 11.5 L26 11.5 L26 -10.5 Z"
       /></clipPath
       ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath13"
-      ><path d="M-16 -1 L-16 20 L36 20 L36 -1 Z"
+      ><path d="M-16 -1.5 L-16 20.5 L36 20.5 L36 -1.5 Z"
       /></clipPath
       ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath14"
       ><path d="M0 0 L0 52 L56 52 L56 0 Z"
@@ -92,10 +92,10 @@
     ><g stroke-linecap="butt" font-family="'Segoe UI'" transform="translate(-126,-143)"
     ><polygon points=" 259 169 249 174 253 169 249 164" stroke="none" clip-path="url(#clipPath11)"
       /><polygon fill="none" points=" 259 169 249 174 253 169 249 164" clip-path="url(#clipPath11)"
-      /><path fill="none" d="M209 169 L253 169 M253 169" clip-path="url(#clipPath11)"
-      /><rect stroke-linecap="square" x="-11" y="-10" transform="translate(234,169)" clip-path="url(#clipPath12)" fill="white" width="22" height="20" stroke="none"
+      /><path fill="none" d="M209 169.5 L253 169 M253 169" clip-path="url(#clipPath11)"
+      /><rect stroke-linecap="square" x="-11" y="-10" transform="translate(234,169.5)" clip-path="url(#clipPath12)" fill="white" width="22" height="20" stroke="none"
     /></g
-    ><g font-family="'Segoe UI'" font-size="13px" transform="translate(98,17)"
+    ><g font-family="'Segoe UI'" font-size="13px" transform="translate(98,17.5)"
     ><text x="0" xml:space="preserve" y="14" clip-path="url(#clipPath13)" stroke="none"
       >has</text
     ></g

@@ -9,16 +9,16 @@
       ><path d="M0 0 L686 0 L686 206 L0 206 L0 0 Z"
       /></clipPath
       ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath2"
-      ><path d="M0 0 L0 22 L85 22 L85 0 Z"
+      ><path d="M0 0 L0 21 L85 21 L85 0 Z"
       /></clipPath
       ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath3"
-      ><path d="M151 65 L151 87 L236 87 L236 65 Z"
+      ><path d="M151 66 L151 87 L236 87 L236 66 Z"
       /></clipPath
       ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath4"
-      ><path d="M-42.5 -10.5 L-42.5 11.5 L42.5 11.5 L42.5 -10.5 Z"
+      ><path d="M-42.5 -10 L-42.5 11 L42.5 11 L42.5 -10 Z"
       /></clipPath
       ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath5"
-      ><path d="M-19.5 -1.5 L-19.5 20.5 L65.5 20.5 L65.5 -1.5 Z"
+      ><path d="M-19.5 -1 L-19.5 20 L65.5 20 L65.5 -1 Z"
       /></clipPath
       ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath6"
       ><path d="M0 0 L0 53 L113 53 L113 0 Z"
@@ -31,12 +31,12 @@
     ><rect x="0" width="686" height="206" y="0" clip-path="url(#clipPath1)" stroke="none"
     /></g
     ><g stroke-linecap="butt" font-family="'Segoe UI'" transform="translate(-51,-49)"
-    ><polygon points=" 152 75 162 70 158 75 162 80" stroke="none" clip-path="url(#clipPath3)"
-      /><polygon fill="none" points=" 152 75 162 70 158 75 162 80" clip-path="url(#clipPath3)"
-      /><path fill="none" d="M235 75.5 L158 75 M158 75" clip-path="url(#clipPath3)"
-      /><rect stroke-linecap="square" x="-24" y="-10" transform="translate(193.5,75.5)" clip-path="url(#clipPath4)" fill="white" width="49" height="20" stroke="none"
+    ><polygon points=" 152 76 162 71 158 76 162 81" stroke="none" clip-path="url(#clipPath3)"
+      /><polygon fill="none" points=" 152 76 162 71 158 76 162 81" clip-path="url(#clipPath3)"
+      /><path fill="none" d="M235 76 L158 76 M158 76" clip-path="url(#clipPath3)"
+      /><rect stroke-linecap="square" x="-24" y="-10" transform="translate(193.5,76)" clip-path="url(#clipPath4)" fill="white" width="49" height="20" stroke="none"
     /></g
-    ><g font-family="'Segoe UI'" font-size="13px" transform="translate(119.5,17.5)"
+    ><g font-family="'Segoe UI'" font-size="13px" transform="translate(119.5,18)"
     ><text x="0" xml:space="preserve" y="14" clip-path="url(#clipPath5)" stroke="none"
       >belongs</text
     ></g

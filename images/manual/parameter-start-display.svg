@@ -9,28 +9,28 @@
       ><path d="M0 0 L200 0 L200 318 L0 318 L0 0 Z"
       /></clipPath
       ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath2"
-      ><path d="M0 0 L0 67 L27 67 L27 0 Z"
-      /></clipPath
-      ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath3"
-      ><path d="M55 63 L55 130 L82 130 L82 63 Z"
-      /></clipPath
-      ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath4"
-      ><path d="M-13.9091 -33.5 L-13.9091 33.5 L13.0909 33.5 L13.0909 -33.5 Z"
-      /></clipPath
-      ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath5"
-      ><path d="M-10.9091 -24.5 L-10.9091 42.5 L16.0909 42.5 L16.0909 -24.5 Z"
-      /></clipPath
-      ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath6"
       ><path d="M0 0 L0 67 L12 67 L12 0 Z"
       /></clipPath
-      ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath7"
+      ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath3"
       ><path d="M32 63 L32 130 L44 130 L44 63 Z"
       /></clipPath
-      ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath8"
+      ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath4"
       ><path d="M-6.5 -33.5 L-6.5 33.5 L5.5 33.5 L5.5 -33.5 Z"
       /></clipPath
-      ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath9"
+      ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath5"
       ><path d="M-3.5 -24.5 L-3.5 42.5 L8.5 42.5 L8.5 -24.5 Z"
+      /></clipPath
+      ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath6"
+      ><path d="M0 0 L0 67 L27 67 L27 0 Z"
+      /></clipPath
+      ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath7"
+      ><path d="M55 63 L55 130 L82 130 L82 63 Z"
+      /></clipPath
+      ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath8"
+      ><path d="M-13.9091 -33.5 L-13.9091 33.5 L13.0909 33.5 L13.0909 -33.5 Z"
+      /></clipPath
+      ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath9"
+      ><path d="M-10.9091 -24.5 L-10.9091 42.5 L16.0909 42.5 L16.0909 -24.5 Z"
       /></clipPath
       ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath10"
       ><path d="M0 0 L0 53 L60 53 L60 0 Z"
@@ -43,22 +43,22 @@
     ><rect x="0" width="200" height="318" y="0" clip-path="url(#clipPath1)" stroke="none"
     /></g
     ><g stroke-linecap="butt" font-family="'Segoe UI'" transform="translate(-19,-16)"
-    ><polygon points=" 80 129 73 121 78 123 81 119" stroke="none" clip-path="url(#clipPath3)"
-      /><polygon fill="none" points=" 80 129 73 121 78 123 81 119" clip-path="url(#clipPath3)"
-      /><path fill="none" d="M56.9268 64 L78 123 M78 123" clip-path="url(#clipPath3)"
-      /><rect stroke-linecap="square" x="-4" y="-10" transform="translate(68.9091,96.5)" clip-path="url(#clipPath4)" fill="white" width="8" height="20" stroke="none"
+    ><polygon points=" 38 129 33 119 38 123 43 119" stroke="none" clip-path="url(#clipPath3)"
+      /><polygon fill="none" points=" 38 129 33 119 38 123 43 119" clip-path="url(#clipPath3)"
+      /><path fill="none" d="M38.5 64 L38 123 M38 123" clip-path="url(#clipPath3)"
+      /><rect stroke-linecap="square" x="-4" y="-10" transform="translate(38.5,96.5)" clip-path="url(#clipPath4)" fill="white" width="8" height="20" stroke="none"
     /></g
-    ><g font-family="'Segoe UI'" font-size="13px" transform="translate(46.9091,71.5)"
+    ><g font-family="'Segoe UI'" font-size="13px" transform="translate(16.5,71.5)"
     ><text x="0" xml:space="preserve" y="14" clip-path="url(#clipPath5)" stroke="none"
       >x</text
     ></g
     ><g stroke-linecap="butt" font-family="'Segoe UI'" transform="translate(-19,-16)"
-    ><polygon points=" 38 129 33 119 38 123 43 119" stroke="none" clip-path="url(#clipPath7)"
-      /><polygon fill="none" points=" 38 129 33 119 38 123 43 119" clip-path="url(#clipPath7)"
-      /><path fill="none" d="M38.5 64 L38 123 M38 123" clip-path="url(#clipPath7)"
-      /><rect stroke-linecap="square" x="-4" y="-10" transform="translate(38.5,96.5)" clip-path="url(#clipPath8)" fill="white" width="8" height="20" stroke="none"
+    ><polygon points=" 80 129 73 121 78 123 81 119" stroke="none" clip-path="url(#clipPath7)"
+      /><polygon fill="none" points=" 80 129 73 121 78 123 81 119" clip-path="url(#clipPath7)"
+      /><path fill="none" d="M56.9268 64 L78 123 M78 123" clip-path="url(#clipPath7)"
+      /><rect stroke-linecap="square" x="-4" y="-10" transform="translate(68.9091,96.5)" clip-path="url(#clipPath8)" fill="white" width="8" height="20" stroke="none"
     /></g
-    ><g font-family="'Segoe UI'" font-size="13px" transform="translate(16.5,71.5)"
+    ><g font-family="'Segoe UI'" font-size="13px" transform="translate(46.9091,71.5)"
     ><text x="0" xml:space="preserve" y="14" clip-path="url(#clipPath9)" stroke="none"
       >x</text
     ></g

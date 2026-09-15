@@ -9,16 +9,16 @@
       ><path d="M0 0 L514 0 L514 604 L0 604 L0 0 Z"
       /></clipPath
       ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath2"
-      ><path d="M0 0 L0 30 L37 30 L37 0 Z"
+      ><path d="M0 0 L0 31 L38 31 L38 0 Z"
       /></clipPath
       ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath3"
-      ><path d="M203 172 L203 202 L240 202 L240 172 Z"
+      ><path d="M206 242 L206 273 L244 273 L244 242 Z"
       /></clipPath
       ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath4"
-      ><path d="M-18 -15 L-18 15 L19 15 L19 -15 Z"
+      ><path d="M-18.5 -15.5 L-18.5 15.5 L19.5 15.5 L19.5 -15.5 Z"
       /></clipPath
       ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath5"
-      ><path d="M-1 -6 L-1 24 L36 24 L36 -6 Z"
+      ><path d="M-1.5 -6.5 L-1.5 24.5 L36.5 24.5 L36.5 -6.5 Z"
       /></clipPath
       ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath6"
       ><path d="M0 0 L0 24 L37 24 L37 0 Z"
@@ -45,16 +45,16 @@
       ><path d="M-1.4637 -12.209 L-1.4637 28.791 L45.5363 28.791 L45.5363 -12.209 Z"
       /></clipPath
       ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath14"
-      ><path d="M0 0 L0 31 L37 31 L37 0 Z"
+      ><path d="M0 0 L0 30 L37 30 L37 0 Z"
       /></clipPath
       ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath15"
-      ><path d="M205 242 L205 273 L242 273 L242 242 Z"
+      ><path d="M204 172 L204 202 L241 202 L241 172 Z"
       /></clipPath
       ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath16"
-      ><path d="M-18 -15.5 L-18 15.5 L19 15.5 L19 -15.5 Z"
+      ><path d="M-18 -15 L-18 15 L19 15 L19 -15 Z"
       /></clipPath
       ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath17"
-      ><path d="M-1 -6.5 L-1 24.5 L36 24.5 L36 -6.5 Z"
+      ><path d="M-1 -6 L-1 24 L36 24 L36 -6 Z"
       /></clipPath
       ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath18"
       ><path d="M0 0 L0 52 L62 52 L62 0 Z"
@@ -67,12 +67,12 @@
     ><rect x="0" width="514" height="604" y="0" clip-path="url(#clipPath1)" stroke="none"
     /></g
     ><g stroke-linecap="butt" font-family="'Segoe UI'" transform="translate(-154,-62)"
-    ><polygon points=" 221 173 226 183 221 179 216 183" stroke="none" clip-path="url(#clipPath3)"
-      /><polygon fill="none" points=" 221 173 226 183 221 179 216 183" clip-path="url(#clipPath3)"
-      /><path fill="none" d="M221 201 L221 179 M221 179" clip-path="url(#clipPath3)"
-      /><rect stroke-linecap="square" x="-18" y="-10" transform="translate(221,187)" clip-path="url(#clipPath4)" fill="white" width="36" height="20" stroke="none"
+    ><polygon points=" 224 243 229 253 224 249 219 253" stroke="none" clip-path="url(#clipPath3)"
+      /><polygon fill="none" points=" 224 243 229 253 224 249 219 253" clip-path="url(#clipPath3)"
+      /><path fill="none" d="M224.5 272 L224 249 M224 249" clip-path="url(#clipPath3)"
+      /><rect stroke-linecap="square" x="-18" y="-10" transform="translate(224.5,257.5)" clip-path="url(#clipPath4)" fill="white" width="36" height="20" stroke="none"
     /></g
-    ><g font-family="'Segoe UI'" font-size="13px" transform="translate(50,116)"
+    ><g font-family="'Segoe UI'" font-size="13px" transform="translate(53.5,186.5)"
     ><text x="0" xml:space="preserve" y="14" clip-path="url(#clipPath5)" stroke="none"
       >father</text
     ></g
@@ -97,12 +97,12 @@
       >son</text
     ></g
     ><g stroke-linecap="butt" font-family="'Segoe UI'" transform="translate(-154,-62)"
-    ><polygon points=" 223 243 228 253 223 249 218 253" stroke="none" clip-path="url(#clipPath15)"
-      /><polygon fill="none" points=" 223 243 228 253 223 249 218 253" clip-path="url(#clipPath15)"
-      /><path fill="none" d="M223 272 L223 249 M223 249" clip-path="url(#clipPath15)"
-      /><rect stroke-linecap="square" x="-18" y="-10" transform="translate(223,257.5)" clip-path="url(#clipPath16)" fill="white" width="36" height="20" stroke="none"
+    ><polygon points=" 222 173 227 183 222 179 217 183" stroke="none" clip-path="url(#clipPath15)"
+      /><polygon fill="none" points=" 222 173 227 183 222 179 217 183" clip-path="url(#clipPath15)"
+      /><path fill="none" d="M222 201 L222 179 M222 179" clip-path="url(#clipPath15)"
+      /><rect stroke-linecap="square" x="-18" y="-10" transform="translate(222,187)" clip-path="url(#clipPath16)" fill="white" width="36" height="20" stroke="none"
     /></g
-    ><g font-family="'Segoe UI'" font-size="13px" transform="translate(52,186.5)"
+    ><g font-family="'Segoe UI'" font-size="13px" transform="translate(51,116)"
     ><text x="0" xml:space="preserve" y="14" clip-path="url(#clipPath17)" stroke="none"
       >father</text
     ></g

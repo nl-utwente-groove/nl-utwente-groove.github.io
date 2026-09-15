@@ -33,16 +33,16 @@
       ><path d="M-36.5982 -15.4548 L-36.5982 32.5452 L56.4018 32.5452 L56.4018 -15.4548 Z"
       /></clipPath
       ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath10"
-      ><path d="M0 0 L0 21 L79 21 L79 0 Z"
+      ><path d="M0 0 L0 22 L79 22 L79 0 Z"
       /></clipPath
       ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath11"
-      ><path d="M196 159 L196 180 L275 180 L275 159 Z"
+      ><path d="M196 159 L196 181 L275 181 L275 159 Z"
       /></clipPath
       ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath12"
-      ><path d="M-39.5 -10 L-39.5 11 L39.5 11 L39.5 -10 Z"
+      ><path d="M-39.5 -10.5 L-39.5 11.5 L39.5 11.5 L39.5 -10.5 Z"
       /></clipPath
       ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath13"
-      ><path d="M-29.5 -1 L-29.5 20 L49.5 20 L49.5 -1 Z"
+      ><path d="M-29.5 -1.5 L-29.5 20.5 L49.5 20.5 L49.5 -1.5 Z"
       /></clipPath
       ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath14"
       ><path d="M0 0 L0 50 L56 50 L56 0 Z"
@@ -92,10 +92,10 @@
     ><g stroke-linecap="butt" font-family="'Segoe UI'" transform="translate(-138,-143)"
     ><polygon points=" 274 169 264 174 268 169 264 164" stroke="none" clip-path="url(#clipPath11)"
       /><polygon fill="none" points=" 274 169 264 174 268 169 264 164" clip-path="url(#clipPath11)"
-      /><path fill="none" d="M197 169 L268 169 M268 169" clip-path="url(#clipPath11)"
-      /><rect stroke-linecap="square" x="-11" y="-10" transform="translate(235.5,169)" clip-path="url(#clipPath12)" fill="white" width="22" height="20" stroke="none"
+      /><path fill="none" d="M197 169.5 L268 169 M268 169" clip-path="url(#clipPath11)"
+      /><rect stroke-linecap="square" x="-11" y="-10" transform="translate(235.5,169.5)" clip-path="url(#clipPath12)" fill="white" width="22" height="20" stroke="none"
     /></g
-    ><g font-family="'Segoe UI'" font-size="13px" transform="translate(87.5,17)"
+    ><g font-family="'Segoe UI'" font-size="13px" transform="translate(87.5,17.5)"
     ><text x="0" xml:space="preserve" y="14" clip-path="url(#clipPath13)" stroke="none"
       >has</text
     ></g
