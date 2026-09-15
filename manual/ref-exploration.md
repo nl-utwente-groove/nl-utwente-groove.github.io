@@ -31,7 +31,7 @@ An exploration is configured by choosing a value for each of the *keys* below. E
 | [`frontier`](#frontier) | `complete`\*, `single`, *n* | Size restriction on the exploration frontier |
 | [`heuristic`](#heuristic) | `none`\*, `nen` | Quality function guiding the selection of the next state |
 | [`cost`](#cost) | `none`\*, `uniform`, `rule` | Cost of a single transition |
-| [`goal`](#goal) | `none`, `any`, `final`\*, `condition:`*formula*, `fires:`*action*, `ltl:`*formula*, `ctl:`*formula* | Condition determining when a result has been found |
+| [`goal`](#goal) | `none`, `any`, `final`\*, `condition:`*formula*, `fires:`*action* | Condition determining when a result has been found |
 | [`outcome`](#outcome) | `satisfy`\*, `violate` | Whether the goal condition is to be satisfied or violated |
 | [`shape`](#shape) | `state`\*, `trace` | Shape of the results the exploration yields |
 | [`count`](#count) | `all`\*, `first`, *n* | Number of results after which exploration halts |
@@ -102,8 +102,6 @@ Condition determining when a result has been found.
 | `final`\* | &mdash; | A state without outgoing transitions |
 | `condition` | a propositional formula over rule names, built with `!`, `&&`, `||` and `->` | A state whose graph satisfies a propositional condition over rule names (regardless of whether the rules are scheduled) |
 | `fires` | the name of a rule or recipe | A state in which the named action (a rule or recipe) fires, as scheduled |
-| `ltl` | an LTL formula | A trace satisfying an LTL formula |
-| `ctl` | a CTL formula | A state space satisfying a CTL formula |
 
 ## `outcome`
 

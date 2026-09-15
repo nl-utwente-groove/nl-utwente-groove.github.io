@@ -181,8 +181,10 @@ public class MakeRefs {
         return List.of(kinds).stream().filter(k -> !OMITTED.contains(k)).toList();
     }
 
-    /** Alternatives that exist in the code but are not part of the released feature set. */
-    private static final List<Setting.Kind> OMITTED = List.of(Goal.GRAPH);
+    /** Alternatives that exist in the code but are not realisable by the exploration engine:
+     * the graph goal is a future extension, and the temporal goals are rejected by the
+     * configuration checker in favour of the model checking actions. */
+    private static final List<Setting.Kind> OMITTED = List.of(Goal.GRAPH, Goal.LTL, Goal.CTL);
 
     /** Renders the name of an alternative, with the default marker and the hint if any. */
     private static String valueName(ExploreKey key, Setting.Kind kind) {
