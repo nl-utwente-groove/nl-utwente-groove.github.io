@@ -107,7 +107,7 @@ Label parsing in rules is more complicated than in host graphs, because rule lab
 
 - The initial-colon convention is the same as for graphs: to use a label containing special characters literally, precede the entire label with a single initial colon, which is itself not part of the label.
 - Alternatively, a label containing characters that would otherwise have a special meaning — such as `'` (single quote), `\` (backslash), `?`, `!`, `=`, `{` or `}` — can be surrounded by single quotes; the quotes are not part of the label. In general, a label consisting only of letters, digits and the characters `_`, `$` and `-` needs no quoting.
-- Within a single-quoted label, the backslash acts as an escape character: the next character (including a single quote or another backslash) is interpreted literally.
+- Within a single-quoted label, the backslash acts as an escape character for the single quote and for itself: `\'` and `\\` stand for `'` and `\`. Escapes are processed left to right; a backslash in front of any other character is taken literally, together with that character.
 
 For instance, the rule label `'\\?\''` (ending in two single quotes) matches the label `\?'` in a host graph.
 
@@ -167,7 +167,7 @@ Among the [samples](samples.html), `mergers` shows the use of mergers, and `coun
 
 ## Remarks
 
-To document rules and graphs, GROOVE offers special nodes and edges that make no difference to the transformation: *remarks*, entered with the prefix `rem:` — either standing alone as a node label or in front of an edge label, just like the role prefixes. In the display view, remark nodes and edges are orange with a yellow background. For instance, this is the counting rule from above, augmented with remarks:
+To document rules and graphs, GROOVE offers special nodes and edges that make no difference to the transformation: *remarks*, entered with the prefix `rem:` — either standing alone as a node label or in front of an edge label, just like the role prefixes. In the display view, remark nodes and edges are orange with a yellow background. Several remark edges between the same pair of nodes are shown as a single multi-line remark, with the lines in the order in which the edges were entered. For instance, this is the counting rule from above, augmented with remarks:
 
 | Edit view | Display view |
 | :---: | :---: |

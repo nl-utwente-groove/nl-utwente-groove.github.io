@@ -25,8 +25,8 @@ This is the web edition of the GROOVE user manual, which supersedes the legacy P
 | Chapter | Contents | Checked against |
 | :--- | :--- | :--- |
 | [Introduction](manual_introduction.html) | What GROOVE is, the concepts behind it, and the components of the tool set | 8.0.0 |
-| [Graphs and rules](manual_basics.html) | Editing host graphs and transformation rules | 7.5.3 |
-| [Advanced rule features](manual_advanced.html) | Wildcards, regular expressions, attributes, parameters, quantification, typing and system properties | 7.5.3 |
+| [Graphs and rules](manual_basics.html) | Editing host graphs and transformation rules | 8.0.0 |
+| [Advanced rule features](manual_advanced.html) | Wildcards, regular expressions, attributes, parameters, quantification, typing and system properties | 8.0.0 |
 | [Control language](manual_control.html) | Programming the order of rule applications | 8.0.0 |
 | [Exploration and verification](manual_verification.html) | Configuring exploration, and model checking | 8.0.0 |
 | [Import and export](manual_io.html) | Storage formats, and exchanging graphs and grammars with other tools | 8.0.0 |

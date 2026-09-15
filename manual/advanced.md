@@ -64,6 +64,7 @@ Some points worth noting:
 - The equality sign as an atom stands for the empty word; for instance, `{a|=}` expresses that there is an `a`-edge between two nodes or the nodes coincide. `R*` is equivalent to `R+|=`.
 - A negation is not properly part of the regular expression: it expresses the absence of a match, and can therefore only occur up front, not nested inside an expression. This is the same negation introduced in the [previous chapter](manual_basics.html#negations).
 - A named wildcard inside a regular expression can only be used if the name is *bound* by another occurrence outside a regular expression.
+- Under `DPO` semantics, the path witnessing an expression that spans more than one host edge must by default survive the rule's own erasures; the `regExpMatching` system property (see [below](#system-properties)) controls this.
 
 For instance, the following rule specifies that a son receives the name of one of his forefathers:
 
@@ -79,7 +80,7 @@ GROOVE supports data values — integers, reals, booleans and strings — in the
 
 In a host graph, an attribute can be specified in either of two ways:
 
-- By an ordinary edge to a constant node: a node labelled `int:0`, `real:100.0`, `bool:true` or `string:"John"` (note the double quotes) stands for the corresponding data value. The edge label is the field name.
+- By an ordinary edge to a constant node: a node labelled `int:0`, `real:100.0`, `bool:true` or `string:"John"` (note the double quotes) stands for the corresponding data value. The edge label is the field name. Within the double quotes, a backslash escapes a double quote or another backslash, so `"say \"hi\""` and `"C:\\"` stand for `say "hi"` and `C:\`; escapes are processed left to right, and a backslash before any other character is taken literally.
 - By an assignment `let:field = const` on the node itself.
 
 In the display view, attributes are not shown as separate nodes and edges, but in the familiar record-like notation, as `field = value` equations inside the node. (The Simulator has an option to switch this off and show value nodes as ellipses.) The following shows an attributed host graph:
@@ -152,7 +153,7 @@ Rule parameters make information about a match visible in the transition system,
 - `par:n` declares a *bidirectional* parameter with number `n`: in a control program it may be instantiated with a concrete value, or used as an output parameter, in which case the value is determined by the match.
 - `parin:n` declares an *input* parameter: its value must be provided by a control program.
 - `parout:n` declares an *output* parameter.
-- `ask:n` declares an *interactive* parameter: its value is provided upon application through a *value oracle*, configured in the `valueOracle` system property.
+- `ask:n` declares an *interactive* parameter: its value is provided upon application through a *value oracle*, configured in the `valueOracle` system property. The `dialog` oracle, which asks the user, exists only in the Simulator; the command-line tools report it as unavailable rather than prompting.
 
 Parameter numbers start at 0 and must be unique and contiguous within a rule. The following shows a parameterised rule and a potential start graph:
 
@@ -223,6 +224,8 @@ The solution is to *name* the nesting level: the quantifier prefix takes the nam
 | :---: | :---: |
 | ![](images/manual/crowning-right-edit.svg) | ![](images/manual/crowning-right-display.svg) |
 
+Tests and assignments (see [above](#tests-and-assignments-in-rules)) can be placed on a named level in the same way, by writing the level into the role prefix in front of them, as in `use=x:test:expr`; and analogously for `let:`.
+
 ### Counting
 
 A universal quantifier can *count* its matches: a `count`-labelled edge from the quantifier node to an (integer) value node binds that node to the number of matches. The value can then be used in expressions, or matched against a concrete value. For instance, the following rule stores the number of `Flower`s of a `Plant` in its `flowers` attribute:
@@ -276,7 +279,7 @@ To require a node to be matched by an *exact* type rather than a subtype, embarg
 
 - **Nodified edges.** A node type can be declared a *nodified edge* by a label of the form `edge:"format",field,...`: nodes of this type are not displayed as nodes at all; instead, their incoming edges are labelled by the format string, instantiated with the given attribute fields (`String.format` syntax). This is useful to visualise, for instance, labelled connections with attributes as plain-looking edges.
 
-Node identifiers (`id:name`) are also worth mentioning here: apart from their role in expressions, when multiple start graphs are enabled (see the `startGraph` system property), nodes with the same identifier are merged, which makes identifiers the glue for composing start graphs from parts.
+Node identifiers (`id:name`) are also worth mentioning here: apart from their role in expressions, when multiple start graphs are enabled (see the `startGraph` system property), nodes with the same identifier are merged, which makes identifiers the glue for composing start graphs from parts. The same happens within a single host graph: nodes that share an identifier are merged into one node carrying the union of their edges. In a rule, on the other hand, a duplicate identifier is an error.
 
 ## System properties
 
@@ -286,7 +289,7 @@ Besides its rules, graphs and control programs, a grammar has global *system pro
 | :--- | :--- | :--- |
 | `remark` | (empty) | One-line documentation of the grammar |
 | `algebraFamily` | `default` | Algebra used for attributes: `default`, `point`, `big` or `term` |
-| `valueOracle` | (none) | Source of values for unbound `ask:` parameters |
+| `valueOracle` | `none` | Source of values for unbound `ask:` parameters: `none`, `default`, `random` (optionally `random:seed`), `reader:file` or `dialog` (Simulator only) |
 | `userOperations` | (empty) | Class(es) whose `@UserOperation`-annotated static methods become data operations |
 | `matchInjective` | `false` | Enforces injective matching for all rules (overrides the rule property) |
 | `semantics` | `SPO-multi` | Transformation semantics: `SPO-simple` (simple graphs), `SPO-multi` (multigraphs, deletion wins) or `DPO` (multigraphs under the gluing condition) |
@@ -313,6 +316,8 @@ Besides its rules, graphs and control programs, a grammar has global *system pro
 | `useStoredNodeIDs` | `false` | Bases node numbers on the node identities stored in the graph files |
 
 (The properties `grooveVersion`, `grammarVersion` and `location` are maintained automatically and not user-editable.)
+
+Some keys from older grammars are still understood when a grammar is loaded, but no longer written: `explorationStrategy`, which held the exploration before GROOVE 8.0.0, is read as a fallback and migrated to a settings resource the first time the exploration dialog saves; `disabledRules`, replaced by `ruleEnabling` in 7.4.0, is converted on loading (rather than silently ignored, as before); and the interim keys `parallelEdges` and `ignoreRegExp` of 8.0.0 development builds are converted to `semantics` and `regExpMatching`.
 
 Some of these deserve a fuller explanation:
 
