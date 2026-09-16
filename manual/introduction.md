@@ -62,7 +62,7 @@ The native installers register each component with the application menu of the p
 
 ## Downloading and installing
 
-Releases are published on [GitHub]({{site.groove_url}}/code/releases/latest); at the time of writing, the current release is 8.0.0. The native installers bundle their own Java runtime; the `zip` archive requires Java 21 or higher. See the [installation page](installing.html) for detailed instructions, and the [Maven Central coordinates](https://central.sonatype.com/artifact/nl.utwente.groove/groove) if you want to use GROOVE as a library.
+Releases are published on [GitHub]({{site.groove_url}}/code/releases/latest); at the time of writing, the current release is 8.0.0. The native installers bundle their own Java 25 runtime; the `zip` archive requires Java 21 or higher. See the [installation page](installing.html) for detailed instructions, and the [Maven Central coordinates](https://central.sonatype.com/artifact/nl.utwente.groove/groove) if you want to use GROOVE as a library.
 
 ## How this manual is organised
 

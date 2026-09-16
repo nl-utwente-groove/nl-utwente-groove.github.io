@@ -22,9 +22,9 @@ There are three ways to get GROOVE: a native installer for your platform, a `zip
 
 ## Requirements
 
-- The native installers bundle a Java runtime; for those, no Java is needed on your machine.
+- The native installers bundle a Java 25 runtime; for those, no Java is needed on your machine.
 
-- To run GROOVE from a `zip` archive you need Java on your machine. The currently required minimum version is Java 21.
+- To run GROOVE from a `zip` archive you need Java on your machine. The currently required minimum version is Java 21; any newer version works, including the Java 25 that the installers ship.
 
 - MacOS ships no Java of its own, so on a Mac the `zip` route requires you to get the Open JDK.
 
@@ -107,6 +107,8 @@ You can also download the compiled GROOVE jar (without dependencies), as well as
 - either <https://mvnrepository.com/artifact/nl.utwente.groove>
 
 - or <https://central.sonatype.com/artifact/nl.utwente.groove/groove>.
+
+The artifact is compiled for Java 21. If your application starts the GROOVE Simulator on Java 24 or newer, pass `--enable-native-access=ALL-UNNAMED` to the JVM: the look-and-feel library loads a native library for the window decorations, which such a Java reports with a warning unless native access has been granted. The runnable jars of the `zip` and the installers carry this grant in their manifest, so they need no flag.
 
 ## Source code
 
