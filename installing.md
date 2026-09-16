@@ -46,13 +46,13 @@ On Linux, pick the package format of your distribution: `.deb` for Debian-based 
 
 ### If Windows or MacOS blocks the installer<a name="blocked"></a>
 
-The installers are not code-signed, so Windows and MacOS treat them as coming from an unknown publisher and block them at first invocation. Nothing is wrong with the file: the installers are built automatically from the public source code.
+The installers are not code-signed, so Windows and MacOS treat them as coming from an unknown publisher and block them at first invocation, and some Linux package managers ask before installing the `.rpm`. Nothing is wrong with the file: the installers are built automatically from the public source code.
 
 - **Windows** (*"Windows protected your PC"*): close the dialog, right-click the downloaded `.msi` in File Explorer, choose `Properties`, tick `Unblock` at the bottom of the `General` tab and click `OK`; then run the `.msi` again. From PowerShell, the same is `Unblock-File <path-to-the-msi>`.
 
 - **MacOS** (*"Apple could not verify GROOVE…"*): see [the MacOS page](../mac#blocked).
 
-- **Linux**: neither package format is affected.
+- **Linux** (*"Package is not signed!"*): `zypper` asks whether to continue; answer yes. `dnf` and `rpm -i` install the `.rpm` without asking; if `dnf` refuses, add `--nogpgcheck`. The `.deb` is not affected, as `apt` and `dpkg` do not check signatures of local package files.
 
 The full instructions are also among the release assets, as `IF-WINDOWS-OR-MACOS-BLOCKS-THE-INSTALLER.txt`. If you cannot get the installer for your platform to work, please [file an issue]({{site.groove_url}}/code/issues) and use the stand-alone installation for the time being.
 
