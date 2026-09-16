@@ -80,6 +80,8 @@ All the [runnable components](../index#runnable) of GROOVE are available as JAR 
 
   `java -jar Runnable.jar -h`
 
+- On Java 25 or newer, adding `-XX:+UseCompactObjectHeaders` before `-jar` trims the heap of a state-space exploration by roughly a tenth; the launchers of the native installers run with this option.
+
 - Mac users may run into errors due to incompatible accessibility settings; see [this page](../mac)
 
 If you used a native installer instead, the same components are started from the application menu, and the command-line ones from the executables in the installation directory.
