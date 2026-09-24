@@ -1,0 +1,11 @@
+{
+    "version": "3.3.11-1",
+    "description": "Ruby 3.3.11 (RubyInstaller2, x64) - pinned for GitHub Pages / Jekyll compatibility",
+    "homepage": "https://www.ruby-lang.org/",
+    "license": "BSD-2-Clause",
+    "url": "https://github.com/oneclick/rubyinstaller2/releases/download/RubyInstaller-3.3.11-1/rubyinstaller-3.3.11-1-x64.7z",
+    "hash": "ee5e71a19bb676302d2d3fb725e2ad3adfee2fdc2f2d64a61830a2d4c0fa9a47",
+    "extract_dir": "rubyinstaller-3.3.11-1-x64",
+    "bin": "bin\\ruby.exe",
+    "env_add_path": "bin"
+}
