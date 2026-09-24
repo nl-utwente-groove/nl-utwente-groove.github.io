@@ -233,17 +233,17 @@ The other layouters come with the *graph backend*, the library the Simulator use
 
 #### yFiles layouters
 
-| Layouter | Result | Settings |
-| :--- | :--- | :--- |
-| Hierarchic | Nodes in layers, with edges running mostly in one direction; good for transition systems, control automata and other flow-like graphs | orientation, distance between layers and between nodes, orthogonal edges |
-| Organic | Force-directed like Spring, but taking node sizes into account and never letting nodes overlap; good for general graphs | preferred edge length, minimum node distance, compactness, deterministic |
-| Orthogonal | Edges drawn as horizontal and vertical segments, with few crossings; good for type graphs | grid spacing, style |
-| Tree | A tree growing in one direction; edges that are not part of the tree are drawn as straight lines | orientation |
-| Balloon | A tree in which the subtrees of each node are arranged in a circle around it | root, minimum edge length, compactness |
-| Circular | Nodes grouped on circles | style |
-| Radial | Nodes on concentric circles around a centre, one circle per layer | layer spacing, node distance |
+| Layouter | Result |
+| :--- | :--- |
+| Hierarchic | Nodes in layers, with most edges pointing in one direction and few crossings; good for transition systems, control automata and other flow-like graphs |
+| Organic | A natural, force-directed spread of the nodes with straight edges, bringing out clusters and symmetries; good for general graphs |
+| Orthogonal | Edges drawn as horizontal and vertical segments, with few crossings and bends; good for type graphs |
+| Tree | An arrangement for tree-shaped graphs |
+| Balloon | A tree in which the children of each node are placed on a circle around it |
+| Circular | Nodes arranged on circles, bringing out groups |
+| Radial | Nodes on concentric circles around a common centre, one circle per layer |
 
-The yFiles layouters respect the nodes that are to stay in place: when only part of the graph is laid out — a selection, or the new nodes of a state or of the transition system — the moved nodes are fitted in among the fixed ones rather than on top of them. Edges attached to moved nodes lose their bend points and are routed afresh; edge labels keep their position relative to their edge.
+Each has its own settings, shown in the *Customize Layout ...* dialog. When only part of the graph is laid out — a selection, or the new nodes of a state or of the transition system — the yFiles layouters place the moved nodes without disturbing the ones that stay in place. More on the algorithms themselves can be found on the [yFiles for Java product page](https://www.yworks.com/products/yfiles-for-java) of yWorks.
 
 #### JGraph layouters
 
