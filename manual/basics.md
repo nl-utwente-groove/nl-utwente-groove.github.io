@@ -15,7 +15,7 @@ datatable: # optional, true for jQueries, see https://www.datatables.net/
     false
 tags:      # need to be included in _data/tags_doc.yml and have a page in tags/
 keywords:  # used in metadata for findability
-    graph, rule, editing, aspect, prefix, eraser, creator, embargo, merger, injectivity
+    graph, rule, editing, aspect, prefix, eraser, creator, embargo, merger, injectivity, layout, yFiles
 ---
 
 ## Edit view and display view
@@ -207,3 +207,44 @@ A *rule system* is a set of rules, possibly with additional resources such as a 
 During exploration, GROOVE builds up a *transition system*, in which every reached graph is a state and every rule application a transition. By default, transitions are labelled by the names of the applied rules — but see the `transitionLabel` rule property above. Whether the labels also show rule arguments is controlled by the `transitionParameters` system property. Exploration and the analysis of the resulting transition system are the subject of the [Exploration and verification](manual_verification.html) chapter.
 
 Note that the hierarchical structure of qualified rule names plays no role in the evaluation of a grammar: its meaning does not change if rules are renamed, even across packages. (If a rule is renamed, however, any control program referring to it needs to be adjusted as well.)
+
+## Layout
+
+Every node of a graph or rule has a position, and every edge may have bend points; for graphs and rules these are saved along with the graph (see [The native graph format](manual_io.html#the-native-graph-format)). Positions are mostly left to you: you move nodes around by dragging them. Where the Simulator has to show something that has no stored layout — a newly reached state, a new part of the transition system, nodes added by a rule application — it places the new nodes automatically, leaving the others where they are.
+
+### Laying out a graph
+
+Layout is done by a *layouter*, chosen per graph view. The right-click menu of a graph view has a submenu **Layout** with three entries:
+
+- the current layouter itself (for instance *Spring layout*), which lays out the graph; shortcut `Ctrl+L`. If nodes are selected, only those are moved and the rest stay in place; otherwise the whole graph is laid out;
+- **Set layouter**, which lists the available layouters and runs the one you pick;
+- **Customize Layout ...**, which opens a dialog with the settings of the layouters that come with the graph backend (see below). Every change of a setting lays the graph out again immediately, so you can watch its effect.
+
+The default layouter is *Spring* for graphs and rules, and *Forest* for the transition system and for control automata.
+
+### Layouters
+
+Two layouters belong to GROOVE itself and are always available:
+
+- **Spring**: a spring embedder, in which edges pull their end nodes together and nodes push each other apart until the forces balance.
+- **Forest**: arranges the graph as a set of layered trees, which suits the tree-like shape of most transition systems.
+
+The other layouters come with the *graph backend*, the library the Simulator uses to draw graphs. The standard backend is JGraph; the optional yFiles add-on brings a second backend with its own, more powerful layout algorithms (see [the installation page](installing.html#the-yfiles-add-on) for how to install it and under what conditions it may be used). When both are installed, the backend is chosen under `View` &rarr; `Options` &rarr; `Graph backend`, and the choice takes effect at the next start.
+
+#### yFiles layouters
+
+| Layouter | Result | Settings |
+| :--- | :--- | :--- |
+| Hierarchic | Nodes in layers, with edges running mostly in one direction; good for transition systems, control automata and other flow-like graphs | orientation, distance between layers and between nodes, orthogonal edges |
+| Organic | Force-directed like Spring, but taking node sizes into account and never letting nodes overlap; good for general graphs | preferred edge length, minimum node distance, compactness, deterministic |
+| Orthogonal | Edges drawn as horizontal and vertical segments, with few crossings; good for type graphs | grid spacing, style |
+| Tree | A tree growing in one direction; edges that are not part of the tree are drawn as straight lines | orientation |
+| Balloon | A tree in which the subtrees of each node are arranged in a circle around it | root, minimum edge length, compactness |
+| Circular | Nodes grouped on circles | style |
+| Radial | Nodes on concentric circles around a centre, one circle per layer | layer spacing, node distance |
+
+The yFiles layouters respect the nodes that are to stay in place: when only part of the graph is laid out — a selection, or the new nodes of a state or of the transition system — the moved nodes are fitted in among the fixed ones rather than on top of them. Edges attached to moved nodes lose their bend points and are routed afresh; edge labels keep their position relative to their edge.
+
+#### JGraph layouters
+
+The JGraph backend offers Simple Circle, Simple Tilt, Simple Randomized, Simple Grid, Compact Tree, Radial Tree, Basic Tree, Organic, Fast Organic, Self-Organizing and Hierarchical layouts. These always lay out the whole graph and clear all bend points; where the Simulator only needs to place new nodes, it uses Spring instead.
