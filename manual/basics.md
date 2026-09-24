@@ -198,7 +198,7 @@ Some of these deserve further explanation:
 
 - **Formatted output.** The `printFormat` text is written to standard output on every application of the rule; it may contain `String.format`-style format specifiers, which are instantiated with the rule parameters.
 
-- **Transition labels.** By default, transitions in the generated transition system are labelled with the name of the applied rule. A nonempty `transitionLabel` is used instead of the rule name — for instance to make different rules give rise to equally labelled transitions. Like `printFormat`, it may refer to rule parameters using a `String.format`-like syntax.
+- **Transition labels.** By default, transitions in the generated transition system are labelled with the name of the applied rule. A nonempty `transitionLabel` is used instead of the rule name — for instance to make different rules give rise to equally labelled transitions. Like `printFormat`, it may refer to rule parameters using a `String.format`-like syntax, except that format specifiers are restricted to `s` (for `String`).
 
 ## Rule systems, grammars and transition systems
 
