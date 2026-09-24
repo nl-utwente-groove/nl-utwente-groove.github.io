@@ -243,7 +243,7 @@ The other layouters come with the *graph backend*, the library the Simulator use
 | Circular | Nodes arranged on circles, bringing out groups |
 | Radial | Nodes on concentric circles around a common centre, one circle per layer |
 
-Each has its own settings, shown in the *Customize Layout ...* dialog. When only part of the graph is laid out — a selection, or the new nodes of a state or of the transition system — the yFiles layouters place the moved nodes without disturbing the ones that stay in place. More on the algorithms themselves can be found on the [yFiles for Java product page](https://www.yworks.com/products/yfiles-for-java) of yWorks.
+Each has its own settings, shown in the *Customize Layout ...* dialog. When only part of the graph is laid out — a selection, or the new nodes of a state or of the transition system — the yFiles layouters place the moved nodes without disturbing the ones that stay in place. The algorithms themselves are described in the [yFiles for Java documentation](https://docs.yfiles.com/yfilesjava/doc/api/#/home) of yWorks.
 
 #### JGraph layouters
 
