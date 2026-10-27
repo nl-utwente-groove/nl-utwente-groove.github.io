@@ -3,6 +3,8 @@
 topnav:
 - title: Topnav
   items:
+    - title: Downloads
+      url: /downloads.html
     - title: GitHub
       external_url: https://github.com/nl-utwente-groove
 #    - title: News
