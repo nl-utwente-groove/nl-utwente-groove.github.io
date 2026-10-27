@@ -3,30 +3,54 @@ title: search
 layout: none
 search: exclude
 ---
-
-{% assign pages = site.html_pages | where_exp: "page", "page.search != 'exclude'"  %}
+{% comment %}
+Section-level full-text search index, consumed by js/groove-search.js.
+Every page is split at its h2/h3 headings; each section becomes one entry
+with the page title, the heading text, the heading anchor and the plain text
+of the section. Pages with "search: exclude" in their front matter are skipped.
+{% endcomment %}
+{%- capture lq %}{% raw %}{%{% endraw %}{% endcapture -%}
+{%- capture rq %}{% raw %}%}{% endraw %}{% endcapture -%}
+{%- capture lo %}{% raw %}{{{% endraw %}{% endcapture -%}
+{%- capture ro %}{% raw %}}}{% endraw %}{% endcapture -%}
+{%- assign pages = site.html_pages | where_exp: "page", "page.search != 'exclude'" -%}
+{%- assign id = 0 -%}
 [
-{% for page in pages %}
-{
-"title": "{{ page.title | escape }}",
-"tags": "{{ page.tags }}",
-"keywords": "{{page.keywords}}",
-"url": "{{ page.url | remove: "/"}}",
-"summary": "{{page.summary | strip }}"
-}
-{% unless forloop.last and site.posts.size < 1 %},{% endunless %}
-{% endfor %}
-
-{% for post in site.posts %}
-
-{
-"title": "{{ post.title | escape }}",
-"tags": "{{ post.tags }}",
-"keywords": "{{post.keywords}}",
-"url": "{{ post.url | remove: "/" }}",
-"summary": "{{post.summary | strip }}"
-}
-{% unless forloop.last %},{% endunless %}
-{% endfor %}
-
+{%- for page in pages -%}
+  {%- comment -%}
+  page.content is HTML if the page was already rendered, otherwise raw Markdown;
+  markdownify is (close to) the identity on HTML, so applying it always is safe.
+  Liquid tags that are still unrendered in raw Markdown are stripped out.
+  {%- endcomment -%}
+  {%- assign chunks = page.content | split: lq -%}
+  {%- capture text -%}{{ chunks[0] }}{% for c in chunks offset:1 %}{{ c | split: rq | last }}{% endfor %}{%- endcapture -%}
+  {%- assign chunks = text | split: lo -%}
+  {%- capture text -%}{{ chunks[0] }}{% for c in chunks offset:1 %}{{ c | split: ro | last }}{% endfor %}{%- endcapture -%}
+  {%- assign html = text | markdownify
+        | replace: '<h3 id="', '<h2 id="' | replace: '</h3>', '</h2>'
+        | replace: '</p>', ' </p>' | replace: '</li>', ' </li>' | replace: '</td>', ' </td>' | replace: '</th>', ' </th>'
+        | replace: '</tr>', ' </tr>' | replace: '</dt>', ' </dt>' | replace: '</dd>', ' </dd>' | replace: '</pre>', ' </pre>'
+        | replace: '</h4>', ' </h4>' | replace: '<br>', ' ' | replace: '<br />', ' ' -%}
+  {%- assign parts = html | split: '<h2 id="' -%}
+  {%- assign url = page.url | remove_first: "/" -%}
+  {%- assign title = page.title | default: url | strip -%}
+  {%- for part in parts -%}
+    {%- if forloop.first -%}
+      {%- assign anchor = "" -%}
+      {%- assign heading = "" -%}
+      {%- assign body = part -%}
+    {%- else -%}
+      {%- assign anchor = part | split: '"' | first -%}
+      {%- assign head = part | split: '</h2>' | first -%}
+      {%- assign heading = head | split: '">' | last | strip_html | normalize_whitespace | strip -%}
+      {%- assign body = part | split: '</h2>' | last -%}
+    {%- endif -%}
+    {%- assign body = body | strip_html | normalize_whitespace | strip -%}
+    {%- if body != "" or heading != "" -%}
+      {%- unless id == 0 %},{% endunless %}
+{"id":{{ id }},"url":{{ url | jsonify }},"title":{{ title | jsonify }},"heading":{{ heading | jsonify }},"anchor":{{ anchor | jsonify }},"body":{{ body | jsonify }}}
+      {%- assign id = id | plus: 1 -%}
+    {%- endif -%}
+  {%- endfor -%}
+{%- endfor %}
 ]

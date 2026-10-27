@@ -196,30 +196,104 @@ p.post-meta {font-size: 80%; color: #777;}
 .entry-date{font-size:14px;font-size:0.875rem;line-height:1.71429;margin-bottom:0;text-transform:uppercase;}
 
 /* search area */
+#search-demo-container {
+    position: relative;
+}
 #search-demo-container ul#results-container {
+    display: none;
     list-style: none;
-    font-size: 12px;
+    font-size: 13px;
+    line-height: 1.35;
     background-color: white;
+    color: #333;
     position: absolute;
-    top: 40px; /* if you change anything about the nav, you'll prob. need to reset the top and left values here.*/
-    left: 20px;
-    z-index: -1;
-    width:223px;
-    border-left: 1px solid #dedede;
+    top: 100%; /* directly below the search input */
+    right: 0;
+    z-index: 1050; /* above the page content and the Bootstrap navbar */
+    width: 36em;
+    max-width: 90vw;
+    max-height: 70vh;
+    overflow-y: auto;
+    margin: 0;
+    padding: 0;
+    border: 1px solid #dedede;
+    border-top: none;
+    text-align: left;
 }
 
+ul#results-container li {
+    border-bottom: 1px solid #eee;
+}
 
-ul#results-container a {
+ul#results-container li:last-child {
+    border-bottom: none;
+}
+
+ul#results-container li a {
+    display: block;
+    padding: 8px 12px;
     background-color: transparent;
+    color: #333;
+    text-decoration: none;
 }
 
-ul#results-container a:hover {
+ul#results-container li a:hover,
+ul#results-container li.active a {
+    background-color: #f5f5f5;
     color: black;
 }
 
+/* undo the sidebar (.nav li > a > span) styling that would otherwise apply inside the navbar */
+ul#results-container li > a > span {
+    float: none;
+    font-size: inherit;
+    font-weight: normal;
+}
 
-#search-demo-container a:hover {
-    color: black;
+ul#results-container li > a > span:after {
+    content: none;
+}
+
+ul#results-container .search-result-heading {
+    display: block;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+ul#results-container .search-result-page {
+    display: block;
+    color: #888;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+}
+
+ul#results-container .search-result-snippet {
+    display: block;
+    margin-top: 2px;
+    color: #555;
+}
+
+ul#results-container mark {
+    background-color: #fff3a3;
+    color: inherit;
+    padding: 0;
+}
+
+ul#results-container li.search-message {
+    padding: 8px 12px;
+    color: #777;
+    font-style: italic;
+}
+
+@media (max-width: 1200px) {
+    /* in the collapsed (hamburger) navbar the list flows with the menu instead of floating */
+    #search-demo-container ul#results-container {
+        position: static;
+        width: auto;
+        max-width: none;
+        border: none;
+    }
 }
 #search-input {
     padding: .5em;
