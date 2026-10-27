@@ -36,6 +36,8 @@ port: 4000
 exclude:
   - .gitignore
   - manual/graphs.gps
+  - manual/user-ops.gps
+  - manual/user-ops-src
   - manual/make-figures.sh
   - manual/make-refs.sh
   - manual/MakeRefs.java

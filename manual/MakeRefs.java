@@ -140,7 +140,7 @@ public class MakeRefs {
         b.append(generatedNote());
         b.append("""
             The built-in operations per data sort, usable in the attribute expressions described \
-            in the [Advanced rule features](manual_advanced.html) chapter. Operations with a \
+            in the [Using data](manual_data.html) chapter. Operations with a \
             symbol can be written in prefix or infix notation; all operations can be called by \
             name, in functional style.
 

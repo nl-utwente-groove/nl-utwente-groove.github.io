@@ -1,0 +1,5 @@
+alap {
+  user person := create();
+  try { birth(person); }
+}
+

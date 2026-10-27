@@ -67,7 +67,8 @@ Releases are published on [GitHub]({{site.groove_url}}/code/releases/latest); at
 ## How this manual is organised
 
 - [Graphs and rules](manual_basics.html) explains how to read and edit host graphs and transformation rules — the day-to-day basics of working with the Simulator.
-- [Advanced rule features](manual_advanced.html) covers data attributes, universally quantified (nested) rules, type graphs, and the available rule properties.
+- [Advanced rule features](manual_advanced.html) covers wildcards and regular expressions, rule parameters, universally quantified (nested) rules, type graphs, and the system properties.
+- [Using data](manual_data.html) covers data attributes and expressions, and extending GROOVE with your own data types and operations.
 - [Control language](manual_control.html) describes the language for programming the order of rule applications.
 - [Exploration and verification](manual_verification.html) covers exploration strategies, acceptors, and CTL/LTL model checking.
 - [Import and export](manual_io.html) describes the supported exchange formats, including Ecore/EMF models.

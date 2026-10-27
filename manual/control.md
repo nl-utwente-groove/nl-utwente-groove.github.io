@@ -88,7 +88,7 @@ The *conditions* of `if`, `while`, `until` and `do` are restricted: a condition 
 
 ## Variables and arguments
 
-Control programs can declare typed variables and pass values into and out of rules, connecting to the rule parameters described in the [previous chapter](manual_advanced.html#rule-parameters). The available types are `node` (all non-value nodes) and the data sorts `bool`, `int`, `real`, `string` and `user`.
+Control programs can declare typed variables and pass values into and out of rules, connecting to the rule parameters described in [Advanced rule features](manual_advanced.html#rule-parameters). The available types are `node` (all non-value nodes) and the data sorts `bool`, `int`, `real`, `string` and `user` (the sort of [user-defined types](manual_data.html#user-defined-types-and-operations)).
 
     node x, y;
     int n;

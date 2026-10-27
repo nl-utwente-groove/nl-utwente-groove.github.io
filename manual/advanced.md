@@ -4,7 +4,7 @@ title: # required
 permalink: # required, must match filename.html
     manual_advanced.html
 summary:
-    "Wildcards, regular expressions, attributes, parameters, quantification and typing"
+    "Wildcards, regular expressions, parameters, quantification and typing"
 sidebar:
     manual_sidebar
 toc: 
@@ -15,10 +15,10 @@ datatable: # optional, true for jQueries, see https://www.datatables.net/
     false
 tags:      # need to be included in _data/tags_doc.yml and have a page in tags/
 keywords:  # used in metadata for findability
-    wildcard, regular expression, attribute, expression, parameter, quantifier, nested rule, type graph, system properties
+    wildcard, regular expression, parameter, quantifier, nested rule, type graph, system properties
 ---
 
-This chapter covers the rule features that go beyond the plain structural rules of the [previous chapter](manual_basics.html): wildcards, regular expressions, data attributes, rule parameters, universally quantified (nested) rules, type graphs, and the grammar-wide system properties.
+This chapter covers the rule features that go beyond the plain structural rules of the [previous chapter](manual_basics.html): wildcards, regular expressions, rule parameters, universally quantified (nested) rules, type graphs, and the grammar-wide system properties. Data attributes and expressions have a chapter of their own, [Using data](manual_data.html).
 
 ## Wildcards and label variables
 
@@ -70,80 +70,6 @@ For instance, the following rule specifies that a son receives the name of one o
 | Edit view | Display view |
 | :---: | :---: |
 | ![](images/manual/regular-edit.svg) | ![](images/manual/regular-display.svg) |
-
-## Data attributes
-
-GROOVE supports data values — integers, reals, booleans and strings — in the form of *attributes*: named fields of graph nodes, formally represented as edges to special *value nodes*. The four built-in data sorts are `int`, `real`, `bool` and `string`; in addition, user-defined operations can be imported (see [below](#algebras)).
-
-### Attributes in host graphs
-
-In a host graph, an attribute can be specified in either of two ways:
-
-- By an ordinary edge to a constant node: a node labelled `int:0`, `real:100.0`, `bool:true` or `string:"John"` (note the double quotes) stands for the corresponding data value. The edge label is the field name.
-- By an assignment `let:field = const` on the node itself.
-
-In the display view, attributes are not shown as separate nodes and edges, but in the familiar record-like notation, as `field = value` equations inside the node. (The Simulator has an option to switch this off and show value nodes as ellipses.) The following shows an attributed host graph:
-
-| Edit view | Display view |
-| :---: | :---: |
-| ![](images/manual/attribute-graph-edit.svg) | ![](images/manual/attribute-graph-display.svg) |
-
-### Tests and assignments in rules
-
-Within rules, attributes are matched, tested and modified using *expressions*:
-
-- **`test:`** followed by a boolean expression makes the rule applicable only if the expression holds. Field names in the expression refer to attributes of the node the test is on (optionally written `self.field`); fields of other nodes can be referenced by declaring a node identifier `id:name` on the other node and writing `name.field`.
-
-- **`let:`** followed by an assignment `field = expr` sets the value of the field upon rule application, replacing any previous value. The expression is evaluated over the values *before* application.
-
-- **Variable nodes** are value nodes with unknown value: a node labelled just with a sort, such as `int:` or `real:`, matches any value of that sort. With an `id:x` label, the value is available in expressions as `x`. Variable nodes are connected by ordinary attribute edges, and can be used to bind, compare or consume values.
-
-Value nodes can never be created or deleted — every value exists exactly once, at least conceptually — so they only ever occur as readers; attribute *edges* however can be erased and created like any other edge.
-
-The following rule expresses a bank withdrawal: the requested `amount`-edge from the `ATM` to the value `x` is consumed, and the `Account`'s balance is reduced by `x`, provided the balance is sufficient:
-
-| Edit view | Display view |
-| :---: | :---: |
-| ![](images/manual/attribute-rule-edit.svg) | ![](images/manual/attribute-rule-display.svg) |
-
-Note the display notation: the test is shown as a plain condition (`balance >= x`) and the assignment as a value change (`± balance → balance - x`).
-
-### Expression syntax
-
-Expressions use conventional infix syntax:
-
-| Sort | Operators |
-| :--- | :--- |
-| `int`, `real` | `+` `-` `*` `/` (and `%` for `int`), unary `-`; comparisons `<` `<=` `>` `>=` `==` `!=` |
-| `bool` | `!` (not), `&` (and), <code>&#124;</code> (or), `==` `!=` |
-| `string` | `+` (concatenation), lexicographic `<` `<=` `>` `>=`, `==` `!=` |
-
-Beyond the operator symbols, named operations are called in functional style, e.g. `max(x,y)`, `abs(x)`, `length(s)`, `substring(s,i,j)`, `ite(b,x,y)` (if-then-else), and conversions such as `toInt(s)` or casts `(real) x`. The complete list of operations per sort is given in the generated [data operations reference](manual_ref_operators.html), and in the editor's syntax help panel.
-
-### The underlying product-node notation
-
-Expressions are in fact a convenient front-end for a lower-level graph notation that remains available: *product nodes* (labelled `prod:`) stand for tuples of values, with `arg:0`, `arg:1`, … edges to their argument value nodes and operator edges (such as `real:sub` or `real:ge`) to result value nodes. The following is the same withdrawal rule in this notation:
-
-| Edit view | Display view |
-| :---: | :---: |
-| ![](images/manual/attribute-rule-legacy-edit.svg) | ![](images/manual/attribute-rule-legacy-display.svg) |
-
-The expression syntax is strongly preferred for readability; the product-node notation is chiefly of interest because the display view of complex expressions decomposes into it, and for grammars dating from before the expression syntax existed.
-
-### Algebras
-
-Formally, the data sorts and operations form a *signature*, which is interpreted by an *algebra* defining the actual values and functions. Through the `algebraFamily` system property (see [below](#system-properties)), the interpretation can be changed. Supported values:
-
-- `default`: Java-based values (`int`, `double`, `boolean`, `String`);
-- `point`: a single value for every sort — all constants and operations collapse to that value (useful for abstraction);
-- `big`: high-precision values — arbitrary-precision integers and 34-digit decimal reals (`BigInteger`/`BigDecimal`);
-- `term`: symbolic term representations rather than computed values.
-
-In the `default` algebra, comparison of reals has a *tolerance* of 10⁻⁷: values whose relative difference is below the tolerance are considered equal, to avoid artificial differences due to rounding errors. In the `big` algebra, the tolerance is 10⁻³⁰.
-
-In addition, you can define your own operations: the `userOperations` system property takes the qualified name of a Java class whose static methods, annotated `@UserOperation`, then become available in expressions.
-
-Among the [samples](samples.html), `attributed-graphs` demonstrates the use of attributes.
 
 ## Rule parameters
 
@@ -285,9 +211,9 @@ Besides its rules, graphs and control programs, a grammar has global *system pro
 | Property | Default | Meaning |
 | :--- | :--- | :--- |
 | `remark` | (empty) | One-line documentation of the grammar |
-| `algebraFamily` | `default` | Algebra used for attributes: `default`, `point`, `big` or `term` |
+| `algebraFamily` | `default` | Algebra used for attributes: `default`, `point`, `big` or `term` (see [Using data](manual_data.html#algebras)) |
 | `valueOracle` | (none) | Source of values for unbound `ask:` parameters |
-| `userOperations` | (empty) | Class(es) whose `@UserOperation`-annotated static methods become data operations |
+| `userOperations` | (empty) | List of classes whose `@UserType` records and `@UserOperation` methods become data types and operations (see [Using data](manual_data.html#user-defined-types-and-operations)) |
 | `matchInjective` | `false` | Enforces injective matching for all rules (overrides the rule property) |
 | `parallelEdges` | `false` | Allows parallel edges in host graphs (multigraphs instead of simple graphs) |
 | `checkDangling` | `false` | Forbids matches that would leave dangling edges (DPO-style deletion) |
