@@ -175,13 +175,22 @@ Two things are needed for a grammar to use your classes.
 
 - **The `userOperations` system property** (see [Advanced rule features](manual_advanced.html#system-properties)) lists the qualified names of the annotated classes, separated by spaces: `user.Date` or `user.Date org.example.MyOps`. Every user type that occurs as a parameter or return type of a listed operation must itself be listed, and every listed class is checked when the grammar is loaded: a class that cannot be found, an annotated method that is not public or not static, a parameter of an unsupported type or a duplicate name is reported as an error on the property. Changing the property reloads the grammar, so the operations become available in the editor right away.
 
-- **The classes must be on the class path** of the Java virtual machine that runs GROOVE, since GROOVE loads them through the system class loader; GROOVE does not search the grammar directory for them. Compile them against the GROOVE jar — `lib/groove-x.y.z.jar` of a stand-alone installation, or the Maven artifact `nl.utwente.groove:groove` — and start the component you want with an explicit class path that includes both:
+- **The classes must be where GROOVE can load them.** Compile them against the GROOVE jar — `lib/groove-x.y.z.jar` of a stand-alone installation, or the Maven artifact `nl.utwente.groove:groove`. Since release 7.6.0, GROOVE then looks for each named class in four places, in this order, and takes the first that has it:
 
-  ```
-  java -cp "lib/*:/path/to/your/classes" nl.utwente.groove.Simulator
-  ```
+  - *On the class path* of the Java virtual machine that runs GROOVE, as described below. This comes first because the other three are searched by a class loader whose parent is GROOVE's own, and Java consults the parent first.
+  - *In the grammar directory*: the subdirectory `classes` of the `.gps` directory, holding compiled `.class` files in their package structure, followed by the jars in the subdirectory `lib`, sorted by file name without regard to case, so in the same order on every platform. The classes travel with the grammar, also when it is zipped or saved elsewhere, which makes this the form for distributing a grammar.
+  - *On the grammar class path*: the entries of the `userClassPath` system property, directories or jars separated by spaces, resolved relative to the grammar directory. This is the form for a grammar that lives inside the code base that defines its operations, as in the paper's repository: `userClassPath = ../target/classes`. An entry that does not exist is reported as an error on the property. Since the entries are relative, they do not survive zipping the grammar.
+  - *On the user class path* of the installation: directories and jars that are set once per installation and apply to every grammar, for an implementation that lives somewhere the grammar should not know about. In the Simulator it is edited under Options &gt; User class path...; the command-line tools take it from the same setting, and override it for a single run with `--user-classpath entries` (entries separated by the platform's path separator) or the system property `groove.user.classpath`. An override replaces the stored value rather than extending it.
 
-  from the directory of a stand-alone installation (on Windows, separate the entries with `;` instead of `:`). The Generator, Imager and the other [runnable components](installing.html#running) are started in the same way, by replacing `Simulator` with their name. The runnable jars in the `bin` directory and the native installers run with a fixed class path and cannot pick up your classes, so they are not suitable for grammars with user-defined operations. On Java 24 or newer, add `--enable-native-access=ALL-UNNAMED` before `-cp` to avoid a warning from the Simulator's look-and-feel library.
+  The three GROOVE-managed forms work however GROOVE is started, including the runnable jars and the native installers. Jars are read from temporary copies, so a jar can be rebuilt while the grammar is open; the new version is picked up when the grammar is reloaded, which the Simulator does on a change of the `userOperations` or `userClassPath` property. If a named class is found nowhere, the error on the `userOperations` property lists the places that were searched; if it is found in more than one place, a warning on the property lists them all, the one in use first, so that a copy on the JVM class path silently taking precedence over the grammar's own does not go unnoticed.
+
+  For the first form, start the component you want with an explicit class path that includes both the GROOVE jar and your classes:
+
+    ```
+    java -cp "lib/*:/path/to/your/classes" nl.utwente.groove.Simulator
+    ```
+
+    from the directory of a stand-alone installation (on Windows, separate the entries with `;` instead of `:`). The Generator, Imager and the other [runnable components](installing.html#running) are started in the same way, by replacing `Simulator` with their name. The runnable jars in the `bin` directory and the native installers run with a fixed class path and cannot pick up classes this way. On Java 24 or newer, add `--enable-native-access=ALL-UNNAMED` before `-cp` to avoid a warning from the Simulator's look-and-feel library.
 
 If your classes are a Maven project, the dependency is
 
@@ -189,7 +198,7 @@ If your classes are a Maven project, the dependency is
 <dependency>
     <groupId>nl.utwente.groove</groupId>
     <artifactId>groove</artifactId>
-    <version>7.5.3</version>
+    <version>7.6.0</version>
 </dependency>
 ```
 

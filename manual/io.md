@@ -38,6 +38,8 @@ The qualified (hierarchical) names of rules and other resources, discussed in [G
 
 The system properties file is a plain-text Java properties file, with lines of the form `key = value` for the properties discussed in [Advanced rule features](manual_advanced.html#system-properties); the graph-based resources are GXL files as described below; control, Prolog and Groovy resources are plain text.
 
+Two subdirectories are reserved for compiled Java code rather than resources: `lib`, holding jars, and `classes`, holding `.class` files, together form the grammar-local class path from which [user-defined types and operations](manual_data.html#making-the-classes-available) are loaded.
+
 A grammar can also be loaded from a *zipped* `.gps` directory (a `.zip` or `.jar` file containing one), including directly from a URL; the archive is transparently unpacked. Saving works on the directory form only.
 
 ## The native graph format
