@@ -5,6 +5,8 @@ permalink: # required, must match filename.html
     manual_io.html
 summary:
     "Storage formats, and exchanging graphs and grammars with other tools"
+release:   # GROOVE release this chapter describes; see manual.md
+    7.6.0
 sidebar:
     manual_sidebar
 toc: 
@@ -38,6 +40,8 @@ The qualified (hierarchical) names of rules and other resources, discussed in [G
 
 The system properties file is a plain-text Java properties file, with lines of the form `key = value` for the properties discussed in [Advanced rule features](manual_advanced.html#system-properties); the graph-based resources are GXL files as described below; control, Prolog and Groovy resources are plain text.
 
+Two subdirectories are reserved for compiled Java code rather than resources: `lib`, holding jars, and `classes`, holding `.class` files, together form the grammar-local class path from which [user-defined types and operations](manual_data.html#making-the-classes-available) are loaded (since release 7.6.0).
+
 A grammar can also be loaded from a *zipped* `.gps` directory (a `.zip` or `.jar` file containing one), including directly from a URL; the archive is transparently unpacked. Saving works on the directory form only.
 
 ## The native graph format
@@ -64,15 +68,15 @@ The File menu of the Simulator offers *Import* and *Export* actions. Importing a
 | FSM | `.fsm` | export only | Transition systems in the FSM layout format |
 | GraphViz | `.dot` | export only | Graph structure for GraphViz processing |
 | Raster images | `.png`, `.jpg` | export only | Renders the graph as displayed |
-| Vector graphics | `.eps`, `.pdf`, `.svg` | export only | Renders the graph as displayed |
+| Vector graphics | `.eps`, `.pdf`, `.svg` | export only | Renders the graph as displayed (`.svg` since release 6.5.0) |
 | LaTeX | `.tikz` | export only | TikZ code for inclusion in LaTeX documents (requires the `groove2tikz` style) |
-| Control program | `.gcp` | export only | Converts an explored LTS into a control program that enforces exactly its transitions |
+| Control program | `.gcp` | export only | Converts an explored LTS into a control program that enforces exactly its transitions (since release 6.9.0) |
 
 The image, vector and TikZ exporters render the graph *as displayed*, with all visual embellishments — they apply to whatever graph panel is currently shown, including the LTS panel. (In fact, all the SVG figures in this manual are produced this way, via the Imager.)
 
 ### Ecore/EMF exchange
 
-The Ecore porter connects GROOVE to the Eclipse Modeling Framework: an Ecore meta-model corresponds to a GROOVE type graph, and an XMI instance model to a host graph conforming to it. The translation runs through an intermediate conceptual representation, so not every construct of either side has an exact counterpart; the porter reports constructs it cannot translate. Two system properties tune the instance-model translation (see [Advanced rule features](manual_advanced.html#system-properties)):
+The Ecore porter connects GROOVE to the Eclipse Modeling Framework: an Ecore meta-model corresponds to a GROOVE type graph, and an XMI instance model to a host graph conforming to it. The translation runs through an intermediate conceptual representation, so not every construct of either side has an exact counterpart; the porter reports constructs it cannot translate. Two system properties tune the instance-model translation (since release 8.0.0, forthcoming; see [Advanced rule features](manual_advanced.html#system-properties)):
 
 - `ecoreOrdering` controls how *ordered* or non-unique many-valued features are encoded: not at all (`none`, the default — the order is lost), or through intermediate nodes carrying an `index` attribute (`index`);
 - `ecoreUseIdentifiers` controls whether `xmi:id` values are retained as GROOVE node identifiers.

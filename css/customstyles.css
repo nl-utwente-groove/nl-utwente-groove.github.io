@@ -663,6 +663,13 @@ a[data-toggle] {
     font-weight: bold;
 }
 
+.release {
+    color: #808080;
+    margin: -10px 0px 20px 0px;
+    padding-left: 15px;
+    font-size: 90%;
+}
+
 
 a.fa.fa-envelope-o.mailto {
     font-weight: 600;

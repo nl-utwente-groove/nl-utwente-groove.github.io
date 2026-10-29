@@ -24,19 +24,28 @@ usermanual_suffix:
   {{site.groove_url}}{{page.usermanual_suffix}}
 {% endcapture %}
 
-This is the web edition of the GROOVE user manual, which supersedes the legacy PDF manual. All chapters have been rewritten against the current feature set of the tool; the status column below records the tool version against which each chapter was last checked.
+This is the web edition of the GROOVE user manual, which supersedes the legacy PDF manual. All chapters have been rewritten against the current feature set of the tool; the release column below records the GROOVE release that each chapter describes (see [Releases](#releases) below).
 
 ## Chapters
 
-| Chapter | Contents | Checked against |
+{% assign chapter_pages = "manual_introduction.html,manual_basics.html,manual_advanced.html,manual_data.html,manual_control.html,manual_verification.html,manual_io.html" | split: "," %}
+| Chapter | Contents | Release |
 | :--- | :--- | :--- |
-| [Introduction](manual_introduction.html) | What GROOVE is, the concepts behind it, and the components of the tool set | 7.5.3 |
-| [Graphs and rules](manual_basics.html) | Editing host graphs and transformation rules | 7.5.3 |
-| [Advanced rule features](manual_advanced.html) | Wildcards, regular expressions, parameters, quantification, typing and system properties | 7.5.3 |
-| [Using data](manual_data.html) | Data attributes, expressions, algebras, and user-defined types and operations | 7.5.3 |
-| [Control language](manual_control.html) | Programming the order of rule applications | 7.5.3 |
-| [Exploration and verification](manual_verification.html) | Exploration strategies and model checking | 7.5.3 |
-| [Import and export](manual_io.html) | Storage formats, and exchanging graphs and grammars with other tools | 7.5.3 |
+{% for url in chapter_pages -%}
+{% assign chapter = site.pages | where: "permalink", url | first -%}
+| [{{ chapter.title }}]({{ url }}) | {{ chapter.summary }} | {{ chapter.release }} |
+{% endfor %}
+
+## Releases
+
+The manual describes the latest GROOVE release. The conventions are:
+
+- Every chapter states, under its summary, the release it describes: the `release` entry in the chapter's front matter, which also feeds the table above, so the two cannot disagree. When a chapter is checked against a new release, that entry is updated.
+- A feature that arrived in release 6.1.0 or later is marked *(since release x.y.z)* at its first description, with the release taken from the [change log]({{site.groove_url}}/code/blob/master/release/include/CHANGES.md); older features carry no such note.
+- Content of a release that is announced but not yet published is marked *(since release x.y.z, forthcoming)*; when that release is out, the chapter is checked against it, its `release` entry moves and the word *forthcoming* goes.
+- Behaviour that differs between releases is stated with concrete release numbers ("release 8.0.0 rejects this"), never relative to the release described ("later releases").
+
+The generated reference pages carry the release of the source code they were generated from in their header instead.
 
 ## Reference pages
 
