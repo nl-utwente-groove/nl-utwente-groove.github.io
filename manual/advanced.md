@@ -214,6 +214,7 @@ Besides its rules, graphs and control programs, a grammar has global *system pro
 | `algebraFamily` | `default` | Algebra used for attributes: `default`, `point`, `big` or `term` (see [Using data](manual_data.html#algebras)) |
 | `valueOracle` | (none) | Source of values for unbound `ask:` parameters |
 | `userOperations` | (empty) | List of classes whose `@UserType` records and `@UserOperation` methods become data types and operations (see [Using data](manual_data.html#user-defined-types-and-operations)) |
+| `userClassPath` | (empty) | List of directories and jars, relative to the grammar directory, from which the `userOperations` classes are loaded (see [Using data](manual_data.html#making-the-classes-available)) |
 | `matchInjective` | `false` | Enforces injective matching for all rules (overrides the rule property) |
 | `parallelEdges` | `false` | Allows parallel edges in host graphs (multigraphs instead of simple graphs) |
 | `checkDangling` | `false` | Forbids matches that would leave dangling edges (DPO-style deletion) |
