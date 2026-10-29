@@ -5,6 +5,8 @@ permalink: # required, must match filename.html
     manual_introduction.html
 summary:
     "What GROOVE is, the concepts behind it, and the components of the tool set"
+release:   # GROOVE release this chapter describes; see manual.md
+    7.6.0
 sidebar:
     manual_sidebar
 toc: 
@@ -62,7 +64,7 @@ Each component is available as a runnable jar in the `bin` subdirectory of the i
 
 ## Downloading and installing
 
-Releases are published on [GitHub]({{site.groove_url}}/code/releases/latest); at the time of writing, the current release is 7.5.3, which requires Java 21 or higher. See the [installation page](installing.html) for detailed instructions, and the [Maven Central coordinates](https://central.sonatype.com/artifact/nl.utwente.groove/groove) if you want to use GROOVE as a library.
+Releases are published on [GitHub]({{site.groove_url}}/code/releases/latest); the current release is {{ page.release }}, which requires Java 21 or higher. See the [installation page](installing.html) for detailed instructions, and the [Maven Central coordinates](https://central.sonatype.com/artifact/nl.utwente.groove/groove) if you want to use GROOVE as a library.
 
 ## How this manual is organised
 

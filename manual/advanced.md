@@ -5,6 +5,8 @@ permalink: # required, must match filename.html
     manual_advanced.html
 summary:
     "Wildcards, regular expressions, parameters, quantification and typing"
+release:   # GROOVE release this chapter describes; see manual.md
+    7.6.0
 sidebar:
     manual_sidebar
 toc: 
@@ -213,8 +215,8 @@ Besides its rules, graphs and control programs, a grammar has global *system pro
 | `remark` | (empty) | One-line documentation of the grammar |
 | `algebraFamily` | `default` | Algebra used for attributes: `default`, `point`, `big` or `term` (see [Using data](manual_data.html#algebras)) |
 | `valueOracle` | (none) | Source of values for unbound `ask:` parameters |
-| `userOperations` | (empty) | List of classes whose `@UserType` records and `@UserOperation` methods become data types and operations (see [Using data](manual_data.html#user-defined-types-and-operations)) |
-| `userClassPath` | (empty) | List of directories and jars, relative to the grammar directory, from which the `userOperations` classes are loaded (see [Using data](manual_data.html#making-the-classes-available)) |
+| `userOperations` | (empty) | List of classes whose `@UserType` records and `@UserOperation` methods become data types and operations (since release 6.7.0; see [Using data](manual_data.html#user-defined-types-and-operations)) |
+| `userClassPath` | (empty) | List of directories and jars, relative to the grammar directory, from which the `userOperations` classes are loaded (since release 7.6.0; see [Using data](manual_data.html#making-the-classes-available)) |
 | `matchInjective` | `false` | Enforces injective matching for all rules (overrides the rule property) |
 | `parallelEdges` | `false` | Allows parallel edges in host graphs (multigraphs instead of simple graphs) |
 | `checkDangling` | `false` | Forbids matches that would leave dangling edges (DPO-style deletion) |
@@ -225,7 +227,7 @@ Besides its rules, graphs and control programs, a grammar has global *system pro
 | `controlProgram` | (empty) | List of enabled control programs |
 | `typeGraph` | (empty) | List of active type graphs |
 | `prolog` | (empty) | List of active Prolog programs |
-| `ruleEnabling` | (empty) | Force-enables (`+`) or -disables (`-`) rules, overriding the `enabled` rule property |
+| `ruleEnabling` | (empty) | Force-enables (`+`) or -disables (`-`) rules, overriding the `enabled` rule property (since release 7.4.0) |
 | `actionPolicy` | (empty) | Per-action policy (`off`, `silent`, `error`, `remove`) for forbidden/invariant properties |
 | `typePolicy` | `error` | Handling of dynamic type constraint violations: `off`, `error` or `remove` |
 | `deadlockPolicy` | `off` | Handling of deadlocked states: `off` or `error` |
@@ -235,7 +237,7 @@ Besides its rules, graphs and control programs, a grammar has global *system pro
 | `commonLabels` | (empty) | List of frequent labels, used to optimise matching |
 | `transitionParameters` | `some` | Shows rule arguments in transition labels: `false`, `some` or `true` |
 | `loopsAsLabels` | `true` | Displays binary self-edges as node labels |
-| `useStoredNodeIDs` | `false` | Bases node numbers on the node identities stored in the graph files |
+| `useStoredNodeIDs` | `false` | Bases node numbers on the node identities stored in the graph files (since release 6.6.3) |
 | `ecoreOrdering` | `none` | Encoding of ordered many-valued features on Ecore import/export (`none` or `index`) |
 | `ecoreUseIdentifiers` | `false` | Uses `xmi:id` values as node identifiers on Ecore import |
 

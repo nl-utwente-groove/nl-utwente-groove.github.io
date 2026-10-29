@@ -5,6 +5,8 @@ permalink: # required, must match filename.html
     manual_verification.html
 summary:
     "Exploration strategies and model checking"
+release:   # GROOVE release this chapter describes; see manual.md
+    7.5.3
 sidebar:
     manual_sidebar
 toc: 
@@ -64,7 +66,7 @@ Further options include:
 
 - `-o file` — save the generated LTS; the accompanying `-ef` option controls extra state labels (start, final, open and result states, state numbers, transient states), and `-spanning`/`-traces` restrict the saved LTS to the spanning tree or the result traces;
 - `-f file` — save the result states as individual graph files;
-- `-P file` / `-D key=val` — override the grammar's system properties for this run (e.g. `-D typeGraph+=names` to extend the active type graphs);
+- `-P file` / `-D key=val` — override the grammar's system properties for this run (e.g. `-D typeGraph+=names` to extend the active type graphs; `-P` since release 7.1.0, the `+=` form since release 7.2.0);
 - `-l dir` — log the generation process;
 - `-r num` — stop after `num` result states.
 

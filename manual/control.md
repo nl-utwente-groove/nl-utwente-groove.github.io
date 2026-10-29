@@ -5,6 +5,8 @@ permalink: # required, must match filename.html
     manual_control.html
 summary:
     "Programming the order of rule applications"
+release:   # GROOVE release this chapter describes; see manual.md
+    7.5.3
 sidebar:
     manual_sidebar
 toc: 
@@ -82,13 +84,13 @@ Expressions terminated by a semicolon are the simplest statements. Beyond these,
 
 - `< stat* >` — an *atomic* block: the enclosed statements are executed as a single step from the perspective of the transition system; the intermediate transitions only become part of the state space if the entire block completes successfully. (Recipes, below, are the named, parameterised form of this.)
 
-- `halt` — stops exploration at this point, without marking the state as final.
+- `halt` — stops exploration at this point, without marking the state as final (since release 6.9.0).
 
 The *conditions* of `if`, `while`, `until` and `do` are restricted: a condition is a rule call, the keyword `true`, or a choice (`|`) of conditions. A condition holds if at least one of its alternatives has a match — and note that, unlike in conventional languages, an enabled condition is actually *applied*, not just tested.
 
 ## Variables and arguments
 
-Control programs can declare typed variables and pass values into and out of rules, connecting to the rule parameters described in [Advanced rule features](manual_advanced.html#rule-parameters). The available types are `node` (all non-value nodes) and the data sorts `bool`, `int`, `real`, `string` and `user` (the sort of [user-defined types](manual_data.html#user-defined-types-and-operations)).
+Control programs can declare typed variables and pass values into and out of rules, connecting to the rule parameters described in [Advanced rule features](manual_advanced.html#rule-parameters). The available types are `node` (all non-value nodes) and the data sorts `bool`, `int`, `real`, `string` and `user` (the sort of [user-defined types](manual_data.html#user-defined-types-and-operations); since release 7.5.1).
 
     node x, y;
     int n;

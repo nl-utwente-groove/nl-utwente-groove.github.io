@@ -5,6 +5,8 @@ permalink: # required, must match filename.html
     manual_data.html
 summary:
     "Data attributes, expressions, algebras, and user-defined types and operations"
+release:   # GROOVE release this chapter describes; see manual.md
+    7.6.0
 sidebar:
     manual_sidebar
 toc: 
@@ -63,9 +65,9 @@ Expressions use conventional infix syntax:
 | `bool` | `!` (not), `&` (and), <code>&#124;</code> (or), `==` `!=` |
 | `string` | `+` (concatenation), lexicographic `<` `<=` `>` `>=`, `==` `!=` |
 
-Beyond the operator symbols, named operations are called in functional style, e.g. `max(x,y)`, `abs(x)`, `length(s)`, `substring(s,i,j)`, `ite(b,x,y)` (if-then-else), and conversions such as `toInt(s)` or casts `(real) x`. The complete list of operations per sort is given in the generated [data operations reference](manual_ref_operators.html), and in the editor's syntax help panel. User-defined operations (see [below](#user-defined-types-and-operations)) are called in the same functional style.
+Beyond the operator symbols, named operations are called in functional style, e.g. `max(x,y)`, `abs(x)`, `length(s)`, `substring(s,i,j)`, `ite(b,x,y)` (if-then-else), and conversions such as `toInt(s)` or casts `(real) x` (the `(real)` and `(string)` casts since release 6.3.0). The complete list of operations per sort is given in the generated [data operations reference](manual_ref_operators.html), and in the editor's syntax help panel. User-defined operations (see [below](#user-defined-types-and-operations)) are called in the same functional style.
 
-An operation whose arguments are not valid for it — division by zero, say, or a substring index out of range — yields an *error value* of its result sort: `NaI` for `int`, `NaR` for `real`, `NaB` for `bool`, `NaS` for `string` and `NaU` for `user`. Error values are values like any other: they are shown as such in the state, and a rule can test for them.
+An operation whose arguments are not valid for it — division by zero, say, or a substring index out of range — yields an *error value* of its result sort (since release 6.7.0): `NaI` for `int`, `NaR` for `real`, `NaB` for `bool`, `NaS` for `string` and `NaU` for `user`. Error values are values like any other: they are shown as such in the state, and a rule can test for them.
 
 ## The underlying product-node notation
 
@@ -100,7 +102,7 @@ The built-in sorts and operations are deliberately minimal, which leaves three t
 - **Randomness.** All built-in operations are *deterministic*: the result is fixed by the arguments. The only way to model the roll of a die is to enumerate all its outcomes as separate transitions, so that every possible outcome becomes part of the state space.
 - **Structured data.** A date, say, has to be modelled as a node with three `int` attributes. That blurs the line between data and graph structure, it leaves it to the rules to keep such nodes immutable and unique (two nodes with the same day, month and year ought to be *one* value), and it offers no way to attach operations such as "the next date" to the structure.
 
-Since release 7.5.2, GROOVE addresses all three through *user-defined types and operations*: Java records and methods that you annotate, compile against GROOVE, and list in the system properties of your grammar. From then on they are used in rules exactly like the built-in sorts and operations. The design and the theory behind the feature are described in the paper *User-defined Types and Operations in GROOVE* (Arend Rensink, 2026); the example in this section is taken from that paper, and its code is also available in the paper's [GitHub repository](https://github.com/nl-utwente-groove/userops).
+GROOVE addresses all three through *user-defined types and operations* (since release 7.5.0; operations alone since release 6.7.0, and their use in rule parameters and control programs since release 7.5.1): Java records and methods that you annotate, compile against GROOVE, and list in the system properties of your grammar. From then on they are used in rules exactly like the built-in sorts and operations. The design and the theory behind the feature are described in the paper *User-defined Types and Operations in GROOVE* (Arend Rensink, 2026); the example in this section is taken from that paper, and its code is also available in the paper's [GitHub repository](https://github.com/nl-utwente-groove/userops).
 
 ### Defining operations
 
@@ -175,7 +177,7 @@ Two things are needed for a grammar to use your classes.
 
 - **The `userOperations` system property** (see [Advanced rule features](manual_advanced.html#system-properties)) lists the qualified names of the annotated classes, separated by spaces: `user.Date` or `user.Date org.example.MyOps`. Every user type that occurs as a parameter or return type of a listed operation must itself be listed, and every listed class is checked when the grammar is loaded: a class that cannot be found, an annotated method that is not public or not static, a parameter of an unsupported type or a duplicate name is reported as an error on the property. Changing the property reloads the grammar, so the operations become available in the editor right away.
 
-- **The classes must be where GROOVE can load them.** Compile them against the GROOVE jar — `lib/groove-x.y.z.jar` of a stand-alone installation, or the Maven artifact `nl.utwente.groove:groove`. Since release 7.6.0, GROOVE then looks for each named class in four places, in this order, and takes the first that has it:
+- **The classes must be where GROOVE can load them.** Compile them against the GROOVE jar — `lib/groove-x.y.z.jar` of a stand-alone installation, or the Maven artifact `nl.utwente.groove:groove`. GROOVE then looks for each named class in four places (since release 7.6.0; earlier releases only search the first), in this order, and takes the first that has it:
 
   - *On the class path* of the Java virtual machine that runs GROOVE, as described below. This comes first because the other three are searched by a class loader whose parent is GROOVE's own, and Java consults the parent first.
   - *In the grammar directory*: the subdirectory `classes` of the `.gps` directory, holding compiled `.class` files in their package structure, followed by the jars in the subdirectory `lib`, sorted by file name without regard to case, so in the same order on every platform. The classes travel with the grammar, also when it is zipped or saved elsewhere, which makes this the form for distributing a grammar.
@@ -232,7 +234,7 @@ This tells GROOVE that the result is *not* determined by the arguments: the prot
 - The operation is evaluated afresh for every application of the rule, and its outcome is part of the identity of the resulting transition: two applications of the same rule at the same match may lead to different target states.
 - The matches of the rule are recomputed in every state, rather than inherited from the previous state as GROOVE normally does where possible, since they may depend on the outcome.
 - Exploring the same grammar twice may give different state spaces — which is exactly what randomness means. Note that this also affects reproducibility: a model checking result obtained on one run need not hold on the next.
-- An indeterminate operation should **not** be used on a quantified level of a [nested rule](manual_advanced.html#nested-rules): the matches of the nested levels cannot be reliably reconstructed from an outcome that is not fixed. Release 7.5.3 still accepts such a rule, but later releases reject it as an error (see [issue 911]({{site.groove_url}}/code/issues/911)). The way around it, shown in the `create` rule below, is to evaluate the operation on the top level, bind the result to a variable node, and use that variable in the nested conditions.
+- An indeterminate operation should **not** be used on a quantified level of a [nested rule](manual_advanced.html#nested-rules): the matches of the nested levels cannot be reliably reconstructed from an outcome that is not fixed. Releases 7.5.3 and 7.6.0 still accept such a rule; release 8.0.0 rejects it as an error (see [issue 911]({{site.groove_url}}/code/issues/911)). The way around it, shown in the `create` rule below, is to evaluate the operation on the top level, bind the result to a variable node, and use that variable in the nested conditions.
 
 Whether or not an operation is indeterminate, GROOVE gives no guarantee about *when* or *how often* it invokes an operation during matching and transformation. Operations should therefore be free of side effects, or at least of side effects that GROOVE could notice: the correctness of the state space depends on it.
 
@@ -301,5 +303,5 @@ The current implementation has the following restrictions:
 - User types must be Java `record`s, and their components must be of the four primitive Java types; a user type cannot have a component of another user type, nor of an array or list type.
 - All user types share the sort `user`, so mismatches between user types are only detected at run time, as the error value `NaU`.
 - Operation names must be distinct: there is no overloading, and component names must be distinct across all user types as well, since they become accessor operations.
-- Indeterminate operations should not be used on quantified levels of nested rules; releases after 7.5.3 reject this.
+- Indeterminate operations should not be used on quantified levels of nested rules; release 8.0.0 rejects this.
 - A grammar with user-defined operations can only be run with the classes on the class path, which rules out the runnable jars and the native installers (see [above](#making-the-classes-available)).
