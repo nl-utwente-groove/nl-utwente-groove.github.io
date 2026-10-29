@@ -304,4 +304,3 @@ The current implementation has the following restrictions:
 - All user types share the sort `user`, so mismatches between user types are only detected at run time, as the error value `NaU`.
 - Operation names must be distinct: there is no overloading, and component names must be distinct across all user types as well, since they become accessor operations.
 - Indeterminate operations should not be used on quantified levels of nested rules; release 8.0.0 rejects this.
-- A grammar with user-defined operations can only be run with the classes on the class path, which rules out the runnable jars and the native installers (see [above](#making-the-classes-available)).
