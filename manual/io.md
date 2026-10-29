@@ -76,7 +76,7 @@ The image, vector and TikZ exporters render the graph *as displayed*, with all v
 
 ### Ecore/EMF exchange
 
-The Ecore porter connects GROOVE to the Eclipse Modeling Framework: an Ecore meta-model corresponds to a GROOVE type graph, and an XMI instance model to a host graph conforming to it. The translation runs through an intermediate conceptual representation, so not every construct of either side has an exact counterpart; the porter reports constructs it cannot translate. Two system properties tune the instance-model translation (see [Advanced rule features](manual_advanced.html#system-properties)):
+The Ecore porter connects GROOVE to the Eclipse Modeling Framework: an Ecore meta-model corresponds to a GROOVE type graph, and an XMI instance model to a host graph conforming to it. The translation runs through an intermediate conceptual representation, so not every construct of either side has an exact counterpart; the porter reports constructs it cannot translate. Two system properties tune the instance-model translation (since release 8.0.0, forthcoming; see [Advanced rule features](manual_advanced.html#system-properties)):
 
 - `ecoreOrdering` controls how *ordered* or non-unique many-valued features are encoded: not at all (`none`, the default — the order is lost), or through intermediate nodes carrying an `index` attribute (`index`);
 - `ecoreUseIdentifiers` controls whether `xmi:id` values are retained as GROOVE node identifiers.

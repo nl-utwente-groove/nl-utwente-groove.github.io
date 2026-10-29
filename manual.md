@@ -42,6 +42,7 @@ The manual describes the latest GROOVE release. The conventions are:
 
 - Every chapter states, under its summary, the release it describes: the `release` entry in the chapter's front matter, which also feeds the table above, so the two cannot disagree. When a chapter is checked against a new release, that entry is updated.
 - A feature that arrived in release 6.1.0 or later is marked *(since release x.y.z)* at its first description, with the release taken from the [change log]({{site.groove_url}}/code/blob/master/release/include/CHANGES.md); older features carry no such note.
+- Content of a release that is announced but not yet published is marked *(since release x.y.z, forthcoming)*; when that release is out, the chapter is checked against it, its `release` entry moves and the word *forthcoming* goes.
 - Behaviour that differs between releases is stated with concrete release numbers ("release 8.0.0 rejects this"), never relative to the release described ("later releases").
 
 The generated reference pages carry the release of the source code they were generated from in their header instead.

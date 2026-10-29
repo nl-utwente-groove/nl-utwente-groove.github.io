@@ -231,15 +231,15 @@ Besides its rules, graphs and control programs, a grammar has global *system pro
 | `actionPolicy` | (empty) | Per-action policy (`off`, `silent`, `error`, `remove`) for forbidden/invariant properties |
 | `typePolicy` | `error` | Handling of dynamic type constraint violations: `off`, `error` or `remove` |
 | `deadlockPolicy` | `off` | Handling of deadlocked states: `off` or `error` |
-| `exploration` | (empty) | Default exploration configuration for this grammar |
+| `exploration` | (empty) | Default exploration configuration for this grammar (since release 8.0.0, forthcoming; up to release 7.6.0: `explorationStrategy`) |
 | `storeOutParameters` | `false` | Stores output parameters for implicit group calls in transition arguments |
 | `controlLabels` | (empty) | List of rare labels, used to optimise matching |
 | `commonLabels` | (empty) | List of frequent labels, used to optimise matching |
 | `transitionParameters` | `some` | Shows rule arguments in transition labels: `false`, `some` or `true` |
 | `loopsAsLabels` | `true` | Displays binary self-edges as node labels |
 | `useStoredNodeIDs` | `false` | Bases node numbers on the node identities stored in the graph files (since release 6.6.3) |
-| `ecoreOrdering` | `none` | Encoding of ordered many-valued features on Ecore import/export (`none` or `index`) |
-| `ecoreUseIdentifiers` | `false` | Uses `xmi:id` values as node identifiers on Ecore import |
+| `ecoreOrdering` | `none` | Encoding of ordered many-valued features on Ecore import/export (`none` or `index`) (since release 8.0.0, forthcoming) |
+| `ecoreUseIdentifiers` | `false` | Uses `xmi:id` values as node identifiers on Ecore import (since release 8.0.0, forthcoming) |
 
 (The properties `grooveVersion`, `grammarVersion` and `location` are maintained automatically and not user-editable.)
 
