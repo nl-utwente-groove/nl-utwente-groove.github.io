@@ -1,16 +1,23 @@
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-import nl.utwente.groove.explore.AcceptorValue;
-import nl.utwente.groove.explore.StrategyValue;
+import nl.utwente.groove.explore.ExploreType;
+import nl.utwente.groove.explore.LTLExploreType;
+import nl.utwente.groove.explore.config.ConfiguredExploreType;
+import nl.utwente.groove.explore.config.ExploreConfig;
+import nl.utwente.groove.explore.config.LegacySyntaxParser;
+import nl.utwente.groove.explore.feature.ExploreKey;
+import nl.utwente.groove.explore.feature.Setting;
 import nl.utwente.groove.algebra.Sort;
 import nl.utwente.groove.algebra.Operator;
 import nl.utwente.groove.control.parse.CtrlDoc;
 import nl.utwente.groove.grammar.aspect.AspectKind;
 import nl.utwente.groove.graph.GraphRole;
+import nl.utwente.groove.util.parse.FormatException;
 
 /**
  * Generates the reference pages of the web manual from the GROOVE sources.
@@ -96,40 +103,127 @@ public class MakeRefs {
     }
 
     private void writeExploration() throws IOException {
-        StringBuilder b = frontMatter("Reference: strategies and acceptors",
+        StringBuilder b = frontMatter("Reference: exploration configuration",
             "manual_ref_exploration.html",
-            "The named exploration strategies and acceptors of the legacy -s/-a options",
-            "strategy, acceptor, exploration, reference");
+            "The keys and settings of the exploration configuration vocabulary,"
+                + " and the legacy strategy and acceptor keywords",
+            "exploration, configuration, strategy, acceptor, reference");
         b.append(generatedNote());
         b.append("""
-            The named strategies and acceptors below constitute the vocabulary of the Generator's \
-            deprecated `-s` and `-a` options (see the \
-            [Exploration and verification](manual_verification.html) chapter); the preferred way \
-            to configure an exploration is the `-x` configuration vocabulary described there. \
-            Development-only strategies are omitted.
+            The keys and settings below constitute the vocabulary of the Generator's `-x` option, \
+            of the exploration dialog in the Simulator and of the `exploration` grammar property \
+            (see the [Exploration and verification](manual_verification.html) chapter). \
+            The textual form of a configuration is a space-separated list of \
+            `key=setting` entries; a key that is absent takes its default.
 
-            ## Strategies
+            ## Keys
 
-            | Keyword | Name | Description |
+            | Key | Default | Description |
             | :--- | :--- | :--- |
             """);
-        for (StrategyValue strategy : StrategyValue.values()) {
-            if (strategy.isDevelopment()) {
-                continue;
-            }
-            b.append("| `" + strategy.getKeyword() + "` | " + strategy.getName() + " | "
-                + cell(strategy.getDescription()) + " |\n");
+        for (ExploreKey key : ExploreKey.values()) {
+            b.append("| " + code(key.getName()) + " | " + code(key.getDefaultKind().getName())
+                + " | " + cell(key.getExplanation()) + " |\n");
         }
         b.append("""
 
-            ## Acceptors
+            ## Settings
 
-            | Keyword | Name | Description |
+            The settings per key; the default is marked with an asterisk. In the setting forms, \
+            *n* stands for a number, *max*[`+`*inc*] for a maximum with an optional increment \
+            for iterative deepening, and *text* for a name or formula as explained in the \
+            description.
+
+            | Key | Setting | Description |
             | :--- | :--- | :--- |
             """);
-        for (AcceptorValue acceptor : AcceptorValue.values()) {
-            b.append("| `" + acceptor.getKeyword() + "` | " + acceptor.getName() + " | "
-                + cell(acceptor.getDescription()) + " |\n");
+        for (ExploreKey key : ExploreKey.values()) {
+            boolean first = true;
+            for (Setting.Kind kind : key.getKindType().getEnumConstants()) {
+                String arg = switch (kind.contentType()) {
+                case NULL -> "";
+                case INTEGER, LONG -> "*n*";
+                case LIMIT -> "*max*[`+`*inc*]";
+                case STRING -> "*text*";
+                };
+                String form = arg.isEmpty()
+                    ? code(kind.getName())
+                    : code(kind.getName() + ":") + arg;
+                if (!arg.isEmpty() && key.getKindMap().get("") == kind) {
+                    // the kind name may be omitted
+                    form = arg + " or " + form;
+                }
+                if (kind == key.getDefaultKind()) {
+                    form += "\\*";
+                }
+                b.append("| " + (first
+                    ? code(key.getName())
+                    : "") + " | " + form + " | " + cell(kind.getExplanation()) + " |\n");
+                first = false;
+            }
+        }
+        b.append("""
+
+            ## Legacy strategies and acceptors
+
+            Up to release 7.5.3, an exploration was given by a named strategy and acceptor: \
+            the keywords of the Generator's `-s` and `-a` options (still accepted as legacy \
+            shorthand) and of the `explorationStrategy` grammar property. Each combination maps \
+            onto a configuration, except for the LTL model checking strategies, which are not \
+            configuration-based. The table lists every keyword with an example of a legacy \
+            *strategy* *acceptor* pair and the configuration it translates to.
+
+            | Legacy keyword | Example | Equivalent configuration |
+            | :--- | :--- | :--- |
+            """);
+        record Legacy(String syntax, String example) {}
+        var legacy = List.of(new Legacy("`bfs`", "bfs final"),
+            new Legacy("`bfs:`*n*", "bfs:5 final"), new Legacy("`dfs`", "dfs final"),
+            new Legacy("`dfs:`*n*", "dfs:5 final"), new Legacy("`linear`", "linear final"),
+            new Legacy("`random`", "random final"), new Legacy("`state`", "state final"),
+            new Legacy("`crule:`[`!`]*rule*", "crule:done final"),
+            new Legacy("`cnbound:`*n*", "cnbound:20 final"),
+            new Legacy("`cebound:`*label*`>`*n*`,`…", "cebound:item>3,flag:busy>1 final"),
+            new Legacy("`uptorule:`(`bfs`&#124;`dfs`)`->`[`!`]*rule*", "uptorule:dfs->done final"),
+            new Legacy("`uptorule:`(`bfs`&#124;`dfs`)`=>`[`!`]*rule*",
+                "uptorule:bfs=>!done final"),
+            new Legacy("`ltl:`*formula*", "ltl:G(!error) cycle"),
+            new Legacy("`ltlbounded:`*bound*`;`*formula*", "ltlbounded:10,5;G(!error) cycle"),
+            new Legacy("`ltlpocket:`*bound*`;`*formula*", "ltlpocket:grow;G(!error) cycle"),
+            new Legacy("`final`", "bfs final"), new Legacy("`any`", "bfs any"),
+            new Legacy("`none`", "bfs none"), new Legacy("`cycle`", "ltl:G(!error) cycle"),
+            new Legacy("`ruleapp:`*rule*", "bfs ruleapp:done"),
+            new Legacy("`inv:`*rule*", "bfs inv:error"),
+            new Legacy("`inv:!`*rule*", "bfs inv:!safe"),
+            new Legacy("`formula:`*formula*", "bfs formula:done&&!error"));
+        for (Legacy l : legacy) {
+            String equivalent;
+            try {
+                ExploreType type = LegacySyntaxParser.parse(l.example());
+                if (type instanceof ConfiguredExploreType configured) {
+                    String text = configured.getConfig().unparse();
+                    ExploreConfig.parse(text);
+                    equivalent = text.isEmpty()
+                        ? "*(the default configuration)*"
+                        : code(text);
+                } else if (type instanceof LTLExploreType) {
+                    String id = type.getIdentifier();
+                    var kind = Arrays.stream(LTLExploreType.Kind.values())
+                        .filter(k -> id.startsWith(k.getKeyword() + ":"))
+                        .findFirst()
+                        .orElseThrow(() -> new IllegalStateException(
+                            "No LTL kind for exploration type '" + id + "'"));
+                    equivalent = code(id) + " (not configuration-based: "
+                        + cell(kind.getDescription()) + ")";
+                } else {
+                    throw new IllegalStateException("Legacy example '" + l.example()
+                        + "' yields unexpected exploration type " + type.getClass().getName());
+                }
+            } catch (FormatException e) {
+                throw new IllegalStateException(
+                    "Legacy example '" + l.example() + "' does not parse: " + e.getMessage(), e);
+            }
+            b.append("| " + l.syntax() + " | " + code(l.example()) + " | " + equivalent + " |\n");
         }
         write("ref-exploration.md", b);
     }
