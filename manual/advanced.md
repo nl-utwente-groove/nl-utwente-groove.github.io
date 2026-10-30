@@ -231,7 +231,7 @@ Besides its rules, graphs and control programs, a grammar has global *system pro
 | `actionPolicy` | (empty) | Per-action policy (`off`, `silent`, `error`, `remove`) for forbidden/invariant properties |
 | `typePolicy` | `error` | Handling of dynamic type constraint violations: `off`, `error` or `remove` |
 | `deadlockPolicy` | `off` | Handling of deadlocked states: `off` or `error` |
-| `exploration` | (empty) | Default exploration configuration for this grammar (since release 8.0.0, forthcoming; up to release 7.6.0: `explorationStrategy`) |
+| `exploration` | (empty) | Default exploration configuration for this grammar (since release 7.6.0; up to release 7.5.3: `explorationStrategy`) |
 | `storeOutParameters` | `false` | Stores output parameters for implicit group calls in transition arguments |
 | `controlLabels` | (empty) | List of rare labels, used to optimise matching |
 | `commonLabels` | (empty) | List of frequent labels, used to optimise matching |

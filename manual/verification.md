@@ -6,7 +6,7 @@ permalink: # required, must match filename.html
 summary:
     "Exploration strategies and model checking"
 release:   # GROOVE release this chapter describes; see manual.md
-    7.5.3
+    7.6.0
 sidebar:
     manual_sidebar
 toc: 
@@ -26,11 +26,11 @@ Exploration is the recursive application of all scheduled actions to all reachab
 
 The Explore menu of the Simulator offers one-click *full exploration* (also available as a toolbar button), which explores the complete state space reachable from the current state, subject to the control program. The LTS panel displays the explored transition system; states can be inspected individually, and partial (step-by-step) exploration is possible by applying matches by hand.
 
-Beyond full exploration, the *exploration dialog* (Explore menu) lets you compose a custom exploration from a set of orthogonal settings — the same vocabulary described in the next section — and warns about combinations that are not realisable (since release 8.0.0, forthcoming). A grammar can record its default exploration in the `exploration` system property, using the same `key=value` vocabulary (since release 8.0.0, forthcoming; up to release 7.6.0 the property is called `explorationStrategy`).
+Beyond full exploration, the *exploration dialog* (Explore menu) lets you compose a custom exploration from a set of orthogonal settings — the same vocabulary described in the next section — and warns about combinations that are not realisable (since release 7.6.0). A grammar can record its default exploration in the `exploration` system property, using the same `key=value` vocabulary (since release 7.6.0; up to release 7.5.3 the property is called `explorationStrategy`).
 
 ## The exploration configuration
 
-An exploration is composed from the following settings (since release 8.0.0, forthcoming; earlier releases use the named strategies and acceptors of the generated [strategies and acceptors reference](manual_ref_exploration.html)); every key has a default (marked *), so only deviations need to be given.
+An exploration is composed from the following settings (since release 7.6.0; earlier releases use the named strategies and acceptors listed at the end of the generated [exploration reference](manual_ref_exploration.html)); every key has a default (marked *), so only deviations need to be given.
 
 | Key | Values | Meaning |
 | :--- | :--- | :--- |
@@ -58,7 +58,7 @@ For large state spaces, the command-line Generator avoids the overhead of the GU
 
     java -jar Generator.jar [options] <grammar>.gps [<start graph names>]
 
-The exploration is configured with `-x` (since release 8.0.0, forthcoming), taking the vocabulary above as a space-separated (quoted) list:
+The exploration is configured with `-x` (since release 7.6.0), taking the vocabulary above as a space-separated (quoted) list:
 
     java -jar Generator.jar -x "next=newest count=first goal=condition:mygoal" mygrammar.gps
 
@@ -70,7 +70,7 @@ Further options include:
 - `-l dir` — log the generation process;
 - `-r num` — stop after `num` result states.
 
-Invoke `Generator -h` for the complete list. Up to release 7.6.0, the exploration is set with the options `-s` (strategy) and `-a` (acceptor) instead; their vocabulary of named *strategies* and *acceptors*, listed in the generated [strategies and acceptors reference](manual_ref_exploration.html), maps onto combinations of the configuration keys above. Release 8.0.0 still recognises the two options, but deprecated in favour of `-x`.
+Invoke `Generator -h` for the complete list. Up to release 7.5.3, the exploration is set with the options `-s` (strategy) and `-a` (acceptor) instead; their vocabulary of named *strategies* and *acceptors* maps onto combinations of the configuration keys above, as listed in the generated [exploration reference](manual_ref_exploration.html). Release 7.6.0 still recognises the two options as legacy shorthands for `-x`.
 
 ## Model checking
 
