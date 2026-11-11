@@ -17,7 +17,7 @@ datatable: # optional, true for jQueries, see https://www.datatables.net/
     false
 tags:      # need to be included in _data/tags_doc.yml and have a page in tags/
 keywords:  # used in metadata for findability
-    attribute, expression, data, sort, algebra, operation, user operation, user type, record, indeterminate, random
+    attribute, expression, data, sort, algebra, operation, user operation, user type, record, indeterminate, random, set-valued, range
 ---
 
 GROOVE supports data values — integers, reals, booleans and strings — in the form of *attributes*: named fields of graph nodes, formally represented as edges to special *value nodes*. The four built-in data sorts are `int`, `real`, `bool` and `string`. A fifth sort, `user`, holds values of *user-defined types*: Java records that you make available to GROOVE, together with your own operations on them. These are the subject of the [second half](#user-defined-types-and-operations) of this chapter; the first half covers the built-in data support.
@@ -93,6 +93,26 @@ In the `default` algebra, comparison of reals has a *tolerance* of 10⁻⁷: val
 The `user` sort is only implemented in the `default` algebra: a grammar that uses user-defined types or operations must leave the `algebraFamily` property at its default value.
 
 Among the [samples](samples.html), `attributed-graphs` demonstrates the use of attributes.
+
+## Set-valued operations
+
+Most operations yield a single value. A *set-valued* operation (since release 7.7.0, forthcoming) yields a set of values of its result sort, and a rule that calls it is matched once for every value in that set. There is one built-in set-valued operation: `range(n)` yields the integers from 0 up to but not including `n`, which is the empty set if `n` is zero or negative. Further ones can be [user-defined](#set-valued-user-operations).
+
+What "once for every value" amounts to depends on the [nesting level](manual_advanced.html#nested-rules) of the node on which the call stands, just as it does for any other part of a rule that can be matched in more than one way:
+
+- **On an existential level, one of the values is chosen.** A top-level node with the assignment `let:x = range(a.n)` gives a rule with one match for every value: for `a.n = 3`, three matches, which assign 0, 1 and 2 to `x`.
+- **On a universal level, all values are taken.** A `new:` node on the level of a `forall:` node, with the assignment `let:idx = range(t.n)`, is created once for every value: the rule creates `t.n` nodes, numbered from 0 by their `idx` attribute. This is the way to create a number of nodes that is itself given as data.
+- **In a negative application condition, no value may qualify.** The condition is violated as soon as it can be satisfied with one of the values.
+- **Compared to a value that is known otherwise, the call tests for membership.** The test `test:x == range(a.n)` succeeds if the existing attribute `x` equals one of the values, since one equal value is enough to match the rule; likewise, `test:x < range(a.n)` succeeds if `x` is smaller than at least one of them.
+
+A set-valued call may be part of a larger expression: `a.lo + range(a.hi - a.lo + 1)` yields the integers from `a.lo` up to and including `a.hi`.
+
+Some things to be aware of:
+
+- **The result is a set, without an order.** Every value is matched once, and no value is the first or the next one. If the order of the values matters, it has to be present in the values themselves, as with the `idx` attribute above.
+- **Set-valued operations can only be called in rules.** They are an error in the attribute expressions of other graphs, and cannot be evaluated in the arguments of a rule call in a [control program](manual_control.html).
+- **The algebra matters** (see [Algebras](#algebras)). In the `default` and `big` algebras the values are enumerated as described. In the `point` algebra the set collapses to the single value of the sort, so that the number of matches no longer follows the data. The `term` algebra cannot enumerate a symbolic set: a rule that calls a set-valued operation is an error there.
+- **An error is a value.** If an argument of the call is an error value, the result is the error value of the result sort, as the only value.
 
 ## User-defined types and operations
 
@@ -238,6 +258,31 @@ This tells GROOVE that the result is *not* determined by the arguments: the prot
 
 Whether or not an operation is indeterminate, GROOVE gives no guarantee about *when* or *how often* it invokes an operation during matching and transformation. Operations should therefore be free of side effects, or at least of side effects that GROOVE could notice: the correctness of the state space depends on it.
 
+### Set-valued user operations
+
+A user-defined operation is [set-valued](#set-valued-operations) (since release 7.7.0, forthcoming) if its return type is a `java.util.Set`, or a subtype such as `SortedSet`, of `Integer`, `Double`, `Boolean`, `String` or a user type:
+
+```java
+/** Yields the divisors of a positive number. */
+@UserOperation
+public static Set<Integer> divisors(int n) {
+    Set<Integer> result = new LinkedHashSet<>();
+    for (int d = 1; d <= n; d++) {
+        if (n % d == 0) {
+            result.add(d);
+        }
+    }
+    return result;
+}
+```
+
+In a rule it behaves like the built-in `range`: on a universal level, `let:d = divisors(a.n)` on a `new:` node creates one node for every divisor of `a.n`. The following requirements apply:
+
+- **The type of the values must be declared.** A raw `Set` or a `Set<?>` is an error, since GROOVE has to know the sort of the values when the grammar is loaded.
+- **Only sets are allowed.** An operation that returns a `List` or another kind of collection is an error. The reason is that a match cannot tell two occurrences of the same value apart, so that a value occurring twice in a list would still be matched only once; requiring a set makes this visible where the operation is written. To match every occurrence in a sequence, match its *positions* instead: define one operation that yields the length of the sequence and one that yields the element at a given position, range over the positions with `range`, and look up the element at each.
+- **The order of the set must be deterministic.** Although the order of the values has no meaning in a rule, the returned set must iterate over them in an order that depends on the values only, and is therefore the same in every run. GROOVE cannot check this; if it is violated, successive explorations of the same grammar may differ. Use a `LinkedHashSet` that is filled in a fixed order, or a sorted set such as a `TreeSet`. Do not use `Set.of` or `Set.copyOf`, whose order changes from one run to the next, nor a `HashSet` of values whose hash code is not determined by their content, which includes records with an `enum` component.
+- **A set-valued operation cannot be indeterminate.**
+
 ### Example: dates
 
 The following class defines a user type `Date` with a number of operations, two of them indeterminate. (This is the example of the paper mentioned above, lightly edited; it is also included, together with the rules below, in the [source of this manual]({{site.groove_url}}/nl-utwente-groove.github.io/tree/main/manual).)
@@ -304,3 +349,4 @@ The current implementation has the following restrictions:
 - All user types share the sort `user`, so mismatches between user types are only detected at run time, as the error value `NaU`.
 - Operation names must be distinct: there is no overloading, and component names must be distinct across all user types as well, since they become accessor operations.
 - Indeterminate operations should not be used on quantified levels of nested rules; release 8.0.0 rejects this.
+- A set-valued operation must return a `Set` with a deterministic order, and cannot be indeterminate (see [above](#set-valued-user-operations)).
