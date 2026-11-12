@@ -17,7 +17,7 @@ datatable: # optional, true for jQueries, see https://www.datatables.net/
     false
 tags:      # need to be included in _data/tags_doc.yml and have a page in tags/
 keywords:  # used in metadata for findability
-    attribute, expression, data, sort, algebra, operation, user operation, user type, record, indeterminate, random, multi-valued, range
+    attribute, expression, data, sort, algebra, operation, user operation, user type, record, indeterminate, random, enumerator, range
 ---
 
 GROOVE supports data values — integers, reals, booleans and strings — in the form of *attributes*: named fields of graph nodes, formally represented as edges to special *value nodes*. The four built-in data sorts are `int`, `real`, `bool` and `string`. A fifth sort, `user`, holds values of *user-defined types*: Java records that you make available to GROOVE, together with your own operations on them. These are the subject of the [second half](#user-defined-types-and-operations) of this chapter; the first half covers the built-in data support.
@@ -94,9 +94,9 @@ The `user` sort is only implemented in the `default` algebra: a grammar that use
 
 Among the [samples](samples.html), `attributed-graphs` demonstrates the use of attributes.
 
-## Multi-valued operations
+## Enumerators
 
-Most operations yield a single value. A *multi-valued* operation (since release 7.7.0, forthcoming) yields a set of values of its result sort, and a rule that calls it is matched once for every value in that set. There is one built-in multi-valued operation: `range(n)` yields the integers from 0 up to but not including `n`, which is the empty set if `n` is zero or negative.
+Most operations yield a single value. An *enumerator* (since release 7.7.0, forthcoming) is an operation that yields a set of values of its result sort; a rule that calls it is matched once for every value in that set. There is one enumerator: `range(n)` yields the integers from 0 up to but not including `n`, which is the empty set if `n` is zero or negative.
 
 What "once for every value" amounts to depends on the [nesting level](manual_advanced.html#nested-rules) of the node on which the call stands, just as it does for any other part of a rule that can be matched in more than one way:
 
@@ -105,13 +105,13 @@ What "once for every value" amounts to depends on the [nesting level](manual_adv
 - **In a negative application condition, no value may qualify.** The condition is violated as soon as it can be satisfied with one of the values.
 - **Compared to a value that is known otherwise, the call tests for membership.** The test `test:x == range(a.n)` succeeds if the existing attribute `x` equals one of the values, since one equal value is enough to match the rule; likewise, `test:x < range(a.n)` succeeds if `x` is smaller than at least one of them.
 
-A multi-valued call may be part of a larger expression: `a.lo + range(a.hi - a.lo + 1)` yields the integers from `a.lo` up to and including `a.hi`.
+An enumerator call may be part of a larger expression: `a.lo + range(a.hi - a.lo + 1)` yields the integers from `a.lo` up to and including `a.hi`.
 
 Some things to be aware of:
 
 - **The result is a set, without an order.** Every value is matched once, and no value is the first or the next one. If the order of the values matters, it has to be present in the values themselves, as with the `idx` attribute above.
-- **Multi-valued operations can only be called in rules.** They are an error in the attribute expressions of other graphs, and cannot be evaluated in the arguments of a rule call in a [control program](manual_control.html).
-- **The algebra matters** (see [Algebras](#algebras)). In the `default` and `big` algebras the values are enumerated as described. In the `point` algebra the set collapses to the single value of the sort, so that the number of matches no longer follows the data. The `term` algebra cannot enumerate a symbolic set: a rule that calls a multi-valued operation is an error there.
+- **Enumerators can only be called in rules.** They are an error in the attribute expressions of other graphs, and cannot be evaluated in the arguments of a rule call in a [control program](manual_control.html).
+- **The algebra matters** (see [Algebras](#algebras)). In the `default` and `big` algebras the values are enumerated as described. In the `point` algebra the set collapses to the single value of the sort, so that the number of matches no longer follows the data. The `term` algebra cannot enumerate a symbolic set: a rule that calls an enumerator is an error there.
 - **An error is a value.** If an argument of the call is an error value, the result is the error value of the result sort, as the only value.
 
 ## User-defined types and operations
