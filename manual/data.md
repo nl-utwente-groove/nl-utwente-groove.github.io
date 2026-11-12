@@ -103,9 +103,16 @@ What "once for every value" amounts to depends on the [nesting level](manual_adv
 - **On an existential level, one of the values is chosen.** A top-level node with the assignment `let:x = range(a.n)` gives a rule with one match for every value: for `a.n = 3`, three matches, which assign 0, 1 and 2 to `x`.
 - **On a universal level, all values are taken.** A `new:` node on the level of a `forall:` node, with the assignment `let:idx = range(t.n)`, is created once for every value: the rule creates `t.n` nodes, numbered from 0 by their `idx` attribute. This is the way to create a number of nodes that is itself given as data.
 - **In a negative application condition, no value may qualify.** The condition is violated as soon as it can be satisfied with one of the values.
-- **Compared to a value that is known otherwise, the call tests for membership.** The test `test:x == range(a.n)` succeeds if the existing attribute `x` equals one of the values, since one equal value is enough to match the rule; likewise, `test:x < range(a.n)` succeeds if `x` is smaller than at least one of them.
+- **Compared to a value that is known otherwise, the call tests for membership.** An attribute edge `x` from an existing node to a value node `int:range(a.n)` is matched if the value of `x` is one of the enumerated values, since one equal value is enough to match the rule. The test `test:x == range(a.n)` is the same condition, written as a label of the node that has the attribute.
 
-An enumerator call may be part of a larger expression: `a.lo + range(a.hi - a.lo + 1)` yields the integers from `a.lo` up to and including `a.hi`.
+An enumerator call may be part of a larger expression: `a.lo + range(a.hi - a.lo + 1)` yields the integers from `a.lo` up to and including `a.hi`. Any expression that calls an enumerator is an *enumeration*. An expression may call at most one enumerator: `range(a.n) + range(a.m)` is an error.
+
+The display view sets an enumeration apart by an element-of sign, in place of the equals sign or the assignment arrow: the assignment and the membership test above are both shown as `x ∈ range(a.n)`, and a value node with identifier `i` and value `range(a.n)` as `i : int ∈ range(a.n)`.
+
+An enumeration that is read stands for *some* one of its values, which limits the ways in which it can be tested or negated:
+
+- **A test may call an enumerator in one form only**: the equality `test:x == range(a.n)`, with a field of the node itself on the left. Negated, as `not:test:x == range(a.n)`, it holds if the value of `x` is none of the enumerated values, which is displayed as `! x ∈ range(a.n)`. Any other test that calls an enumerator, such as `test:x < range(a.n)`, is an error: it would hold as soon as it holds for one of the values, and its text does not convey that. To impose a condition on the values, name them: a value node with the labels `id:i` and `int:range(a.n)` stands for one of the values, and `test:x < i` is then an ordinary test of that value.
+- **An embargo edge may not point to an enumeration.** A `not:` on the attribute edge `x` to the value node `int:range(a.n)` is an error, since it would mean that some enumerated value differs from `x`. The `not:` belongs on the value node: the condition then is that `x` is none of the values, as in the negated test.
 
 Some things to be aware of:
 
@@ -146,7 +153,7 @@ public class MyOps {
 }
 ```
 
-The parameter types and the return type must be among the Java types that correspond to the GROOVE sorts, or a user-defined type (see below):
+The parameter types and the return type must be among the Java types that correspond to the GROOVE sorts, or a user-defined type (see below); the last parameter may also be a sequence of such values (see [Sequence components](#sequence-components)):
 
 | Java type | GROOVE sort |
 | :--- | :--- |
@@ -160,7 +167,7 @@ The name of the operation is the name of the method, and it is by this name that
 
 ### Defining types
 
-A user-defined type is a `public` Java `record`, annotated with `@UserType`, whose components are all of the four Java types above (not of another user type):
+A user-defined type is a `public` Java `record`, annotated with `@UserType`, whose components are all of the four Java types above (not of another user type; the last component may be a sequence, see [below](#sequence-components)):
 
 ```java
 import nl.utwente.groove.annotation.UserType;
@@ -178,6 +185,69 @@ Such a record contributes several operations at once:
 In addition, a user type may declare *instance methods* annotated with `@UserOperation`: public, but not static. These get an implicit first parameter of sort `user`, the value the method is invoked on, so that a method `int daysSince()` of `Date` becomes the operation `daysSince(user)` and is called in a rule as `daysSince(d)`. Instance methods have access to the record's components and may construct new values, but they should not *change* anything (and a record cannot be changed anyway): a user value is a *value*, a tuple of its components, in the same way that `3` is a value and not an object. Two values with the same components are the same value, and GROOVE relies on the `equals` and `hashCode` that Java generates for records to recognise this.
 
 A user type and its operations are listed in the syntax help panel of the graph editor as soon as the grammar declares them (see [below](#making-the-classes-available)), with the class they are declared in.
+
+### Sequence components
+
+The last component of a user type may hold a sequence of values rather than a single one (since release 7.7.0, forthcoming). Its type is then one of four classes that GROOVE provides, in the same package as the annotations:
+
+| Java type | Elements | GROOVE sort of the elements |
+| :--- | :--- | :--- |
+| `BoolSeq` | `boolean` | `bool` |
+| `IntSeq` | `int` | `int` |
+| `RealSeq` | `double` | `real` |
+| `StringSeq` | `String` | `string` |
+
+The following type is a named polynomial, given by its coefficients in the order of increasing degree:
+
+```java
+import nl.utwente.groove.annotation.IntSeq;
+import nl.utwente.groove.annotation.UserOperation;
+import nl.utwente.groove.annotation.UserType;
+
+@UserType
+public record Poly(String name, IntSeq coeffs) {
+    /** Returns this polynomial extended by a coefficient for the next higher degree. */
+    @UserOperation
+    public Poly append(int coeff) {
+        return new Poly(name(), coeffs().append(coeff));
+    }
+}
+```
+
+The sequence classes are immutable, and two sequences are equal if they hold the same elements in the same order. A record with a sequence component is therefore a value like any other user value: two `Poly` values with the same name and coefficients are the same value, however they were arrived at. In Java code, `IntSeq.of(1, 2, 3)` makes a sequence, `size()` and `get(i)` read it, `with(i, v)` and `append(v)` return a changed copy, and `toArray()` returns the elements as an array; the other three classes have the same methods.
+
+In a rule, a sequence is not a value by itself: there is no sort for it, so no node holds one and no expression yields one. The record instead contributes the following operations:
+
+- the *constructor* takes the elements as trailing arguments, any number of them: `Poly(n, a, b)` is a polynomial with two coefficients and `Poly(n)` is one with none. A constant is written in the same way, `user:Poly("p", 1, 2, 3)`, and so is a value in the display view;
+- `coeffsAt(p, i)` is the element at position `i`, counting from 0. If the sequence has no such position, the result is the error value of the element sort;
+- `coeffsSize(p)` is the number of elements.
+
+The two names are derived from the name of the component. There is no accessor called `coeffs`, and that name is reserved: an operation with the name of a sequence component is an error.
+
+Anything that concerns the sequence as a whole is an instance method of the record, where the Java code has the sequence at hand: `append(p, c)` above is an example.
+
+**Sequence parameters.** The last parameter of a `@UserOperation` method may be a sequence as well. The operation is then called with the elements as trailing arguments, like the constructor:
+
+```java
+/** Evaluates the polynomial with given coefficients, in the order of increasing degree. */
+@UserOperation
+public static int horner(int x, IntSeq coeffs) {
+    int result = 0;
+    for (int i = coeffs.size() - 1; i >= 0; i--) {
+        result = result * x + coeffs.get(i);
+    }
+    return result;
+}
+```
+
+is called as `horner(x, 1, 2, 3)`, or with any other number of arguments after `x`. The elements are always listed one by one: the sequence component of a user value cannot be passed on as a whole. For a variable number of user values there is a fifth class, `UserSeq<T>` with `T` a user type, which is allowed as a parameter but not as a component: `static int countCoeffs(UserSeq<Poly> polys)` is called as `countCoeffs(p, q)`. An argument of another user type than `T` makes the result an error value.
+
+**Ranging over the elements.** The [enumerator](#enumerators) `range` yields the positions of a sequence, and `coeffsAt` the element at each of them. With `t` the identifier of a node that has the polynomial as its attribute `p`:
+
+- a `new:` node on the level of a `forall:` node, with the assignment `let:val = coeffsAt(t.p, range(coeffsSize(t.p)))`, is created once for every element, with the element as its `val`;
+- a value node on the level of a `forall:` node, with the labels `id:e` and `int:coeffsAt(t.p, range(coeffsSize(t.p)))`, stands for every element in turn, so that `sum(e)` on the level above is the sum of the elements. The same goes for the other operations that take all values of a nested level, such as `prod` (see the [data operations reference](manual_ref_operators.html)).
+
+It is the positions that are enumerated, not the elements, so an element that occurs twice counts twice: for `Poly("p", 5, 6, 5)` the first rule creates three nodes and the second computes 16.
 
 ### The `user` sort
 
@@ -320,7 +390,8 @@ Exploring this grammar from the start graph above yields transitions labelled `c
 The current implementation has the following restrictions:
 
 - User-defined types and operations are only supported in the `default` algebra (see [Algebras](#algebras)).
-- User types must be Java `record`s, and their components must be of the four primitive Java types; a user type cannot have a component of another user type, nor of an array or list type.
+- User types must be Java `record`s, and their components must be of the four primitive Java types; a user type cannot have a component of another user type, nor of an array or list type. The one exception is a [sequence](#sequence-components) as the last component.
+- A sequence is not a sort: a node cannot hold a sequence, an operation cannot return one (only a user value that contains one), and a sequence parameter is filled by listing the elements. A user type has at most one sequence component, and the names derived from it (`coeffsAt`, `coeffsSize`) must be distinct from all other operation names, like any other.
 - All user types share the sort `user`, so mismatches between user types are only detected at run time, as the error value `NaU`.
 - Operation names must be distinct: there is no overloading, and component names must be distinct across all user types as well, since they become accessor operations.
 - Indeterminate operations should not be used on quantified levels of nested rules; release 8.0.0 rejects this.
