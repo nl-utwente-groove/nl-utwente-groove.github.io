@@ -96,7 +96,7 @@ Among the [samples](samples.html), `attributed-graphs` demonstrates the use of a
 
 ## Set-valued operations
 
-Most operations yield a single value. A *set-valued* operation (since release 7.7.0, forthcoming) yields a set of values of its result sort, and a rule that calls it is matched once for every value in that set. There is one built-in set-valued operation: `range(n)` yields the integers from 0 up to but not including `n`, which is the empty set if `n` is zero or negative. Further ones can be [user-defined](#set-valued-user-operations).
+Most operations yield a single value. A *set-valued* operation (since release 7.7.0, forthcoming) yields a set of values of its result sort, and a rule that calls it is matched once for every value in that set. There is one built-in set-valued operation: `range(n)` yields the integers from 0 up to but not including `n`, which is the empty set if `n` is zero or negative.
 
 What "once for every value" amounts to depends on the [nesting level](manual_advanced.html#nested-rules) of the node on which the call stands, just as it does for any other part of a rule that can be matched in more than one way:
 
@@ -258,31 +258,6 @@ This tells GROOVE that the result is *not* determined by the arguments: the prot
 
 Whether or not an operation is indeterminate, GROOVE gives no guarantee about *when* or *how often* it invokes an operation during matching and transformation. Operations should therefore be free of side effects, or at least of side effects that GROOVE could notice: the correctness of the state space depends on it.
 
-### Set-valued user operations
-
-A user-defined operation is [set-valued](#set-valued-operations) (since release 7.7.0, forthcoming) if its return type is a `java.util.Set`, or a subtype such as `SortedSet`, of `Integer`, `Double`, `Boolean`, `String` or a user type:
-
-```java
-/** Yields the divisors of a positive number. */
-@UserOperation
-public static Set<Integer> divisors(int n) {
-    Set<Integer> result = new LinkedHashSet<>();
-    for (int d = 1; d <= n; d++) {
-        if (n % d == 0) {
-            result.add(d);
-        }
-    }
-    return result;
-}
-```
-
-In a rule it behaves like the built-in `range`: on a universal level, `let:d = divisors(a.n)` on a `new:` node creates one node for every divisor of `a.n`. The following requirements apply:
-
-- **The type of the values must be declared.** A raw `Set` or a `Set<?>` is an error, since GROOVE has to know the sort of the values when the grammar is loaded.
-- **Only sets are allowed.** An operation that returns a `List` or another kind of collection is an error. The reason is that a match cannot tell two occurrences of the same value apart, so that a value occurring twice in a list would still be matched only once; requiring a set makes this visible where the operation is written. To match every occurrence in a sequence, match its *positions* instead: define one operation that yields the length of the sequence and one that yields the element at a given position, range over the positions with `range`, and look up the element at each.
-- **The order of the set must be deterministic.** Although the order of the values has no meaning in a rule, the returned set must iterate over them in an order that depends on the values only, and is therefore the same in every run. GROOVE cannot check this; if it is violated, successive explorations of the same grammar may differ. Use a `LinkedHashSet` that is filled in a fixed order, or a sorted set such as a `TreeSet`. Do not use `Set.of` or `Set.copyOf`, whose order changes from one run to the next, nor a `HashSet` of values whose hash code is not determined by their content, which includes records with an `enum` component.
-- **A set-valued operation cannot be indeterminate.**
-
 ### Example: dates
 
 The following class defines a user type `Date` with a number of operations, two of them indeterminate. (This is the example of the paper mentioned above, lightly edited; it is also included, together with the rules below, in the [source of this manual]({{site.groove_url}}/nl-utwente-groove.github.io/tree/main/manual).)
@@ -349,4 +324,4 @@ The current implementation has the following restrictions:
 - All user types share the sort `user`, so mismatches between user types are only detected at run time, as the error value `NaU`.
 - Operation names must be distinct: there is no overloading, and component names must be distinct across all user types as well, since they become accessor operations.
 - Indeterminate operations should not be used on quantified levels of nested rules; release 8.0.0 rejects this.
-- A set-valued operation must return a `Set` with a deterministic order, and cannot be indeterminate (see [above](#set-valued-user-operations)).
+- A user-defined operation yields a single value: a `Set`, `List` or other collection as return type is an error.
