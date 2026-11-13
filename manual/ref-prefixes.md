@@ -18,7 +18,7 @@ keywords:
     aspect, prefix, syntax, reference
 ---
 
-*This page is generated from the GROOVE 7.6.0 source code by `manual/make-refs.sh`; do not edit it by hand.*
+*This page is generated from the GROOVE 7.7.0 source code by `manual/make-refs.sh`; do not edit it by hand.*
 
 The tables below list the complete label syntax for the three kinds of aspect graph, as also shown in the help panel of the graph editor in the Simulator. Optional parts are shown in square brackets.
 

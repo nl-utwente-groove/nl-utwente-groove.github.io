@@ -18,7 +18,7 @@ keywords:
     attribute, operation, sort, reference
 ---
 
-*This page is generated from the GROOVE 7.6.0 source code by `manual/make-refs.sh`; do not edit it by hand.*
+*This page is generated from the GROOVE 7.7.0 source code by `manual/make-refs.sh`; do not edit it by hand.*
 
 The built-in operations per data sort, usable in the attribute expressions described in the [Using data](manual_data.html) chapter. Operations with a symbol can be written in prefix or infix notation; all operations can be called by name, in functional style.
 
@@ -56,6 +56,7 @@ The built-in operations per data sort, usable in the attribute expressions descr
 | <code>neg(int): int</code> | <code>-</code> | Inversion |
 | <code>neq(int, int): bool</code> | <code>!=</code> | Inequality test |
 | <code>prod(int): int</code> |  | Product |
+| <code>range(int): int</code> |  | Integer range |
 | <code>sub(int, int): int</code> | <code>-</code> | Subtraction |
 | <code>sum(int): int</code> |  | Summation |
 | <code>toReal(int): real</code> | <code>(real)</code> | Real number conversion |
