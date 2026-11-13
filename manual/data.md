@@ -6,7 +6,7 @@ permalink: # required, must match filename.html
 summary:
     "Data attributes, expressions, algebras, and user-defined types and operations"
 release:   # GROOVE release this chapter describes; see manual.md
-    7.6.0
+    7.7.0
 sidebar:
     manual_sidebar
 toc: 
@@ -96,7 +96,7 @@ Among the [samples](samples.html), `attributed-graphs` demonstrates the use of a
 
 ## Enumerators
 
-Most operations yield a single value. An *enumerator* (since release 7.7.0, forthcoming) is an operation that yields a set of values of its result sort; a rule that calls it is matched once for every value in that set. There is one enumerator: `range(n)` yields the integers from 0 up to but not including `n`, which is the empty set if `n` is zero or negative.
+Most operations yield a single value. An *enumerator* (since release 7.7.0) is an operation that yields a set of values of its result sort; a rule that calls it is matched once for every value in that set. There is one enumerator: `range(n)` yields the integers from 0 up to but not including `n`, which is the empty set if `n` is zero or negative.
 
 What "once for every value" amounts to depends on the [nesting level](manual_advanced.html#nested-rules) of the node on which the call stands, just as it does for any other part of a rule that can be matched in more than one way:
 
@@ -188,7 +188,7 @@ A user type and its operations are listed in the syntax help panel of the graph 
 
 ### Sequence components
 
-The last component of a user type may hold a sequence of values rather than a single one (since release 7.7.0, forthcoming). Its type is then one of four classes that GROOVE provides, in the same package as the annotations:
+The last component of a user type may hold a sequence of values rather than a single one (since release 7.7.0). Its type is then one of four classes that GROOVE provides, in the same package as the annotations:
 
 | Java type | Elements | GROOVE sort of the elements |
 | :--- | :--- | :--- |
@@ -291,7 +291,7 @@ If your classes are a Maven project, the dependency is
 <dependency>
     <groupId>nl.utwente.groove</groupId>
     <artifactId>groove</artifactId>
-    <version>7.6.0</version>
+    <version>7.7.0</version>
 </dependency>
 ```
 
