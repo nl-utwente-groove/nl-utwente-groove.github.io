@@ -1,17 +1,19 @@
 #!/bin/bash
 # Regenerates the SVG figures of the web manual (in images/manual/) from the
-# example grammars manual/graphs.gps and manual/user-ops.gps, using the GROOVE
-# Imager.
+# example grammars manual/graphs.gps, manual/user-ops.gps and
+# manual/user-seq.gps, using the GROOVE Imager.
 #
 # Every rule (.gpr), host graph (.gst) and type graph (.gty) is rendered twice:
 # as <name>-display.svg (the Simulator's display view) and as <name>-edit.svg
 # (the editor view, showing the aspect prefixes literally). The figures of
-# user-ops.gps get the prefix user-ops-, to keep them apart from those of
-# graphs.gps.
+# user-ops.gps get the prefix user-ops- and those of user-seq.gps the prefix
+# user-seq-, to keep them apart from those of graphs.gps.
 #
-# The grammar user-ops.gps relies on the user-defined type in
-# manual/user-ops-src/user/Date.java; the script compiles that class against
-# the GROOVE build and puts it on the class path of the Imager.
+# The grammars user-ops.gps and user-seq.gps rely on the user-defined types in
+# manual/user-ops-src/user (Date.java and Poly.java); the script compiles
+# those classes against the GROOVE build and puts them on the class path of
+# the Imager. Poly.java has a sequence component, so the build has to be of
+# release 7.7.0 or later.
 #
 # Requires java and javac (21+) on the PATH and the environment variable
 # GROOVE_CLASSPATH pointing to a GROOVE build: either a groove jar including
@@ -61,3 +63,4 @@ render() {
 
 render graphs.gps ""
 render user-ops.gps "user-ops-"
+render user-seq.gps "user-seq-"

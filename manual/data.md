@@ -200,18 +200,7 @@ The last component of a user type may hold a sequence of values rather than a si
 The following type is a named polynomial, given by its coefficients in the order of increasing degree:
 
 ```java
-import nl.utwente.groove.annotation.IntSeq;
-import nl.utwente.groove.annotation.UserOperation;
-import nl.utwente.groove.annotation.UserType;
-
-@UserType
-public record Poly(String name, IntSeq coeffs) {
-    /** Returns this polynomial extended by a coefficient for the next higher degree. */
-    @UserOperation
-    public Poly append(int coeff) {
-        return new Poly(name(), coeffs().append(coeff));
-    }
-}
+{% include_relative user-ops-src/user/Poly.java %}
 ```
 
 The sequence classes are immutable, and two sequences are equal if they hold the same elements in the same order. A record with a sequence component is therefore a value like any other user value: two `Poly` values with the same name and coefficients are the same value, however they were arrived at. In Java code, `IntSeq.of(1, 2, 3)` makes a sequence, `size()` and `get(i)` read it, `with(i, v)` and `append(v)` return a changed copy, and `toArray()` returns the elements as an array; the other three classes have the same methods.
@@ -242,12 +231,24 @@ public static int horner(int x, IntSeq coeffs) {
 
 is called as `horner(x, 1, 2, 3)`, or with any other number of arguments after `x`. The elements are always listed one by one: the sequence component of a user value cannot be passed on as a whole. For a variable number of user values there is a fifth class, `UserSeq<T>` with `T` a user type, which is allowed as a parameter but not as a component: `static int countCoeffs(UserSeq<Poly> polys)` is called as `countCoeffs(p, q)`. An argument of another user type than `T` makes the result an error value.
 
-**Ranging over the elements.** The [enumerator](#enumerators) `range` yields the positions of a sequence, and `coeffsAt` the element at each of them. With `t` the identifier of a node that has the polynomial as its attribute `p`:
+**Ranging over the elements.** The [enumerator](#enumerators) `range` yields the positions of a sequence, and `coeffsAt` the element at each of them. The following rule unfolds a polynomial, the attribute `p` of the node `t`, into one `Term` node for each of its coefficients. (The rule and the graphs below are in the grammar `user-seq.gps` in the [source of this manual]({{site.groove_url}}/nl-utwente-groove.github.io/tree/main/manual).)
 
-- a `new:` node on the level of a `forall:` node, with the assignment `let:val = coeffsAt(t.p, range(coeffsSize(t.p)))`, is created once for every element, with the element as its `val`;
-- a value node on the level of a `forall:` node, with the labels `id:e` and `int:coeffsAt(t.p, range(coeffsSize(t.p)))`, stands for every element in turn, so that `sum(e)` on the level above is the sum of the elements. The same goes for the other operations that take all values of a nested level, such as `prod` (see the [data operations reference](manual_ref_operators.html)).
+| Edit view | Display view |
+| :---: | :---: |
+| ![](images/manual/user-seq-terms-edit.svg) | ![](images/manual/user-seq-terms-display.svg) |
 
-It is the positions that are enumerated, not the elements, so an element that occurs twice counts twice: for `Poly("p", 5, 6, 5)` the first rule creates three nodes and the second computes 16.
+The value node `i` is on the level of the `forall:` node and has the enumeration `range(coeffsSize(t.p))` as its value, so on that level the rule is matched once for every position of the sequence; the display view marks this by the element-of sign. The `Term` node is created on the same level, hence once for every position, with the position as its `degree` and the element at that position as its `coeff`. Applied to the graph on the left, the rule yields the graph on the right:
+
+| Before | After |
+| :---: | :---: |
+| ![](images/manual/user-seq-start-display.svg) | ![](images/manual/user-seq-result-display.svg) |
+
+It is the positions that are enumerated, not the elements, so an element that occurs twice counts twice: the coefficient 5 gives two `Term` nodes.
+
+Two variations on this rule:
+
+- Where the position is not needed as data, the enumeration can be part of the expression: the assignment `let:coeff = coeffsAt(t.p, range(coeffsSize(t.p)))` on the `new:` node does without the node `i`.
+- To combine the elements instead of creating something for each, name them: a value node on the level of the `forall:` node, with the labels `id:e` and `int:coeffsAt(t.p, range(coeffsSize(t.p)))`, stands for every element in turn, so that `sum(e)` on the level above is the sum of the elements, 16 for the polynomial above. The same goes for the other operations that take all values of a nested level, such as `prod` (see the [data operations reference](manual_ref_operators.html)).
 
 ### The `user` sort
 

@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<gxl xmlns="http://www.gupro.de/GXL/gxl-1.0.dtd">
+    <graph role="rule" edgeids="false" edgemode="directed" id="terms">
+        <attr name="$version">
+            <string>curly</string>
+        </attr>
+        <node id="t">
+            <attr name="layout">
+                <string>60 60 60 30</string>
+            </attr>
+        </node>
+        <node id="f">
+            <attr name="layout">
+                <string>330 60 60 30</string>
+            </attr>
+        </node>
+        <node id="i">
+            <attr name="layout">
+                <string>330 190 60 30</string>
+            </attr>
+        </node>
+        <node id="c">
+            <attr name="layout">
+                <string>60 190 60 30</string>
+            </attr>
+        </node>
+        <edge from="t" to="t">
+            <attr name="label">
+                <string>type:Polynomial</string>
+            </attr>
+        </edge>
+        <edge from="t" to="t">
+            <attr name="label">
+                <string>id:t</string>
+            </attr>
+        </edge>
+        <edge from="f" to="f">
+            <attr name="label">
+                <string>forall:</string>
+            </attr>
+        </edge>
+        <edge from="i" to="i">
+            <attr name="label">
+                <string>id:i</string>
+            </attr>
+        </edge>
+        <edge from="i" to="i">
+            <attr name="label">
+                <string>int:range(coeffsSize(t.p))</string>
+            </attr>
+        </edge>
+        <edge from="i" to="f">
+            <attr name="label">
+                <string>at</string>
+            </attr>
+        </edge>
+        <edge from="c" to="c">
+            <attr name="label">
+                <string>new:</string>
+            </attr>
+        </edge>
+        <edge from="c" to="c">
+            <attr name="label">
+                <string>type:Term</string>
+            </attr>
+        </edge>
+        <edge from="c" to="c">
+            <attr name="label">
+                <string>let:degree = i</string>
+            </attr>
+        </edge>
+        <edge from="c" to="c">
+            <attr name="label">
+                <string>let:coeff = coeffsAt(t.p, i)</string>
+            </attr>
+        </edge>
+        <edge from="c" to="f">
+            <attr name="label">
+                <string>at</string>
+            </attr>
+        </edge>
+        <edge from="t" to="c">
+            <attr name="label">
+                <string>new:term</string>
+            </attr>
+        </edge>
+    </graph>
+</gxl>
