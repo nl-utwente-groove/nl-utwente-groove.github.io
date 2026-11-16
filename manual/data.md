@@ -6,7 +6,7 @@ permalink: # required, must match filename.html
 summary:
     "Data attributes, expressions, algebras, and user-defined types and operations"
 release:   # GROOVE release this chapter describes; see manual.md
-    7.7.0
+    7.8.0
 sidebar:
     manual_sidebar
 toc: 
@@ -17,7 +17,7 @@ datatable: # optional, true for jQueries, see https://www.datatables.net/
     false
 tags:      # need to be included in _data/tags_doc.yml and have a page in tags/
 keywords:  # used in metadata for findability
-    attribute, expression, data, sort, algebra, operation, user operation, user type, record, indeterminate, random, enumerator, range
+    attribute, expression, data, sort, algebra, operation, user operation, user type, user interface, record, display method, indeterminate, random, enumerator, range
 ---
 
 GROOVE supports data values — integers, reals, booleans and strings — in the form of *attributes*: named fields of graph nodes, formally represented as edges to special *value nodes*. The four built-in data sorts are `int`, `real`, `bool` and `string`. A fifth sort, `user`, holds values of *user-defined types*: Java records that you make available to GROOVE, together with your own operations on them. These are the subject of the [second half](#user-defined-types-and-operations) of this chapter; the first half covers the built-in data support.
@@ -153,7 +153,7 @@ public class MyOps {
 }
 ```
 
-The parameter types and the return type must be among the Java types that correspond to the GROOVE sorts, or a user-defined type (see below); the last parameter may also be a sequence of such values (see [Sequence components](#sequence-components)):
+The parameter types and the return type must be among the Java types that correspond to the GROOVE sorts, or a user-defined type or user interface (see below); the last parameter may also be a sequence of such values (see [Sequence components](#sequence-components)):
 
 | Java type | GROOVE sort |
 | :--- | :--- |
@@ -162,8 +162,9 @@ The parameter types and the return type must be among the Java types that corres
 | `double` | `real` |
 | `String` | `string` |
 | a `@UserType` record | `user` |
+| a `@UserInterface` interface | `user` |
 
-The name of the operation is the name of the method, and it is by this name that the operation is called in expressions: `sqrt(x)`, `isPrefix(s, t)`. Names must be unique across all classes that a grammar lists, since GROOVE does not support overloading; a duplicate is reported as an error. Methods without the annotation are ignored, so a class may contain any number of helper methods. If a method throws an exception, the operation yields the error value of its result sort (see [Expression syntax](#expression-syntax)).
+The name of the operation is the name of the method, and it is by this name that the operation is called in expressions: `sqrt(x)`, `isPrefix(s, t)`. Names must be unique across all classes that a grammar lists, since GROOVE does not support overloading; a duplicate is reported as an error. The one exception is an operation that several user types share through a [user interface](#user-interfaces). Methods without the annotation are ignored, so a class may contain any number of helper methods. If a method throws an exception, the operation yields the error value of its result sort (see [Expression syntax](#expression-syntax)).
 
 ### Defining types
 
@@ -229,7 +230,7 @@ public static int horner(int x, IntSeq coeffs) {
 }
 ```
 
-is called as `horner(x, 1, 2, 3)`, or with any other number of arguments after `x`. The elements are always listed one by one: the sequence component of a user value cannot be passed on as a whole. For a variable number of user values there is a fifth class, `UserSeq<T>` with `T` a user type, which is allowed as a parameter but not as a component: `static int countCoeffs(UserSeq<Poly> polys)` is called as `countCoeffs(p, q)`. An argument of another user type than `T` makes the result an error value.
+is called as `horner(x, 1, 2, 3)`, or with any other number of arguments after `x`. The elements are always listed one by one: the sequence component of a user value cannot be passed on as a whole. For a variable number of user values there is a fifth class, `UserSeq<T>` with `T` a user type or a [user interface](#user-interfaces), which is allowed as a parameter but not as a component: `static int countCoeffs(UserSeq<Poly> polys)` is called as `countCoeffs(p, q)`. An argument of another user type than `T` is an error in the grammar if its type is known when the grammar is loaded (see [Checking calls](#checking-calls)), and otherwise makes the result an error value. User classes that use `UserSeq` and were compiled against release 7.7.0 or 7.7.1 have to be recompiled for release 7.8.0.
 
 **Ranging over the elements.** The [enumerator](#enumerators) `range` yields the positions of a sequence, and `coeffsAt` the element at each of them. The following rule unfolds a polynomial, the attribute `p` of the node `t`, into one `Term` node for each of its coefficients. (The rule and the graphs below are in the grammar `user-seq.gps` in the [source of this manual]({{site.groove_url}}/nl-utwente-groove.github.io/tree/main/manual).)
 
@@ -250,6 +251,77 @@ Two variations on this rule:
 - Where the position is not needed as data, the enumeration can be part of the expression: the assignment `let:coeff = coeffsAt(t.p, range(coeffsSize(t.p)))` on the `new:` node does without the node `i`.
 - To combine the elements instead of creating something for each, name them: a value node on the level of the `forall:` node, with the labels `id:e` and `int:coeffsAt(t.p, range(coeffsSize(t.p)))`, stands for every element in turn, so that `sum(e)` on the level above is the sum of the elements, 16 for the polynomial above. The same goes for the other operations that take all values of a nested level, such as `prod` (see the [data operations reference](manual_ref_operators.html)).
 
+### User interfaces
+
+An operation name can belong to one user type only: two user types cannot both have a component `name`, say, or both an instance method `size`. A *user interface* (since release 7.8.0) lets several user types share operations. It is a `public` Java interface annotated with `@UserInterface`, whose non-static methods annotated with `@UserOperation`, abstract or with a default implementation, are the shared operations. The following interface describes containers of integers:
+
+```java
+import nl.utwente.groove.annotation.IntSeq;
+import nl.utwente.groove.annotation.UserInterface;
+import nl.utwente.groove.annotation.UserOperation;
+
+@UserInterface
+public interface Container {
+    /** The elements of the container. */
+    @UserOperation
+    IntSeq items();
+
+    /** Returns the element that is next in line. */
+    @UserOperation
+    int peek();
+
+    /** Returns this container extended by a given element. */
+    @UserOperation
+    Container push(int item);
+
+    /** Tests if the container holds no elements. */
+    @UserOperation
+    default boolean isEmpty() {
+        return items().size() == 0;
+    }
+}
+```
+
+and the following two user types, each in a file of its own (with the imports of `IntSeq` and `UserType`), implement it:
+
+```java
+@UserType
+public record Stack(IntSeq items) implements Container {
+    @Override
+    public int peek() {
+        return items().get(items().size() - 1);
+    }
+
+    @Override
+    public Stack push(int item) {
+        return new Stack(items().append(item));
+    }
+}
+
+@UserType
+public record Queue(IntSeq items) implements Container {
+    @Override
+    public int peek() {
+        return items().get(0);
+    }
+
+    @Override
+    public Queue push(int item) {
+        return new Queue(items().append(item));
+    }
+}
+```
+
+An operation of a user interface takes a value of any of the user types that implement it as its first argument, in the same way as an instance method of a user type, and is applied as implemented by the user type of that value: Java dispatches the call. So `peek(Stack(1, 2))` is 2, `peek(Queue(1, 2))` is 1, and `push(Queue(1), 2)` is `Queue(1, 2)`. A user type implements an operation by a component or a method of that name: `items` above is implemented by the record components, `peek` and `push` by methods, which need not be annotated themselves (if one is, it must agree with the interface on being `indeterminate`). An implementing method may have a narrower return type, as `push` has here. A default method, such as `isEmpty`, is an operation of every user type that implements the interface.
+
+A method of a user interface that has no parameters and returns one of the sequence classes of the [previous section](#sequence-components), such as `items()` above, declares a sequence-valued field: like a sequence component, it stands for the operations `itemsAt` and `itemsSize`, and the name `items` itself is reserved. This is the only way for two user types to have a sequence component of the same name: without `items()` in `Container`, the components of `Stack` and `Queue` would be a duplicate.
+
+Furthermore:
+
+- A user interface may extend other user interfaces. An operation belongs to the topmost interface that declares it.
+- A user interface may be the type of a parameter and the return type of a user operation, in which case it stands for the sort `user`, like a user type. The last parameter may be a `UserSeq` of a user interface, which takes the values of all user types that implement it: `static int countItems(UserSeq<Container> containers)` is called as `countItems(Stack(1, 2), Queue(3))`. For a generic interface `I` the parameter is declared as `UserSeq<I<?>>`.
+- A user interface need not be listed in the `userOperations` property (see [below](#making-the-classes-available)): it is found through the `implements` and `extends` clauses of the listed classes. Its simple name, `Container` here, must differ from those of all other user interfaces and user types of the grammar.
+
 ### The `user` sort
 
 All user-defined types share the single sort `user`. In the graph editor this is the sort of variable nodes, expression nodes and constants of any user type:
@@ -260,13 +332,36 @@ All user-defined types share the single sort `user`. In the graph editor this is
 
 The display view shows user values in the same constructor notation: `Date(6, 6, 1966)`. Saved host graphs use the `let:` form.
 
-The flip side of this uniformity is that GROOVE does not distinguish between user types statically. Applying an accessor or an operation to a value of the wrong user type — `day(p)` where `p` happens to be a `Point` — is not caught in the editor but yields the error value `NaU` at run time, in the same way that dividing by zero yields `NaI`. Rule parameters, control variables and attribute fields of sort `user` likewise accept a value of any user type.
+**Display methods.** For a type with many components the constructor term gets wide. A `@UserType` record can therefore have a *display method* (since release 7.8.0): a public, non-static method without parameters with return type `String`, annotated with `@UserDisplay` (from the same package as the other annotations). A user type has at most one. The state display of the Simulator then shows a value of the type by the string that the method returns, with the constructor term in the tooltip of the node; the constructor term is also shown whenever aspect prefixes are shown. For instance, the method
+
+```java
+@UserDisplay
+public String display() {
+    return day() + "/" + month() + "/" + year();
+}
+```
+
+added to `Date` would make the state display show `6/6/1966`. The display string is shown only: the value itself, and the way it is written, saved and parsed, do not change, so editors, saved graphs and transition labels keep showing `Date(6, 6, 1966)`. If the method throws an exception or returns `null` or the empty string, the constructor term is shown instead. A display method may be a `@UserOperation` as well.
+
+#### Checking calls
+
+The flip side of the uniformity of the `user` sort is that it does not distinguish between user types. Applying an accessor or an operation to a value of the wrong user type — `day(p)` where `p` happens to be a `Point` — yields the error value `NaU` at run time, in the same way that dividing by zero yields `NaI`. Rule parameters, control variables and attribute fields of sort `user` likewise accept a value of any user type.
+
+Where the type of an argument is known when the grammar is loaded, however, a call is checked against the Java types of the operation (since release 7.8.0; up to release 7.7.1 such a call loaded and yielded `NaU`). The type of an argument is known if it is a user constant or a constructor call, or a call of a user operation, whose type is then the return type of the method that implements it. A call that cannot succeed is an error in the grammar: in a grammar that lists `Poly` and the [containers](#user-interfaces), `coeffsSize(Stack(1, 2))` gives
+
+    User operation 'coeffsSize' is not implemented for a value of type Stack, only for Poly
+
+and `countCoeffs(Poly("p", 1), Stack(1))` gives
+
+    Parameter 1 of user operation 'countCoeffs' should have type Poly rather than Stack
+
+(the parameters counted from 0). Since `push(s, 1)` is a `Container` whatever `s` is, `coeffsSize(push(s, 1))` is an error as well, while `peek(push(s, 1))` is accepted. A variable or a field, such as `p` in `day(p)`, has no known type, so a call on it is never rejected and a mismatch still yields `NaU` at run time.
 
 ### Making the classes available
 
 Two things are needed for a grammar to use your classes.
 
-- **The `userOperations` system property** (see [Advanced rule features](manual_advanced.html#system-properties)) lists the qualified names of the annotated classes, separated by spaces: `user.Date` or `user.Date org.example.MyOps`. Every user type that occurs as a parameter or return type of a listed operation must itself be listed, and every listed class is checked when the grammar is loaded: a class that cannot be found, an annotated method that is not public or not static, a parameter of an unsupported type or a duplicate name is reported as an error on the property. Changing the property reloads the grammar, so the operations become available in the editor right away.
+- **The `userOperations` system property** (see [Advanced rule features](manual_advanced.html#system-properties)) lists the qualified names of the annotated classes, separated by spaces: `user.Date` or `user.Date org.example.MyOps`. A name of the form `package.*` (since release 7.8.0) stands for all top-level classes of that package, not of its subpackages, that are a `@UserType` or a `@UserInterface` or declare a `@UserOperation`: `user.*` lists `Stack`, `Queue` and any other user class of the package `user`. The other classes of the package, such as helper classes, are left alone. It is an error if the package has no such class, or if the `*` is not the last part of the name; a class of the package that cannot be loaded is skipped with a warning. Every user type that occurs as a parameter or return type of a listed operation must itself be listed, whereas a [user interface](#user-interfaces) need not be. Every listed class is checked when the grammar is loaded: a class that cannot be found, an annotated method that is not public or not static, a parameter of an unsupported type, a duplicate name, or a user interface with the simple name of another user interface or user type is reported as an error on the property. Changing the property reloads the grammar, so the operations become available in the editor right away.
 
 - **The classes must be where GROOVE can load them.** Compile them against the GROOVE jar — `lib/groove-x.y.z.jar` of a stand-alone installation, or the Maven artifact `nl.utwente.groove:groove`. GROOVE then looks for each named class in four places (since release 7.6.0; earlier releases only search the first), in this order, and takes the first that has it:
 
@@ -291,7 +386,7 @@ If your classes are a Maven project, the dependency is
 <dependency>
     <groupId>nl.utwente.groove</groupId>
     <artifactId>groove</artifactId>
-    <version>7.7.0</version>
+    <version>7.8.0</version>
 </dependency>
 ```
 
@@ -393,7 +488,7 @@ The current implementation has the following restrictions:
 - User-defined types and operations are only supported in the `default` algebra (see [Algebras](#algebras)).
 - User types must be Java `record`s, and their components must be of the four primitive Java types; a user type cannot have a component of another user type, nor of an array or list type. The one exception is a [sequence](#sequence-components) as the last component.
 - A sequence is not a sort: a node cannot hold a sequence, an operation cannot return one (only a user value that contains one), and a sequence parameter is filled by listing the elements. A user type has at most one sequence component, and the names derived from it (`coeffsAt`, `coeffsSize`) must be distinct from all other operation names, like any other.
-- All user types share the sort `user`, so mismatches between user types are only detected at run time, as the error value `NaU`.
-- Operation names must be distinct: there is no overloading, and component names must be distinct across all user types as well, since they become accessor operations.
+- All user types share the sort `user`, so mismatches between user types are detected when the grammar is loaded only where the type of an argument is known then (see [Checking calls](#checking-calls)), and otherwise at run time, as the error value `NaU`.
+- Operation names must be distinct: there is no overloading, and component names must be distinct across all user types as well, since they become accessor operations. The exception are the operations of a [user interface](#user-interfaces), which the user types that implement it share.
 - Indeterminate operations should not be used on quantified levels of nested rules; release 8.0.0 rejects this.
 - A user-defined operation yields a single value: a `Set`, `List` or other collection as return type is an error.

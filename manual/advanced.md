@@ -6,7 +6,7 @@ permalink: # required, must match filename.html
 summary:
     "Wildcards, regular expressions, parameters, quantification and typing"
 release:   # GROOVE release this chapter describes; see manual.md
-    7.6.0
+    7.8.0
 sidebar:
     manual_sidebar
 toc: 
@@ -215,7 +215,7 @@ Besides its rules, graphs and control programs, a grammar has global *system pro
 | `remark` | (empty) | One-line documentation of the grammar |
 | `algebraFamily` | `default` | Algebra used for attributes: `default`, `point`, `big` or `term` (see [Using data](manual_data.html#algebras)) |
 | `valueOracle` | (none) | Source of values for unbound `ask:` parameters |
-| `userOperations` | (empty) | List of classes whose `@UserType` records and `@UserOperation` methods become data types and operations (since release 6.7.0; see [Using data](manual_data.html#user-defined-types-and-operations)) |
+| `userOperations` | (empty) | List of classes whose `@UserType` records and `@UserOperation` methods become data types and operations (since release 6.7.0; see [Using data](manual_data.html#user-defined-types-and-operations)); `package.*` stands for the user classes of a package (since release 7.8.0; see [Using data](manual_data.html#making-the-classes-available)) |
 | `userClassPath` | (empty) | List of directories and jars, relative to the grammar directory, from which the `userOperations` classes are loaded (since release 7.6.0; see [Using data](manual_data.html#making-the-classes-available)) |
 | `matchInjective` | `false` | Enforces injective matching for all rules (overrides the rule property) |
 | `parallelEdges` | `false` | Allows parallel edges in host graphs (multigraphs instead of simple graphs) |
