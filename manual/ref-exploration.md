@@ -18,7 +18,7 @@ keywords:
     exploration, configuration, strategy, acceptor, reference
 ---
 
-*This page is generated from the GROOVE 7.7.0 source code by `manual/make-refs.sh`; do not edit it by hand.*
+*This page is generated from the GROOVE 7.8.0 source code by `manual/make-refs.sh`; do not edit it by hand.*
 
 The keys and settings below constitute the vocabulary of the Generator's `-x` option, of the exploration dialog in the Simulator and of the `exploration` grammar property (see the [Exploration and verification](manual_verification.html) chapter). The textual form of a configuration is a space-separated list of `key=setting` entries; a key that is absent takes its default.
 
