@@ -18,7 +18,7 @@ keywords:  # used in metadata for findability
     requirements, installing, running, maven
 ---
 
-There are three ways to get GROOVE: a native installer for your platform, a `zip` archive that you unpack yourself, or the Maven artifacts. All release assets are on the [release page]({{site.groove_url}}/code/releases/latest).
+There are three ways to get GROOVE: a native installer for your platform, a `zip` archive that you unpack yourself, or the Maven artifacts. All release assets are on the [release page]({{site.groove_url}}/code/releases/latest). The installers and one of the `zip` archives contain the commercial library yFiles and may therefore be used **for academic, non-commercial purposes only**; the other archives and the Maven artifacts are unrestricted. See [With or without yFiles](#yfiles) before you choose.
 
 ## Requirements
 
@@ -44,6 +44,8 @@ The installers save you the trouble of unpacking an archive, having the right Ja
 
 On Linux, pick the package format of your distribution: `.deb` for Debian-based systems, `.rpm` for RPM-based ones. The installers have few customisation options; among other things, they use a fixed, platform-default installation path. If you want more control, use the stand-alone installation below.
 
+The installers contain yFiles, so **they may be used for academic, non-commercial purposes only**; the restrictions are part of the license that each installer carries (see [With or without yFiles](#yfiles)). If your use does not qualify, take the stand-alone installation without yFiles.
+
 ### If Windows or MacOS blocks the installer<a name="blocked"></a>
 
 The installers are not code-signed, so Windows and MacOS treat them as coming from an unknown publisher and block them at first invocation, and some Linux package managers ask before installing the `.rpm`. Nothing is wrong with the file: the installers are built automatically from the public source code.
@@ -58,9 +60,17 @@ The full instructions are also among the release assets, as `IF-WINDOWS-OR-MACOS
 
 ## Stand-alone installation
 
-- To install GROOVE without an installer, download the library (as a `zip`-file) [here]({{site.groove_url}}/code/releases/latest): `groove-x_y_z-bin.zip`, or `groove-x_y_z-bin+doc.zip` if you also want the Javadoc.
+- To install GROOVE without an installer, download one of the `zip` archives [here]({{site.groove_url}}/code/releases/latest):
 
-- Unpack the zip in a directory of your choice. This will result in a `bin` subdirectory containing the runnable `jar`s (which are essentially empty, merely containing the metadata to find the runnable in the `groove` jar), and a `lib` subdirectory containing all actual libraries, that is, the `groove` jar together with all required dependencies. Next to these are the change log, the license and installation instructions; the `bin+doc` variant has a further `doc` subdirectory with the API documentation.
+  | Asset | Content | Permitted use |
+  | :--- | :--- | :--- |
+  | `groove-x_y_z-bin.zip` | GROOVE without yFiles | Unrestricted (Apache License 2.0) |
+  | `groove-x_y_z-bin+doc.zip` | The same, with the Javadoc | Unrestricted (Apache License 2.0) |
+  | `groove-x_y_z-yfiles-bin.zip` | GROOVE with yFiles | Academic, non-commercial only |
+
+  The difference is explained under [With or without yFiles](#yfiles).
+
+- Unpack the zip in a directory of your choice. This will result in a `bin` subdirectory containing the runnable `jar`s (which are essentially empty, merely containing the metadata to find the runnable in the `groove` jar), and a `lib` subdirectory containing all actual libraries, that is, the `groove` jar together with all required dependencies. Next to these are the change log, the license and installation instructions; the `bin+doc` variant has a further `doc` subdirectory with the API documentation, and the `yfiles-bin` variant a further file `LICENSE-YFILES.txt` with the restrictions on its use.
 
 - This route needs Java 21 or newer on your machine (see [Requirements](#requirements)), but triggers none of the warnings described above.
 
@@ -86,25 +96,21 @@ All the [runnable components](../index#runnable) of GROOVE are available as JAR 
 
 If you used a native installer instead, the same components are started from the application menu, and the command-line ones from the executables in the installation directory.
 
-## The yFiles add-on
+## With or without yFiles<a name="yfiles"></a>
 
-GROOVE draws graphs through a visualisation backend, of which there are two: the JGraph-based one included in every release, and one built on the commercial library [yFiles for Java (Swing)](https://www.yworks.com/products/yfiles-for-java) by yWorks GmbH, which contributes its own layout algorithms. The yFiles backend is *not* part of the standard release; it is an optional add-on, released as the separate asset `groove-x_y_z-yfiles-addon.zip`.
+GROOVE draws graphs through a visualisation backend, of which there are two: one built on the commercial library [yFiles for Java (Swing)](https://www.yworks.com/products/yfiles-for-java) by yWorks GmbH, which contributes its own layout algorithms, and the JGraph-based one of earlier releases. GROOVE itself is open source, but yFiles is not: it is licensed to the University of Twente for academic, non-commercial use only, and that restriction carries over to every release asset that contains the library. A release therefore comes in two forms:
 
-The add-on comes with license restrictions that GROOVE itself does not have, most importantly that **GROOVE with the add-on installed may be used for non-commercial purposes only**. Read [`YFILES-ADDON.md`]({{site.groove_url}}/code/blob/master/release/yfiles/include/YFILES-ADDON.md) (also included in the zip) before installing it.
+- **With yFiles**: the native installers and `groove-x_y_z-yfiles-bin.zip`. **You may use these for academic, non-commercial purposes only**, such as research, teaching and study. The precise restrictions are in [`LICENSE-YFILES.txt`]({{site.groove_url}}/code/blob/master/release/yfiles/include/LICENSE-YFILES.txt), which is at the root of the zip and part of the license of each installer. Among other things, the library may not be extracted from the distribution or used for anything other than running GROOVE.
 
-Installing and removing the add-on:
+- **Without yFiles**: `groove-x_y_z-bin.zip` and `groove-x_y_z-bin+doc.zip`, as well as the [Maven package](#maven-package). These carry no such restriction: they are under the Apache License 2.0 alone. They draw graphs with the JGraph-based backend, which lacks the yFiles layout algorithms but is otherwise the same tool.
 
-- At the first start of a newly released GROOVE version, the Simulator asks once whether to download and install it. If you decline, the JGraph backend is used.
+If in doubt about whether your use qualifies as academic and non-commercial, use one of the archives without yFiles.
 
-- The same choice remains available afterwards under `View` &rarr; `YFiles add-on`, which also installs the add-on from a downloaded zip and removes an installed one.
-
-- By hand, unpack the zip into GROOVE's extension directory (`%APPDATA%\GROOVE\extensions` on Windows, `~/Library/Application Support/GROOVE/extensions` on MacOS, `~/.groove/extensions` elsewhere); it is picked up at the next start.
-
-An add-on is built for one GROOVE version and is skipped with a warning by any other, so a new release of GROOVE needs the add-on of that release. When both backends are installed, yFiles is the default; the backend to use is chosen under `View` &rarr; `Options` &rarr; `Graph backend` and takes effect at the next start. On Windows, uninstalling or upgrading GROOVE through the installer removes the add-on as well; the new version offers to install its own add-on at its first start.
+A distribution with yFiles contains both backends. The Simulator uses yFiles unless you choose otherwise under `View` &rarr; `Options` &rarr; `Graph backend`; a change takes effect at the next start. The layout algorithms of both backends are described in [the user manual](../manual_basics#layout).
 
 ## Maven package
 
-You can also download the compiled GROOVE jar (without dependencies), as well as the source files and documentation, from Maven Central: see
+You can also download the compiled GROOVE jar (without dependencies and without yFiles), as well as the source files and documentation, from Maven Central: see
 
 - either <https://mvnrepository.com/artifact/nl.utwente.groove>
 
@@ -114,7 +120,7 @@ The artifact is compiled for Java 21. If your application starts the GROOVE Simu
 
 ## Source code
 
-GROOVE is open source; the development version can be found (formatted as Eclipse Maven project) at <{{site.groove_url}}/code>. The yFiles add-on is the exception: it is not open source.
+GROOVE is open source, under the Apache License 2.0; the development version can be found (formatted as Eclipse Maven project) at <{{site.groove_url}}/code>. The source includes the part of GROOVE that calls yFiles, but not the yFiles library itself, which is not open source: building that part requires a yFiles license of your own.
 
 ## Prior versions
 

@@ -231,7 +231,7 @@ Two layouters belong to GROOVE itself and are always available:
 - **Spring**: a spring embedder, in which edges pull their end nodes together and nodes push each other apart until the forces balance.
 - **Forest**: arranges the graph as a set of layered trees, which suits the tree-like shape of most transition systems.
 
-The other layouters come with the *graph backend*, the library the Simulator uses to draw graphs. The standard backend is JGraph; the optional yFiles add-on brings a second backend with its own, more powerful layout algorithms (see [the installation page](installing.html#the-yfiles-add-on) for how to install it and under what conditions it may be used). When both are installed, the backend is chosen under `View` &rarr; `Options` &rarr; `Graph backend`, and the choice takes effect at the next start.
+The other layouters come with the *graph backend*, the library the Simulator uses to draw graphs. There are two backends: yFiles, with its own, more powerful layout algorithms, and JGraph. Which of them you have depends on how you installed GROOVE: the native installers and the `zip` archive with yFiles contain both, the other archives only JGraph (see [the installation page](installing.html#yfiles), also for the conditions under which GROOVE with yFiles may be used). When both are present, the Simulator uses yFiles unless you choose otherwise under `View` &rarr; `Options` &rarr; `Graph backend`; a change takes effect at the next start.
 
 #### yFiles layouters
 
