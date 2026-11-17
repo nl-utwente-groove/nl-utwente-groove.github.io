@@ -18,7 +18,7 @@ keywords:
     aspect, prefix, syntax, reference
 ---
 
-*This page is generated from the GROOVE 7.5.4-SNAPSHOT source code by `manual/make-refs.sh`; do not edit it by hand.*
+*This page is generated from the GROOVE 7.8.1-SNAPSHOT source code by `manual/make-refs.sh`; do not edit it by hand.*
 
 The tables below list the complete label syntax for the three kinds of aspect graph, as also shown in the help panel of the graph editor in the Simulator. Optional parts are shown in square brackets.
 
@@ -74,7 +74,7 @@ The tables below list the complete label syntax for the three kinds of aspect gr
 | <code>not[=q]:flagflag</code> | Flag embargo Tests for the absence of a flag. The optional q denotes the associated quantifier level. ; q - optional associated quantifier level; flag - forbidden flag |
 | <code>par:</code> | Anchor node Declares an explicit anchor node. This causes the node to be considered relevant in distinguishing matches even if it is not involved in any deletion, creation or merging. |
 | <code>par:nr</code> | Bidirectional rule parameter Declares bidirectional rule parameter nr. In a control program this parameter may be instantiated with a concrete value, or be used as an output parameter, in which case the value is determined by the matching. ; nr - the parameter number, ranging from 0. Parameter numbers must be unique and contiguous |
-| <code>parin:nr</code> | Rule input parameter Declares rule input parameter nr. The value must be provided through a control program, or by setting the 'algebra family' in the system properties to point ; nr - the parameter number, ranging from 0. Parameter numbers must be unique and contiguous |
+| <code>parin:nr</code> | Rule input parameter Declares rule input parameter nr. The value must be provided as an argument in a control program; for values provided by the value oracle, use an 'ask' parameter instead ; nr - the parameter number, ranging from 0. Parameter numbers must be unique and contiguous |
 | <code>parout:nr</code> | Rule output parameter Declares rule output parameter nr. ; nr - the parameter number, ranging from 0. Parameter numbers must be unique and contiguous |
 | <code>prod:</code> | Product node Declares a product node, corresponding to a tuple of attribute nodes. |
 | <code>rem:</code> | Declares a remark node, to be used for documentation |

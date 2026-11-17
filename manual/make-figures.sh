@@ -1,15 +1,25 @@
 #!/bin/bash
 # Regenerates the SVG figures of the web manual (in images/manual/) from the
-# example grammar manual/graphs.gps, using the GROOVE Imager.
+# example grammars manual/graphs.gps, manual/user-ops.gps and
+# manual/user-seq.gps, using the GROOVE Imager.
 #
-# Every rule (.gpr), host graph (.gst) and type graph (.gty) in graphs.gps is
-# rendered twice: as <name>-display.svg (the Simulator's display view) and as
-# <name>-edit.svg (the editor view, showing the aspect prefixes literally).
+# Every rule (.gpr), host graph (.gst) and type graph (.gty) is rendered twice:
+# as <name>-display.svg (the Simulator's display view) and as <name>-edit.svg
+# (the editor view, showing the aspect prefixes literally). The figures of
+# user-ops.gps get the prefix user-ops- and those of user-seq.gps the prefix
+# user-seq-, to keep them apart from those of graphs.gps.
 #
-# Requires java (21+) on the PATH and the environment variable GROOVE_CLASSPATH
-# pointing to a GROOVE build: either a groove jar including dependencies (e.g.
-# lib/groove-X.Y.Z.jar of a release installation) or a classes directory plus
-# dependency jars, separated by the platform path separator.
+# The grammars user-ops.gps and user-seq.gps rely on the user-defined types in
+# manual/user-ops-src/user (Date.java and Poly.java); the script compiles
+# those classes against the GROOVE build and puts them on the class path of
+# the Imager. Poly.java has a sequence component, so the build has to be of
+# release 7.7.0 or later.
+#
+# Requires java and javac (21+) on the PATH and the environment variable
+# GROOVE_CLASSPATH pointing to a GROOVE build: either a groove jar including
+# dependencies (e.g. lib/groove-X.Y.Z.jar of a release installation) or a
+# classes directory plus dependency jars, separated by the platform path
+# separator.
 #
 # Usage: ./make-figures.sh   (from the manual/ directory)
 
@@ -20,15 +30,37 @@ if [ -z "$GROOVE_CLASSPATH" ]; then
     exit 1
 fi
 
-GPS=graphs.gps
 OUT=../images/manual
-IMAGER="java -cp $GROOVE_CLASSPATH nl.utwente.groove.Imager -v 0 -f svg"
+USER_SRC=user-ops-src
+USER_CLASSES=$(mktemp -d)
+trap 'rm -rf "$USER_CLASSES"' EXIT
+
+# Platform path separator: ';' on Windows (Git Bash), ':' elsewhere. On
+# Windows, the temporary directory also has to be passed to java in Windows
+# form, since a ';'-separated class path is not converted by the shell.
+case "$(uname -s)" in
+    MINGW*|MSYS*|CYGWIN*) SEP=';'; USER_CLASSES_CP=$(cygpath -m "$USER_CLASSES") ;;
+    *) SEP=':'; USER_CLASSES_CP=$USER_CLASSES ;;
+esac
+
+echo "Compiling $USER_SRC"
+javac -cp "$GROOVE_CLASSPATH" -d "$USER_CLASSES" "$USER_SRC"/user/*.java
+
+IMAGER="java -cp $GROOVE_CLASSPATH$SEP$USER_CLASSES_CP nl.utwente.groove.Imager -v 0 -f svg"
 
 mkdir -p "$OUT"
-for f in "$GPS"/*.gpr "$GPS"/*.gst "$GPS"/*.gty; do
-    name=$(basename "$f")
-    name=${name%.*}
-    echo "$name"
-    $IMAGER "$f" "$OUT/$name-display.svg"
-    $IMAGER -e "$f" "$OUT/$name-edit.svg"
-done
+render() {
+    local gps=$1 prefix=$2
+    for f in "$gps"/*.gpr "$gps"/*.gst "$gps"/*.gty; do
+        [ -e "$f" ] || continue
+        name=$(basename "$f")
+        name=$prefix${name%.*}
+        echo "$name"
+        $IMAGER "$f" "$OUT/$name-display.svg"
+        $IMAGER -e "$f" "$OUT/$name-edit.svg"
+    done
+}
+
+render graphs.gps ""
+render user-ops.gps "user-ops-"
+render user-seq.gps "user-seq-"

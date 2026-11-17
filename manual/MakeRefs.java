@@ -1,20 +1,26 @@
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-import nl.utwente.groove.algebra.Operator;
-import nl.utwente.groove.algebra.Sort;
-import nl.utwente.groove.control.parse.CtrlDoc;
-import nl.utwente.groove.explore.Generator;
-import nl.utwente.groove.explore.feature.Bound;
+import nl.utwente.groove.explore.ExploreType;
+import nl.utwente.groove.explore.LTLExploreType;
+import nl.utwente.groove.explore.config.ConfiguredExploreType;
+import nl.utwente.groove.explore.config.ExploreConfig;
+import nl.utwente.groove.explore.config.LegacySyntaxParser;
 import nl.utwente.groove.explore.feature.ExploreKey;
-import nl.utwente.groove.explore.feature.Goal;
 import nl.utwente.groove.explore.feature.Setting;
+import nl.utwente.groove.algebra.Sort;
+import nl.utwente.groove.algebra.Operator;
+import nl.utwente.groove.control.parse.CtrlDoc;
+import nl.utwente.groove.explore.feature.Bound;
+import nl.utwente.groove.explore.feature.Goal;
 import nl.utwente.groove.grammar.aspect.AspectKind;
 import nl.utwente.groove.graph.GraphRole;
 import nl.utwente.groove.util.Version;
+import nl.utwente.groove.util.parse.FormatException;
 
 /**
  * Generates the reference pages of the web manual from the GROOVE sources.
@@ -149,29 +155,66 @@ public class MakeRefs {
             ## Legacy options `-s` and `-a`
 
             The Generator's options `-s` (strategy), `-a` (acceptor) and `-r` (result count) \
-            predate the configuration keys and are kept indefinitely as shorthand; a combination of \
-            them stands for a configuration in the vocabulary above, which the Generator reports \
-            when it runs. Their vocabulary is given by their usage texts:
+            predate the configuration keys (up to release 7.5.3 they were the only way to give an \
+            exploration, as was the `explorationStrategy` grammar property) and are kept \
+            indefinitely as shorthand. A combination of them stands for a configuration in the \
+            vocabulary above, which the Generator reports when it runs; the LTL model checking \
+            strategies are the exception, as they are not configuration-based. The table lists \
+            every keyword of `-s` and `-a` with an example of a *strategy* *acceptor* pair and the \
+            configuration it translates to.
 
-            ```
-            -s <strgy>
+            | Legacy keyword | Example | Equivalent configuration |
+            | :--- | :--- | :--- |
             """);
-        b.append(usage(Generator.STRATEGY_USAGE));
-        b.append("""
-            ```
-
-            ```
-            -a <acc>
-            """);
-        b.append(usage(Generator.ACCEPTOR_USAGE));
-        b.append("""
-            ```
-
-            ```
-            -r <num>
-            """);
-        b.append(usage(Generator.RESULT_USAGE));
-        b.append("```\n");
+        record Legacy(String syntax, String example) {}
+        var legacy = List.of(new Legacy("`bfs`", "bfs final"),
+            new Legacy("`bfs:`*n*", "bfs:5 final"), new Legacy("`dfs`", "dfs final"),
+            new Legacy("`dfs:`*n*", "dfs:5 final"), new Legacy("`linear`", "linear final"),
+            new Legacy("`random`", "random final"), new Legacy("`state`", "state final"),
+            new Legacy("`crule:`[`!`]*rule*", "crule:done final"),
+            new Legacy("`cnbound:`*n*", "cnbound:20 final"),
+            new Legacy("`cebound:`*label*`>`*n*`,`…", "cebound:item>3,flag:busy>1 final"),
+            new Legacy("`uptorule:`(`bfs`&#124;`dfs`)`->`[`!`]*rule*", "uptorule:dfs->done final"),
+            new Legacy("`uptorule:`(`bfs`&#124;`dfs`)`=>`[`!`]*rule*",
+                "uptorule:bfs=>!done final"),
+            new Legacy("`ltl:`*formula*", "ltl:G(!error) cycle"),
+            new Legacy("`ltlbounded:`*bound*`;`*formula*", "ltlbounded:10,5;G(!error) cycle"),
+            new Legacy("`ltlpocket:`*bound*`;`*formula*", "ltlpocket:grow;G(!error) cycle"),
+            new Legacy("`final`", "bfs final"), new Legacy("`any`", "bfs any"),
+            new Legacy("`none`", "bfs none"), new Legacy("`cycle`", "ltl:G(!error) cycle"),
+            new Legacy("`ruleapp:`*rule*", "bfs ruleapp:done"),
+            new Legacy("`inv:`*rule*", "bfs inv:error"),
+            new Legacy("`inv:!`*rule*", "bfs inv:!safe"),
+            new Legacy("`formula:`*formula*", "bfs formula:done&&!error"));
+        for (Legacy l : legacy) {
+            String equivalent;
+            try {
+                ExploreType type = LegacySyntaxParser.parse(l.example());
+                if (type instanceof ConfiguredExploreType configured) {
+                    String text = configured.getConfig().unparse();
+                    ExploreConfig.parse(text);
+                    equivalent = text.isEmpty()
+                        ? "*(the default configuration)*"
+                        : code(text);
+                } else if (type instanceof LTLExploreType) {
+                    String id = type.getIdentifier();
+                    var kind = Arrays.stream(LTLExploreType.Kind.values())
+                        .filter(k -> id.startsWith(k.getKeyword() + ":"))
+                        .findFirst()
+                        .orElseThrow(() -> new IllegalStateException(
+                            "No LTL kind for exploration type '" + id + "'"));
+                    equivalent = code(id) + " (not configuration-based: "
+                        + cell(kind.getDescription()) + ")";
+                } else {
+                    throw new IllegalStateException("Legacy example '" + l.example()
+                        + "' yields unexpected exploration type " + type.getClass().getName());
+                }
+            } catch (FormatException e) {
+                throw new IllegalStateException(
+                    "Legacy example '" + l.example() + "' does not parse: " + e.getMessage(), e);
+            }
+            b.append("| " + l.syntax() + " | " + code(l.example()) + " | " + equivalent + " |\n");
+        }
         write("ref-exploration.md", b);
     }
 
@@ -265,22 +308,13 @@ public class MakeRefs {
         return result;
     }
 
-    /** Renders a picocli usage text as code block content, without trailing blanks. */
-    private static String usage(String text) {
-        StringBuilder result = new StringBuilder();
-        for (String line : text.split("\n")) {
-            result.append(line.stripTrailing()).append('\n');
-        }
-        return result.toString();
-    }
-
     private void writeOperators() throws IOException {
         StringBuilder b = frontMatter("Reference: data operations", "manual_ref_operators.html",
             "All built-in operations on the data sorts", "attribute, operation, sort, reference");
         b.append(generatedNote());
         b.append("""
             The built-in operations per data sort, usable in the attribute expressions described \
-            in the [Advanced rule features](manual_advanced.html) chapter. Operations with a \
+            in the [Using data](manual_data.html) chapter. Operations with a \
             symbol can be written in prefix or infix notation; all operations can be called by \
             name, in functional style.
 

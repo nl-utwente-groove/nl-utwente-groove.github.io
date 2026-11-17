@@ -5,6 +5,8 @@ permalink: # required, must match filename.html
     manual_verification.html
 summary:
     "Configuring exploration, and model checking"
+release:   # GROOVE release this chapter describes; see manual.md
+    8.0.0
 sidebar:
     manual_sidebar
 toc: 
@@ -24,13 +26,13 @@ Exploration is the recursive application of all scheduled actions to all reachab
 
 The Explore menu of the Simulator offers *Explore State Space* (also available as a toolbar button), which runs the grammar's exploration from the current state; unless configured otherwise, this is a full breadth-first exploration of everything reachable, subject to the control program. The LTS panel displays the explored transition system; states can be inspected individually, and partial (step-by-step) exploration is possible by applying matches by hand or by exploring a single state.
 
-The exploration a grammar runs is part of the grammar. It is stored as a *settings resource*: a properties file in the `explore` folder of the `.gps` directory, listed in the Simulator under the Settings tab, with one `key=value` line per deviation from the default vocabulary described in the next section. The `exploration` system property names the settings resource in use; that one is shown in bold in the resource list, and enabling another there switches the grammar over to it. A grammar without such a resource explores with all defaults. Grammars saved before GROOVE 8.0.0 kept their exploration in the `explorationStrategy` property; it is still read, and migrated to a settings resource the first time the exploration dialog saves.
+The exploration a grammar runs is part of the grammar. It is stored as a *settings resource* (since release 7.6.0): a properties file in the `explore` folder of the `.gps` directory, listed in the Simulator under the Settings tab, with one `key=value` line per deviation from the default vocabulary described in the next section. The `exploration` system property names the settings resource in use; that one is shown in bold in the resource list, and enabling another there switches the grammar over to it. A grammar without such a resource explores with all defaults. Up to release 7.5.3, a grammar kept its exploration in the `explorationStrategy` property; it is still read, and migrated to a settings resource the first time the exploration dialog saves.
 
 *Customize Exploration ...* (Explore menu) opens the *exploration dialog*, which shows the settings resource in use as one row per key, each with its alternatives and their content, and reports combinations that cannot be realised. A selector switches between the grammar's settings resources and activates the chosen one. The composed settings are stored with *Save* (under the current name) or *Save As...* (under a new name, which then becomes the grammar's exploration), or discarded with *Revert*; *Restart* and *Continue*, which explore afresh or continue the current state space, are enabled only once the settings are saved and consistent. Switching to another settings resource does not discard the state space, so a partial exploration can be continued under different settings, except that the keys shaping the transition system itself — `collapse`, `algebra` and `persistence` — may not change on *Continue*. Errors in a stored settings resource, such as an unknown rule name in a goal, are reported as grammar errors.
 
 ## The exploration configuration
 
-An exploration is composed from fourteen independent *keys*, each with a default, so that only deviations need to be given. The complete vocabulary — every key, its alternatives and the content they take — is in the generated [exploration keys reference](manual_ref_exploration.html); this section explains how the keys combine.
+An exploration is composed from fourteen independent *keys* (since release 7.6.0; earlier releases use the named strategies and acceptors listed at the end of the generated reference), each with a default, so that only deviations need to be given. The complete vocabulary — every key, its alternatives and the content they take — is in the generated [exploration keys reference](manual_ref_exploration.html); this section explains how the keys combine.
 
 - **Search order.** `next` selects the state to explore next from the frontier: the `oldest` (breadth-first, the default), the `newest` (depth-first) or a `random` one. `successor` selects which successors of that state are generated: `all` of them, or a `single` one, which gives a linear exploration; the `-random` variants shuffle. `frontier` restricts the size of the frontier, to a `single` state or to a beam of *n* states.
 - **Results.** `goal` says what counts as a result: a `final` state (one without outgoing transitions, the default), `any` state, a state satisfying a `condition:`*formula* over rule names (`r`, `!P`, `P&&Q`, `P||Q`, `P->Q`, with the usual precedence), read as "rule *r* is applicable", or a state in which a named action `fires:`*action*. `outcome` turns the goal around (`violate` makes the states *not* satisfying it the results), `count` says after how many results exploration halts (`all`, `first`, or a number), and `shape` whether a result is the `state` itself or the `trace` leading to it from the start state.
@@ -54,7 +56,7 @@ For large state spaces, the command-line Generator avoids the overhead of the GU
 
     java -jar Generator.jar [options] <grammar>.gps [<start graph names>]
 
-By default the Generator runs the grammar's own exploration, as the Simulator does. Another exploration is configured with `-x`, taking the vocabulary above as a space-separated (quoted) list of `key=value` pairs, exactly as in a settings resource:
+By default the Generator runs the grammar's own exploration, as the Simulator does. Another exploration is configured with `-x` (since release 7.6.0), taking the vocabulary above as a space-separated (quoted) list of `key=value` pairs, exactly as in a settings resource:
 
     java -jar Generator.jar -x "next=newest count=first goal=condition:mygoal" mygrammar.gps
 
@@ -62,13 +64,13 @@ Alternatively, `-D exploration=name` selects another of the grammar's settings r
 
 - `-o file` — save the generated LTS; the accompanying `-ef` option controls extra state labels (start, final, open and result states, state numbers, transient states), and `-spanning`/`-traces` restrict the saved LTS to the spanning tree or the result traces;
 - `-f file` — save the result states as individual graph files;
-- `-P file` / `-D key=val` — override the grammar's system properties for this run (e.g. `-D typeGraph+=names` to extend the active type graphs);
+- `-P file` / `-D key=val` — override the grammar's system properties for this run (e.g. `-D typeGraph+=names` to extend the active type graphs; `-P` since release 7.1.0, the `+=` form since release 7.2.0);
 - `-seed num` — fix the master random seed (see [above](#randomness-and-determinism));
 - `-l dir` — write a log of the generation run, including its outcome, to a directory;
 - `-log level[:subsystem]` — print diagnostic messages of the given level (`trace`, `debug`, `info`, `warning` or `error`) and upwards to the standard error stream, optionally for a single subsystem only, such as `explore.timing`; may be repeated. This option is common to all command-line tools;
 - `-r num` — stop after `num` result states.
 
-Invoke `Generator -h` for the complete list. The options `-s` (strategy), `-a` (acceptor) and `-r` predate `-x` and are kept indefinitely as shorthand: each combination of them stands for a configuration in the vocabulary above, which the Generator prints as the equivalent `-x` when they are used. Their own vocabulary of named *strategies* and *acceptors* is listed at the end of the [exploration keys reference](manual_ref_exploration.html). Two combinations are rejected: the `cycle` acceptor with anything but an LTL strategy, and the `none` acceptor with a result count. LTL model checking from the command line goes through the `ltl` strategies of `-s`; see [below](#the-modelchecker-command-line-tool).
+Invoke `Generator -h` for the complete list. The options `-s` (strategy), `-a` (acceptor) and `-r` predate `-x` (up to release 7.5.3 they are the only way to set the exploration) and are kept indefinitely as shorthand: each combination of them stands for a configuration in the vocabulary above, which the Generator prints as the equivalent `-x` when they are used. Their own vocabulary of named *strategies* and *acceptors* is listed at the end of the [exploration keys reference](manual_ref_exploration.html). Two combinations are rejected: the `cycle` acceptor with anything but an LTL strategy, and the `none` acceptor with a result count. LTL model checking from the command line goes through the `ltl` strategies of `-s`; see [below](#the-modelchecker-command-line-tool).
 
 ## Model checking
 

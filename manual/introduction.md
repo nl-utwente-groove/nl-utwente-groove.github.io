@@ -5,6 +5,8 @@ permalink: # required, must match filename.html
     manual_introduction.html
 summary:
     "What GROOVE is, the concepts behind it, and the components of the tool set"
+release:   # GROOVE release this chapter describes; see manual.md
+    8.0.0
 sidebar:
     manual_sidebar
 toc: 
@@ -62,12 +64,13 @@ The native installers register each component with the application menu of the p
 
 ## Downloading and installing
 
-Releases are published on [GitHub]({{site.groove_url}}/code/releases/latest); at the time of writing, the current release is 8.0.0. The native installers bundle their own Java 25 runtime; the `zip` archive requires Java 21 or higher. See the [installation page](installing.html) for detailed instructions, and the [Maven Central coordinates](https://central.sonatype.com/artifact/nl.utwente.groove/groove) if you want to use GROOVE as a library.
+Releases are published on [GitHub]({{site.groove_url}}/code/releases/latest); the current release is {{ page.release }}. The native installers bundle their own Java 25 runtime; the `zip` archive requires Java 21 or higher. See the [installation page](installing.html) for detailed instructions, and the [Maven Central coordinates](https://central.sonatype.com/artifact/nl.utwente.groove/groove) if you want to use GROOVE as a library.
 
 ## How this manual is organised
 
 - [Graphs and rules](manual_basics.html) explains how to read and edit host graphs and transformation rules — the day-to-day basics of working with the Simulator.
-- [Advanced rule features](manual_advanced.html) covers data attributes, universally quantified (nested) rules, type graphs, and the available rule properties.
+- [Advanced rule features](manual_advanced.html) covers wildcards and regular expressions, rule parameters, universally quantified (nested) rules, type graphs, and the system properties.
+- [Using data](manual_data.html) covers data attributes and expressions, and extending GROOVE with your own data types and operations.
 - [Control language](manual_control.html) describes the language for programming the order of rule applications.
 - [Exploration and verification](manual_verification.html) covers configuring exploration, the Generator, and CTL/LTL model checking.
 - [Import and export](manual_io.html) describes the supported exchange formats, including Ecore/EMF models.

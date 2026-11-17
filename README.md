@@ -24,11 +24,13 @@ To host locally on a Windows machine
   ```
 
 - Invoke bundler with
-
   ```
-  bundle install --path ~/.gem
+  bundle install
   ```
-
+  possibly after setting the bundler path with
+  ```
+  bundle config set path '~/.gem
+  ```
   to avoid gems being installed in the possibly inaccessible `/etc/var/gem` directory (see https://stackoverflow.com/questions/16031061/force-bundler-to-install-gems-in-user-s-home-directory)
 
 - To get a webserver with the page up and running, invoke (see https://michaelriedl.com/2021/06/11/testing-jekyll.html)

@@ -5,6 +5,8 @@ permalink: # required, must match filename.html
     manual_basics.html
 summary:
     "Editing host graphs and transformation rules"
+release:   # GROOVE release this chapter describes; see manual.md
+    8.0.0
 sidebar:
     manual_sidebar
 toc: 

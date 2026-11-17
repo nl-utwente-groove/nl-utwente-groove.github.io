@@ -34,6 +34,10 @@ layout: default
     <div class="summary">{{page.summary}}</div>
    {% endif %}
 
+   {% if page.release %}
+    <div class="release">This chapter describes GROOVE release {{page.release}}; see <a href="manual.html#releases">About this manual</a> for how releases are marked.</div>
+   {% endif %}
+
     {% unless page.toc == false %}
     {% include toc.html %}
     {% endunless %}

@@ -5,6 +5,8 @@ permalink: # required, must match filename.html
     manual_io.html
 summary:
     "Storage formats, and exchanging graphs and grammars with other tools"
+release:   # GROOVE release this chapter describes; see manual.md
+    8.0.0
 sidebar:
     manual_sidebar
 toc: 
@@ -41,6 +43,8 @@ The system properties file is a plain-text Java properties file, with lines of t
 
 *Settings resources* are properties files as well, but with a *schema* that fixes the admissible keys and values, and they are checked against it, with errors reported per line. The schema is given by the subdirectory a settings resource lives in: `explore` for exploration configurations (see [Exploration and verification](manual_verification.html#exploration-in-the-simulator)) and `ecore` for the Ecore import and export options (see [below](#ecoreemf-exchange)). The Simulator lists them under the Settings tab, where new ones are created from a template of the schema; the names `system.properties` and `system` are reserved.
 
+Two subdirectories are reserved for compiled Java code rather than resources: `lib`, holding jars, and `classes`, holding `.class` files, together form the grammar-local class path from which [user-defined types and operations](manual_data.html#making-the-classes-available) are loaded (since release 7.6.0).
+
 A grammar can also be loaded from a *zipped* `.gps` directory (a `.zip` or `.jar` file containing one), including directly from a URL; the archive is transparently unpacked. Saving works on the directory form only.
 
 ## The native graph format
@@ -68,9 +72,9 @@ The File menu of the Simulator offers *Import* and *Export* actions. Importing a
 | FSM | `.fsm` | export only | Transition systems in the FSM layout format |
 | GraphViz | `.dot` | export only | Graph structure for GraphViz processing |
 | Raster images | `.png`, `.jpg` | export only | Renders the graph as displayed |
-| Vector graphics | `.eps`, `.pdf`, `.svg` | export only | Renders the graph as displayed |
+| Vector graphics | `.eps`, `.pdf`, `.svg` | export only | Renders the graph as displayed (`.svg` since release 6.5.0) |
 | LaTeX | `.tikz` | export only | TikZ code for inclusion in LaTeX documents (requires the `groove2tikz` style) |
-| Control program | `.gcp` | export only | Converts an explored LTS into a control program that enforces exactly its transitions |
+| Control program | `.gcp` | export only | Converts an explored LTS into a control program that enforces exactly its transitions (since release 6.9.0) |
 
 The image, vector and TikZ exporters render the graph *as displayed*, with all visual embellishments — they apply to whatever graph panel is currently shown, including the LTS panel. (In fact, all the SVG figures in this manual are produced this way, via the Imager.) These three are available in the Simulator and the Imager only; the other formats are also produced headlessly, by the Generator's `-o` and `-f` options. Text formats (`.aut`, `.gxl`, `.fsm`, `.dot`, control programs) are written in UTF-8 with LF line ends on every platform.
 
@@ -78,7 +82,7 @@ The image, vector and TikZ exporters render the graph *as displayed*, with all v
 
 The Ecore porter connects GROOVE to the Eclipse Modeling Framework: an Ecore meta-model imports as a GROOVE type graph, and an XMI instance model as a host graph conforming to it — importing the instance model brings its meta-model along, as the type graph is needed to make sense of the instance. Both export again: a type graph as an `.ecore` file and a host graph as an `.xmi` file, the latter against the grammar's active type graphs, so the `.ecore` file has to be exported next to it for the result to be importable. The translation is direct: classes become node types, attributes and references become edges, multiplicities become `out=`*lo*`..`*hi*`:` edge multiplicities, containment references become `part:` edges, and abstract classes and enums become abstract types (`abs:`), the literals of an enum being subtypes (`sub:`) of it. Custom data types become strings. Constructs that the encoding cannot represent at all, such as a reference to a class outside the imported packages, are reported as errors.
 
-The options of the translation live in an `ecore` settings resource (see [above](#grammars-on-disk)), which the import and export actions offer to edit in a dialog:
+The options of the translation live in an `ecore` settings resource (since release 8.0.0; see [above](#grammars-on-disk)), which the import and export actions offer to edit in a dialog:
 
 - `ordering` controls how *ordered* or non-unique many-valued features are encoded: as plain edges (`none`, the default — the order and duplicates are lost), or through intermediate nodes carrying an `index` attribute (`index`); the setting can be overridden per feature, as `class.feature.ordering`;
 - `useIdentifiers` controls whether `xmi:id` values are retained as GROOVE node identifiers (`id:` aspects), and regenerated on export;
@@ -97,3 +101,5 @@ The Imager converts GROOVE graphs and rules to image formats without opening the
     java -jar Imager.jar -f svg mygraph.gst mygraph.svg
 
 Options include `-f` to select the output format (from the image, vector and TikZ formats listed above, among others), `-e` to render the *editor* view instead of the display view, and `-b` to select the graph backend to render with (`jgraph` or `yfiles`; see the [installation page](installing.html#the-yfiles-add-on)), falling back to the default backend with a warning if the requested one is not installed. When given a directory (for instance a whole `.gps`), the Imager converts all graph files in it. Invoke `Imager -h` for the full list of options.
+
+A graph is rendered with the layout stored with it. Nodes that have no stored position, as in a graph that was generated by another tool, are laid out by the Imager (since release 7.8.0; up to release 7.7.1 they ended up at random positions), as the Viewer already did. The option `-l spring` or `-l forest` (since release 7.8.0) lays out every graph afresh before it is rendered, ignoring the stored layout: `spring` is a spring-embedder layout, `forest` a top-to-bottom forest layout. The Viewer has the same option, for the graph it shows. In both cases the layout only exists in the image or on screen: the graph files are not changed.

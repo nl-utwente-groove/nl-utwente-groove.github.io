@@ -19,6 +19,9 @@ entries:
         -   title: Advanced rule features
             url: /manual_advanced.html
             output: web
+        -   title: Using data
+            url: /manual_data.html
+            output: web
         -   title: Control language
             url: /manual_control.html
             output: web

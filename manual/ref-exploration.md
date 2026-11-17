@@ -18,7 +18,7 @@ keywords:
     exploration, configuration, strategy, acceptor, reference
 ---
 
-*This page is generated from the GROOVE 7.5.4-SNAPSHOT source code by `manual/make-refs.sh`; do not edit it by hand.*
+*This page is generated from the GROOVE 7.8.1-SNAPSHOT source code by `manual/make-refs.sh`; do not edit it by hand.*
 
 An exploration is configured by choosing a value for each of the *keys* below. Every key has a default (marked *), so only deviations need to be given. The vocabulary is shared by the exploration dialog of the Simulator, the `explore` settings resources of a grammar and the `-x` option of the Generator, where a configuration is written as a space-separated list of `key=value` pairs; see the [Exploration and verification](manual_verification.html) chapter. A value is the name of one of the alternatives of the key; if the alternative takes *content*, that follows the name after a colon, as in `bound=nodes:200`. Where the content column says so, the content may also be given on its own, as in `count=5`.
 
@@ -189,46 +189,30 @@ Master random seed governing the randomised features.
 
 ## Legacy options `-s` and `-a`
 
-The Generator's options `-s` (strategy), `-a` (acceptor) and `-r` (result count) predate the configuration keys and are kept indefinitely as shorthand; a combination of them stands for a configuration in the vocabulary above, which the Generator reports when it runs. Their vocabulary is given by their usage texts:
+The Generator's options `-s` (strategy), `-a` (acceptor) and `-r` (result count) predate the configuration keys (up to release 7.5.3 they were the only way to give an exploration, as was the `explorationStrategy` grammar property) and are kept indefinitely as shorthand. A combination of them stands for a configuration in the vocabulary above, which the Generator reports when it runs; the LTL model checking strategies are the exception, as they are not configuration-based. The table lists every keyword of `-s` and `-a` with an example of a *strategy* *acceptor* pair and the configuration it translates to.
 
-```
--s <strgy>
-(Legacy shorthand; the fully general option is -x.) Set the exploration strategy to <strgy>. Legal values are:
-  bfs[:n]     - Optionally bounded Breadth-First exploration:
-                if n>0, exploration stops at depth n
-  dfs[:n]     - Optionally bounded Depth-First exploration:
-                if n>0, exploration stops at depth n
-  linear      - Linear
-  random      - Random linear
-  uptorule:[bfs|dfs][n][->|=>][!]id
-              - BFS or DFS up to (for ->) or including (for =>) states
-                where rule <id> is or is not (!) applicable
-  cnbound:n   - BFS up to (but not including) graphs with
-                more than <n> nodes
-  cebound:id_1>n_1,...,id_k>n_k
-              - BFS up to (but not including) graphs with
-                more than <n_i> <id_i>-edges, for all i in 1..k;
-                <id_i> may carry a type: or flag: prefix
-  ltl:prop    - LTL Model Checking
-  ltlbounded:idn,...;prop
-              - Bounded LTL Model Checking
-  ltlpocket:idn,...;prop
-              - Pocket LTL Model Checking
-```
-
-```
--a <acc>
-(Legacy shorthand; the fully general option is -x.) Set the acceptor to <acc>. The acceptor determines when a state is counted as a result of the exploration. Legal values are:
-    final      - When final (default)
-    inv:[!]id  - If rule <id> is [not] applicable
-    ruleapp:id - If there is an <id>-labelled transition
-    formula:f  - If <f> holds (a boolean formula of rules separated by &, |, !)
-    any        - Always (all states are results)
-    cycle      - If the state starts a cycle
-    none       - Never (no states are results)
-```
-
-```
--r <num>
-Stop exploration after <num> result states (default is 0 for "unbounded")
-```
+| Legacy keyword | Example | Equivalent configuration |
+| :--- | :--- | :--- |
+| `bfs` | <code>bfs final</code> | *(the default configuration)* |
+| `bfs:`*n* | <code>bfs:5 final</code> | <code>cost=uniform bound=cost:5</code> |
+| `dfs` | <code>dfs final</code> | <code>next=newest</code> |
+| `dfs:`*n* | <code>dfs:5 final</code> | <code>next=newest cost=uniform bound=cost:5</code> |
+| `linear` | <code>linear final</code> | <code>successor=single frontier=single</code> |
+| `random` | <code>random final</code> | <code>successor=single-random frontier=single</code> |
+| `state` | <code>state final</code> | <code>bound=initial</code> |
+| `crule:`[`!`]*rule* | <code>crule:done final</code> | <code>bound=upto:done</code> |
+| `cnbound:`*n* | <code>cnbound:20 final</code> | <code>bound=nodes:20</code> |
+| `cebound:`*label*`>`*n*`,`… | <code>cebound:item&gt;3,flag:busy&gt;1 final</code> | <code>bound=edges:item&gt;3,flag:busy&gt;1</code> |
+| `uptorule:`(`bfs`&#124;`dfs`)`->`[`!`]*rule* | <code>uptorule:dfs-&gt;done final</code> | <code>next=newest bound=upto:done</code> |
+| `uptorule:`(`bfs`&#124;`dfs`)`=>`[`!`]*rule* | <code>uptorule:bfs=&gt;!done final</code> | <code>bound=include:!done</code> |
+| `ltl:`*formula* | <code>ltl:G(!error) cycle</code> | <code>ltl:G(!error)</code> (not configuration-based: Nested Depth-First Search for a given LTL formula.) |
+| `ltlbounded:`*bound*`;`*formula* | <code>ltlbounded:10,5;G(!error) cycle</code> | <code>ltlbounded:10,5;G(!error)</code> (not configuration-based: Nested Depth-First Search for a given LTL formula, using incremental bounds based on graph size or rule applications) |
+| `ltlpocket:`*bound*`;`*formula* | <code>ltlpocket:grow;G(!error) cycle</code> | <code>ltlpocket:grow;G(!error)</code> (not configuration-based: Nested Depth-First Search for a given LTL formula, using incremental bounds based on graph size or rule applications and optimised to avoid reexploring connected components ('pockets')) |
+| `final` | <code>bfs final</code> | *(the default configuration)* |
+| `any` | <code>bfs any</code> | <code>goal=any</code> |
+| `none` | <code>bfs none</code> | <code>goal=none</code> |
+| `cycle` | <code>ltl:G(!error) cycle</code> | <code>ltl:G(!error)</code> (not configuration-based: Nested Depth-First Search for a given LTL formula.) |
+| `ruleapp:`*rule* | <code>bfs ruleapp:done</code> | <code>goal=fires:done</code> |
+| `inv:`*rule* | <code>bfs inv:error</code> | <code>goal=condition:error</code> |
+| `inv:!`*rule* | <code>bfs inv:!safe</code> | <code>goal=condition:!safe</code> |
+| `formula:`*formula* | <code>bfs formula:done&amp;&amp;!error</code> | <code>goal=condition:done&amp;&amp;!error</code> |

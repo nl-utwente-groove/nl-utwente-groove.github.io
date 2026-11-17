@@ -10,7 +10,9 @@
 # should correspond to the released GROOVE version that the manual documents,
 # not to a development branch. Pass a version as the first argument to override.
 #
-# Usage: ./make-refs.sh [version]   (from the manual/ directory)
+# Usage: ./make-refs.sh [version]   (from the manual/ directory, in a bash
+# shell; from PowerShell, run "bash ./make-refs.sh" so that output and exit
+# code stay in the console)
 
 set -e
 
