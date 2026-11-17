@@ -57,7 +57,7 @@ The distinction between types and flags matters in two ways:
 
 ### Parallel edges
 
-Whether a graph may contain *parallel edges* — several edges with the same label between the same two nodes — depends on the transformation semantics of the grammar, set by the `semantics` system property (see [Advanced rule features](manual_advanced.html#system-properties)). Under the classic `SPO-simple` semantics, graphs are *simple*: an edge is fully determined by its label and end nodes, so adding an edge that is already present changes nothing. Under `SPO-multi` (the default for grammars created with GROOVE 8.0.0 or later) and `DPO`, host graphs are *multigraphs*, in which the parallel copies of an edge are distinct and counted.
+Whether a graph may contain *parallel edges* — several edges with the same label between the same two nodes — depends on the transformation semantics of the grammar, set by the `semantics` system property (since release 7.6.0; see [Advanced rule features](manual_advanced.html#system-properties)). Under the classic `SPO-simple` semantics, graphs are *simple*: an edge is fully determined by its label and end nodes, so adding an edge that is already present changes nothing. Under `SPO-multi` (the default for grammars created with release 7.6.0 or later) and `DPO`, host graphs are *multigraphs*, in which the parallel copies of an edge are distinct and counted.
 
 In the edit view, a bundle of parallel copies is written as a single edge with the prefix `mult=k:`, where `k` is a positive constant; the display view shows the bundle as one edge with the suffix `(xk)`, and so does the state display during exploration. The prefix is allowed on binary edges, on flags (`mult=2:flag:f`) and on attribute assignments (`mult=2:let:f=5`, see the next chapter), but not on type labels, since the type of a node is not an edge of the host graph. For instance, the buffer below holds two copies of one item, which is also its first:
 
@@ -109,7 +109,7 @@ Label parsing in rules is more complicated than in host graphs, because rule lab
 
 - The initial-colon convention is the same as for graphs: to use a label containing special characters literally, precede the entire label with a single initial colon, which is itself not part of the label.
 - Alternatively, a label containing characters that would otherwise have a special meaning — such as `'` (single quote), `\` (backslash), `?`, `!`, `=`, `{` or `}` — can be surrounded by single quotes; the quotes are not part of the label. In general, a label consisting only of letters, digits and the characters `_`, `$` and `-` needs no quoting.
-- Within a single-quoted label, the backslash acts as an escape character for the single quote and for itself: `\'` and `\\` stand for `'` and `\`. Escapes are processed left to right; a backslash in front of any other character is taken literally, together with that character.
+- Within a single-quoted label, the backslash acts as an escape character for the single quote and for itself: `\'` and `\\` stand for `'` and `\`. Escapes are processed left to right; a backslash in front of any other character is taken literally, together with that character (since release 7.6.0).
 
 For instance, the rule label `'\\?\''` (ending in two single quotes) matches the label `\?'` in a host graph.
 
@@ -169,7 +169,7 @@ Among the [samples](samples.html), `mergers` shows the use of mergers, and `coun
 
 ## Remarks
 
-To document rules and graphs, GROOVE offers special nodes and edges that make no difference to the transformation: *remarks*, entered with the prefix `rem:` — either standing alone as a node label or in front of an edge label, just like the role prefixes. In the display view, remark nodes and edges are orange with a yellow background. Several remark edges between the same pair of nodes are shown as a single multi-line remark, with the lines in the order in which the edges were entered. For instance, this is the counting rule from above, augmented with remarks:
+To document rules and graphs, GROOVE offers special nodes and edges that make no difference to the transformation: *remarks*, entered with the prefix `rem:` — either standing alone as a node label or in front of an edge label, just like the role prefixes. In the display view, remark nodes and edges are orange with a yellow background. Several remark edges between the same pair of nodes are shown as a single multi-line remark, with the lines in the order in which the edges were entered (since release 7.6.0). For instance, this is the counting rule from above, augmented with remarks:
 
 | Edit view | Display view |
 | :---: | :---: |
@@ -192,7 +192,7 @@ Apart from its graph structure, a rule also has *rule properties*, which can be 
 
 Some of these deserve further explanation:
 
-- **Priorities** provide a basic way to *schedule* rules: as long as a rule of higher priority is applicable, no lower-priority rule can be applied. Assigning different priorities also changes the rule tree in the Simulator, which then shows the rules grouped by priority. A typical use is a high-priority rule that merely tests for the presence of an `Error` node: it automatically halts the exploration of any branch in which another rule has introduced such a node. The `priorities` sample shows an example. Priorities and control programs do not mix: once the actions carry more than one distinct priority, a control program may not call a prioritised action by name (see [Control language](manual_control.html#calls-and-expressions)).
+- **Priorities** provide a basic way to *schedule* rules: as long as a rule of higher priority is applicable, no lower-priority rule can be applied. Assigning different priorities also changes the rule tree in the Simulator, which then shows the rules grouped by priority. A typical use is a high-priority rule that merely tests for the presence of an `Error` node: it automatically halts the exploration of any branch in which another rule has introduced such a node. The `priorities` sample shows an example. Priorities and control programs do not mix: once the actions carry more than one distinct priority, a control program may not call a prioritised action by name (since release 7.6.0; see [Control language](manual_control.html#calls-and-expressions)).
 
 - **Enabledness.** A disabled rule is never scheduled for application. This is useful while developing a grammar, as it makes it easy to experiment with different versions of the same rule.
 
@@ -200,7 +200,7 @@ Some of these deserve further explanation:
 
 - **Formatted output.** The `printFormat` text is written to standard output on every application of the rule; it may contain `String.format`-style format specifiers, which are instantiated with the rule parameters.
 
-- **Transition labels.** By default, transitions in the generated transition system are labelled with the name of the applied rule. A nonempty `transitionLabel` is used instead of the rule name — for instance to make different rules give rise to equally labelled transitions. Like `printFormat`, it may refer to rule parameters using a `String.format`-like syntax, except that format specifiers are restricted to `s` (for `String`).
+- **Transition labels.** By default, transitions in the generated transition system are labelled with the name of the applied rule. A nonempty `transitionLabel` is used instead of the rule name — for instance to make different rules give rise to equally labelled transitions. Like `printFormat`, it may refer to rule parameters using a `String.format`-like syntax, except that format specifiers are restricted to `s` (for `String`) (since release 8.0.0).
 
 ## Rule systems, grammars and transition systems
 
@@ -231,7 +231,7 @@ Two layouters belong to GROOVE itself and are always available:
 - **Spring**: a spring embedder, in which edges pull their end nodes together and nodes push each other apart until the forces balance.
 - **Forest**: arranges the graph as a set of layered trees, which suits the tree-like shape of most transition systems.
 
-The other layouters come with the *graph backend*, the library the Simulator uses to draw graphs. There are two backends: yFiles, with its own, more powerful layout algorithms, and JGraph. Which of them you have depends on how you installed GROOVE: the native installers and the `zip` archive with yFiles contain both, the other archives only JGraph (see [the installation page](installing.html#yfiles), also for the conditions under which GROOVE with yFiles may be used). When both are present, the Simulator uses yFiles unless you choose otherwise under `View` &rarr; `Options` &rarr; `Graph backend`; a change takes effect at the next start.
+The other layouters come with the *graph backend*, the library the Simulator uses to draw graphs. There are two backends: yFiles, with its own, more powerful layout algorithms, and JGraph (since release 8.0.0). Which of them you have depends on how you installed GROOVE: the native installers and the `zip` archive with yFiles contain both, the other archives only JGraph (see [the installation page](installing.html#yfiles), also for the conditions under which GROOVE with yFiles may be used). When both are present, the Simulator uses yFiles unless you choose otherwise under `View` &rarr; `Options` &rarr; `Graph backend`; a change takes effect at the next start.
 
 #### yFiles layouters
 

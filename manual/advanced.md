@@ -66,7 +66,7 @@ Some points worth noting:
 - The equality sign as an atom stands for the empty word; for instance, `{a|=}` expresses that there is an `a`-edge between two nodes or the nodes coincide. `R*` is equivalent to `R+|=`.
 - A negation is not properly part of the regular expression: it expresses the absence of a match, and can therefore only occur up front, not nested inside an expression. This is the same negation introduced in the [previous chapter](manual_basics.html#negations).
 - A named wildcard inside a regular expression can only be used if the name is *bound* by another occurrence outside a regular expression.
-- Under `DPO` semantics, the path witnessing an expression that spans more than one host edge must by default survive the rule's own erasures; the `regExpMatching` system property (see [below](#system-properties)) controls this.
+- Under `DPO` semantics, the path witnessing an expression that spans more than one host edge must by default survive the rule's own erasures; the `regExpMatching` system property (since release 7.6.0; see [below](#system-properties)) controls this.
 
 For instance, the following rule specifies that a son receives the name of one of his forefathers:
 
@@ -81,7 +81,7 @@ Rule parameters make information about a match visible in the transition system,
 - `par:n` declares a *bidirectional* parameter with number `n`: in a control program it may be instantiated with a concrete value, or used as an output parameter, in which case the value is determined by the match.
 - `parin:n` declares an *input* parameter: its value must be provided by a control program.
 - `parout:n` declares an *output* parameter.
-- `ask:n` declares an *interactive* parameter: its value is provided upon application through a *value oracle*, configured in the `valueOracle` system property. The `dialog` oracle, which asks the user, exists only in the Simulator; the command-line tools report it as unavailable rather than prompting.
+- `ask:n` declares an *interactive* parameter: its value is provided upon application through a *value oracle*, configured in the `valueOracle` system property. The `dialog` oracle, which asks the user, exists only in the Simulator; the command-line tools report it as unavailable rather than prompting (since release 7.6.0).
 
 Parameter numbers start at 0 and must be unique and contiguous within a rule. The following shows a parameterised rule and a potential start graph:
 
@@ -152,7 +152,7 @@ The solution is to *name* the nesting level: the quantifier prefix takes the nam
 | :---: | :---: |
 | ![](images/manual/crowning-right-edit.svg) | ![](images/manual/crowning-right-display.svg) |
 
-Tests and assignments (see [above](#tests-and-assignments-in-rules)) can be placed on a named level in the same way, by writing the level into the role prefix in front of them, as in `use=x:test:expr`; and analogously for `let:`.
+Tests and assignments (see [above](#tests-and-assignments-in-rules)) can be placed on a named level in the same way, by writing the level into the role prefix in front of them, as in `use=x:test:expr`; and analogously for `let:` (since release 7.6.0).
 
 ### Counting
 
@@ -207,7 +207,7 @@ To require a node to be matched by an *exact* type rather than a subtype, embarg
 
 - **Nodified edges.** A node type can be declared a *nodified edge* by a label of the form `edge:"format",field,...`: nodes of this type are not displayed as nodes at all; instead, their incoming edges are labelled by the format string, instantiated with the given attribute fields (`String.format` syntax). This is useful to visualise, for instance, labelled connections with attributes as plain-looking edges.
 
-Node identifiers (`id:name`) are also worth mentioning here: apart from their role in expressions, when multiple start graphs are enabled (see the `startGraph` system property), nodes with the same identifier are merged, which makes identifiers the glue for composing start graphs from parts. The same happens within a single host graph: nodes that share an identifier are merged into one node carrying the union of their edges. In a rule, on the other hand, a duplicate identifier is an error.
+Node identifiers (`id:name`) are also worth mentioning here: apart from their role in expressions, when multiple start graphs are enabled (see the `startGraph` system property), nodes with the same identifier are merged, which makes identifiers the glue for composing start graphs from parts. The same happens within a single host graph: nodes that share an identifier are merged into one node carrying the union of their edges (since release 7.6.0). In a rule, on the other hand, a duplicate identifier is an error.
 
 ## System properties
 
@@ -221,9 +221,9 @@ Besides its rules, graphs and control programs, a grammar has global *system pro
 | `userOperations` | (empty) | List of classes whose `@UserType` records and `@UserOperation` methods become data types and operations (since release 6.7.0; see [Using data](manual_data.html#user-defined-types-and-operations)); `package.*` stands for the user classes of a package (since release 7.8.0; see [Using data](manual_data.html#making-the-classes-available)) |
 | `userClassPath` | (empty) | List of directories and jars, relative to the grammar directory, from which the `userOperations` classes are loaded (since release 7.6.0; see [Using data](manual_data.html#making-the-classes-available)) |
 | `matchInjective` | `false` | Enforces injective matching for all rules (overrides the rule property) |
-| `semantics` | `SPO-multi` | Transformation semantics: `SPO-simple` (simple graphs), `SPO-multi` (multigraphs, deletion wins) or `DPO` (multigraphs under the gluing condition) |
+| `semantics` | `SPO-multi` | Transformation semantics: `SPO-simple` (simple graphs), `SPO-multi` (multigraphs, deletion wins) or `DPO` (multigraphs under the gluing condition) (since release 7.6.0) |
 | `regExpMatching` | `faithful` | Whether a composite regular expression must be witnessed by a path that survives the rule's own erasures (`faithful`) or by any path (`sloppy`); only relevant under `DPO` |
-| `matchBound` | `10000` | Upper bound on the number of matches in a single state; beyond it, exploration halts with the state flagged (`0` disables the bound) |
+| `matchBound` | `10000` | Upper bound on the number of matches in a single state; beyond it, exploration halts with the state flagged (`0` disables the bound; since release 7.6.0) |
 | `checkDangling` | `false` | Forbids matches that would leave dangling edges; implied by `DPO` |
 | `checkCreatorEdges` | `false` | Treats creator edges as implicit NACs |
 | `rhsIsNAC` | `false` | Treats each entire RHS as an implicit NAC |
@@ -246,17 +246,17 @@ Besides its rules, graphs and control programs, a grammar has global *system pro
 
 (The properties `grooveVersion`, `grammarVersion` and `location` are maintained automatically and not user-editable.)
 
-Some keys from older grammars are still understood when a grammar is loaded, but no longer written: `explorationStrategy`, which held the exploration before GROOVE 8.0.0, is read as a fallback and migrated to a settings resource the first time the exploration dialog saves; `disabledRules`, replaced by `ruleEnabling` in 7.4.0, is converted on loading (rather than silently ignored, as before); and the interim keys `parallelEdges` and `ignoreRegExp` of 8.0.0 development builds are converted to `semantics` and `regExpMatching`.
+Some keys from older grammars are still understood when a grammar is loaded, but no longer written: `explorationStrategy`, which held the exploration up to release 7.5.3, is read as a fallback and migrated to a settings resource the first time the exploration dialog saves; `disabledRules`, replaced by `ruleEnabling` in 7.4.0, is converted on loading (since release 7.6.0; up to release 7.5.3 it was silently ignored); and the key `parallelEdges` of releases 6.8.0 to 7.5.3 and the interim key `ignoreRegExp` of development builds of release 7.6.0 are converted to `semantics` and `regExpMatching`.
 
 Some of these deserve a fuller explanation:
 
 - **Match injectivity.** Matches are in general non-injective (see [the previous chapter](manual_basics.html#injectivities)). Setting `matchInjective` enforces injectivity for all rules at once; in this way, GROOVE can simulate rule systems designed for tools that always impose injectivity.
 
-- **Transformation semantics.** The `semantics` property fixes two things at once: whether host graphs are simple graphs or multigraphs (see [Parallel edges](manual_basics.html#parallel-edges)), and how rules are applied. Under the *SPO* (single-pushout) approach of `SPO-simple` and `SPO-multi`, a match may identify a deleted element with a preserved one, in which case deletion wins, and deleting a node deletes all its incident edges with it, whether or not the rule mentions them. Under the *DPO* (double-pushout) approach of `DPO`, a match must satisfy the *gluing condition*: the identification condition, under which erasers are matched injectively (see [Injectivities](manual_basics.html#injectivities)), and the dangling condition, under which a rule is inapplicable if a deleted node has an incident edge that is not explicitly deleted as well. `SPO-multi` is the default for grammars created with GROOVE 8.0.0 or later; a grammar saved by an older version keeps the simple-graph semantics it was written under, by being pinned to `SPO-simple` when loaded, and is asked to be saved again.
+- **Transformation semantics.** The `semantics` property fixes two things at once: whether host graphs are simple graphs or multigraphs (see [Parallel edges](manual_basics.html#parallel-edges)), and how rules are applied. Under the *SPO* (single-pushout) approach of `SPO-simple` and `SPO-multi`, a match may identify a deleted element with a preserved one, in which case deletion wins, and deleting a node deletes all its incident edges with it, whether or not the rule mentions them. Under the *DPO* (double-pushout) approach of `DPO`, a match must satisfy the *gluing condition*: the identification condition, under which erasers are matched injectively (see [Injectivities](manual_basics.html#injectivities)), and the dangling condition, under which a rule is inapplicable if a deleted node has an incident edge that is not explicitly deleted as well. `SPO-multi` is the default for grammars created with release 7.6.0 or later; a grammar saved by an older version keeps the simple-graph semantics it was written under, by being pinned to `SPO-simple` when loaded, and is asked to be saved again.
 
 - **Dangling edge check.** Setting `checkDangling` imposes the dangling condition of DPO on its own, under either SPO semantics; `DPO` implies it.
 
-- **Creator edge check.** Setting `checkCreatorEdges` adds an implicit embargo for every creator edge, making the rule inapplicable if the edge is already present. In simple graphs, where adding an edge that is already present would leave the graph unchanged, this distinguishes a real change from a no-op; in multigraphs, where a created edge is always a fresh copy, it forbids adding a further copy. A rule that both reads and creates the same edge can then never be applied, which GROOVE reports as a warning.
+- **Creator edge check.** Setting `checkCreatorEdges` adds an implicit embargo for every creator edge, making the rule inapplicable if the edge is already present. In simple graphs, where adding an edge that is already present would leave the graph unchanged, this distinguishes a real change from a no-op; in multigraphs, where a created edge is always a fresh copy, it forbids adding a further copy. A rule that both reads and creates the same edge can then never be applied, which GROOVE reports as a warning (since release 7.6.0).
 
 - **Regular expression matching.** Under `DPO`, a *composite* regular expression (one not matched by a single host edge; see [Regular expressions](#regular-expressions)) must, with `regExpMatching=faithful`, be witnessed by a path that the rule's own erasures leave intact; `sloppy` accepts any witness path. Under the SPO semantics any witness path counts regardless.
 

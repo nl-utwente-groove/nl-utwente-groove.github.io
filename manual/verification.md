@@ -44,11 +44,11 @@ For example, breadth-first exploration is simply all defaults; depth-first explo
 
 ### Randomness and determinism
 
-Exploration is deterministic: two runs of the same grammar under the same configuration produce the same state space in the same order, also across separate runs of the tool. The random alternatives (`next=random` and the `-random` successor variants) draw from a single *master seed*, which is generated afresh for each run unless fixed by the `seed` key, the Generator's `-seed` option or the system property `groove.randomSeed`. After an exploration that actually drew random values, the effective seed is stored in the transition system, saved with the LTS and shown in the Simulator's LTS status line, so that any run can be reproduced.
+Exploration is deterministic: two runs of the same grammar under the same configuration produce the same state space in the same order, also across separate runs of the tool (since release 7.6.0). The random alternatives (`next=random` and the `-random` successor variants) draw from a single *master seed*, which is generated afresh for each run unless fixed by the `seed` key, the Generator's `-seed` option or the system property `groove.randomSeed`. After an exploration that actually drew random values, the effective seed is stored in the transition system, saved with the LTS and shown in the Simulator's LTS status line, so that any run can be reproduced (since release 7.6.0).
 
 ### Too many matches
 
-The number of matches collected in a single state is capped by the `matchBound` system property (10000 by default; `0` disables the cap). Exceeding it — typically through rule amalgamation — halts the exploration with the offending state flagged as an error state; in the Simulator the state space explored so far remains available, while the Generator and ModelChecker fail with a message rather than report a truncated state space as complete.
+The number of matches collected in a single state is capped by the `matchBound` system property (10000 by default; `0` disables the cap; since release 7.6.0). Exceeding it — typically through rule amalgamation — halts the exploration with the offending state flagged as an error state; in the Simulator the state space explored so far remains available, while the Generator and ModelChecker fail with a message rather than report a truncated state space as complete.
 
 ## The Generator
 
@@ -65,9 +65,9 @@ Alternatively, `-D exploration=name` selects another of the grammar's settings r
 - `-o file` — save the generated LTS; the accompanying `-ef` option controls extra state labels (start, final, open and result states, state numbers, transient states), and `-spanning`/`-traces` restrict the saved LTS to the spanning tree or the result traces;
 - `-f file` — save the result states as individual graph files;
 - `-P file` / `-D key=val` — override the grammar's system properties for this run (e.g. `-D typeGraph+=names` to extend the active type graphs; `-P` since release 7.1.0, the `+=` form since release 7.2.0);
-- `-seed num` — fix the master random seed (see [above](#randomness-and-determinism));
+- `-seed num` — fix the master random seed (since release 7.6.0; see [above](#randomness-and-determinism));
 - `-l dir` — write a log of the generation run, including its outcome, to a directory;
-- `-log level[:subsystem]` — print diagnostic messages of the given level (`trace`, `debug`, `info`, `warning` or `error`) and upwards to the standard error stream, optionally for a single subsystem only, such as `explore.timing`; may be repeated. This option is common to all command-line tools;
+- `-log level[:subsystem]` — print diagnostic messages of the given level (`trace`, `debug`, `info`, `warning` or `error`) and upwards to the standard error stream, optionally for a single subsystem only, such as `explore.timing`; may be repeated. This option is common to all command-line tools (since release 7.6.0);
 - `-r num` — stop after `num` result states.
 
 Invoke `Generator -h` for the complete list. The options `-s` (strategy), `-a` (acceptor) and `-r` predate `-x` (up to release 7.5.3 they are the only way to set the exploration) and are kept indefinitely as shorthand: each combination of them stands for a configuration in the vocabulary above, which the Generator prints as the equivalent `-x` when they are used. Their own vocabulary of named *strategies* and *acceptors* is listed at the end of the [exploration keys reference](manual_ref_exploration.html). Two combinations are rejected: the `cycle` acceptor with anything but an LTL strategy, and the `none` acceptor with a result count. LTL model checking from the command line goes through the `ltl` strategies of `-s`; see [below](#the-modelchecker-command-line-tool).
@@ -115,7 +115,7 @@ Typical examples, for a grammar with rules `error` and `done`:
 The Verify menu offers:
 
 - **Check CTL property** — either on the *full state space*, which is explored first if any open states remain, or on the *current* state space as explored so far, in which case the verdict refers to that part only. The states satisfying, respectively violating, the formula are marked in the LTS panel.
-- **Check LTL property** — on the full state space, or with *bounded* exploration, for which a dialog asks for the bound. LTL checking is implemented as a nested depth-first search for an accepting cycle in the product of the state space with a Büchi automaton derived from the negated formula; it drives its own exploration and can conclude violation before the full state space has been generated. If the property is violated, the counterexample — a lasso consisting of a prefix and a cycle — is reported and highlighted in the LTS panel.
+- **Check LTL property** — on the full state space, or with *bounded* exploration, for which a dialog asks for the bound. LTL checking is implemented as a nested depth-first search for an accepting cycle in the product of the state space with a Büchi automaton derived from the negated formula; it drives its own exploration and can conclude violation before the full state space has been generated. If the property is violated, the counterexample — a lasso consisting of a prefix and a cycle — is reported and highlighted in the LTS panel (since release 7.6.0).
 
 ### The ModelChecker command-line tool
 
@@ -123,8 +123,8 @@ The ModelChecker combines generation and CTL checking headlessly:
 
     java -jar ModelChecker.jar -ctl "AG !error" [-g "<generator args>"] <grammar>.gps
 
-Options: `-ctl prop` specifies a property to check (may occur multiple times); `-g args` passes options through to the embedded Generator; a previously saved GXL state space can be checked instead of a grammar. Invoke it with `-h` for details. LTL properties are checked from the command line by the Generator, through its legacy `-s ltl:prop` strategy (with `ltlbounded` and `ltlpocket` as bounded variants).
+Options: `-ctl prop` specifies a property to check (may occur multiple times; up to release 7.5.3, `-ltl prop` likewise specified an LTL property); `-g args` passes options through to the embedded Generator; a previously saved GXL state space can be checked instead of a grammar. Invoke it with `-h` for details. LTL properties are checked from the command line by the Generator, through its legacy `-s ltl:prop` strategy (with `ltlbounded` and `ltlpocket` as bounded variants).
 
 ## Prolog queries
 
-As a third analysis vehicle besides exploration and model checking, GROOVE embeds a Prolog interpreter: the Prolog panel of the Simulator lets you query the current graph and state space through a library of built-in predicates (with the possibility to add your own predicates via the `prolog` system property). This is chiefly of interest for ad-hoc inspection and custom analyses; the built-in predicates are documented in the Prolog panel itself. Predicates that open a window, such as `show_graph`, are available in the Simulator only.
+As a third analysis vehicle besides exploration and model checking, GROOVE embeds a Prolog interpreter: the Prolog panel of the Simulator lets you query the current graph and state space through a library of built-in predicates (with the possibility to add your own predicates via the `prolog` system property). This is chiefly of interest for ad-hoc inspection and custom analyses; the built-in predicates are documented in the Prolog panel itself. Predicates that open a window, such as `show_graph`, are available in the Simulator only (since release 7.6.0).

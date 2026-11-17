@@ -32,7 +32,7 @@ GROOVE is developed at the University of Twente and distributed as open source u
 
 The following terms are used throughout this manual and in the tool itself.
 
-- **Graph.** GROOVE works with directed, edge-labelled graphs — multigraphs, in which several edges with the same label may connect the same nodes, or simple graphs, depending on the grammar's transformation semantics. Nodes have no identity of their own visible in the visual representation; all information is in the (labelled) edges. Node labels as you see them on screen are in fact self-edges, displayed inside the node for readability. Graphs may in addition be *typed* (conform to a type graph) and carry *attributes* (data values such as integers and strings).
+- **Graph.** GROOVE works with directed, edge-labelled graphs — multigraphs, in which several edges with the same label may connect the same nodes, or simple graphs, depending on the grammar's transformation semantics (multigraphs since release 7.6.0). Nodes have no identity of their own visible in the visual representation; all information is in the (labelled) edges. Node labels as you see them on screen are in fact self-edges, displayed inside the node for readability. Graphs may in addition be *typed* (conform to a type graph) and carry *attributes* (data values such as integers and strings).
 
 - **Host graph.** A graph representing a state of the modelled system. One host graph is designated the *start graph*, the initial state of the exploration.
 
@@ -40,7 +40,7 @@ The following terms are used throughout this manual and in the tool itself.
 
 - **Graph grammar.** The complete collection of resources that together define a transformation system: rules, host graph(s), and optionally type graphs, control programs, Prolog programs and configuration properties. On disk, a grammar is a directory with extension `.gps` ("graph production system") holding one file per resource.
 
-- **Exploration.** The process of recursively applying all enabled rules to all reachable host graphs. The result is a *graph transition system* (GTS): a labelled transition system whose states are host graphs and whose transitions are rule applications. GROOVE collapses states that are isomorphic, which drastically reduces the size of the state space. The order and extent of exploration is determined by an *exploration configuration*, composed from a small set of keys and stored with the grammar; see the [Exploration and verification](manual_verification.html) chapter.
+- **Exploration.** The process of recursively applying all enabled rules to all reachable host graphs. The result is a *graph transition system* (GTS): a labelled transition system whose states are host graphs and whose transitions are rule applications. GROOVE collapses states that are isomorphic, which drastically reduces the size of the state space. The order and extent of exploration is determined by an *exploration configuration*, composed from a small set of keys and stored with the grammar (since release 7.6.0); see the [Exploration and verification](manual_verification.html) chapter.
 
 - **Control.** By default, all rules are always enabled, and rule application order is arbitrary. A *control program* constrains this, using a small imperative language with sequencing, choice, loops and function/recipe definitions; see the [Control language](manual_control.html) chapter.
 
@@ -50,7 +50,7 @@ The following terms are used throughout this manual and in the tool itself.
 
 A GROOVE installation offers the following runnable components:
 
-- **Simulator.** The main, GUI-based tool. It lets you create and edit grammars (host graphs, rules, type graphs, control programs), apply rules interactively, explore and inspect the state space, and run model checking — all visually. If you are new to GROOVE, this is the place to start. Problems in a grammar are reported in the error list and marked on the resources concerned; *errors* keep the grammar from being explored, whereas *warnings* (shown in orange) point out things that are probably not intended, such as a rule that can never be applied, but do not block. Graphs are drawn by one of two interchangeable backends; the yFiles backend, which is part of some distributions of GROOVE only and restricts their use to academic, non-commercial purposes, is described on the [installation page](installing.html#yfiles), its layout algorithms in [Layout](manual_basics.html#layout).
+- **Simulator.** The main, GUI-based tool. It lets you create and edit grammars (host graphs, rules, type graphs, control programs), apply rules interactively, explore and inspect the state space, and run model checking — all visually. If you are new to GROOVE, this is the place to start. Problems in a grammar are reported in the error list and marked on the resources concerned; *errors* keep the grammar from being explored, whereas *warnings* (shown in orange) point out things that are probably not intended, such as a rule that can never be applied, but do not block (since release 7.6.0). Graphs are drawn by one of two interchangeable backends (since release 8.0.0); the yFiles backend, which is part of some distributions of GROOVE only and restricts their use to academic, non-commercial purposes, is described on the [installation page](installing.html#yfiles), its layout algorithms in [Layout](manual_basics.html#layout).
 
 - **Generator.** A command-line tool for state space exploration, without the overhead (and memory footprint) of the GUI. Its principal use is for large explorations and for scripted or batch experiments. It runs the exploration stored with the grammar, or one given on the command line; warnings of the grammar are printed before exploring.
 
@@ -60,11 +60,11 @@ A GROOVE installation offers the following runnable components:
 
 - **Imager.** A converter from GROOVE graphs and rules to image formats (among others PNG, SVG, PDF and TikZ), for inclusion in documents. It can be invoked from the command line or through a small GUI.
 
-The native installers register each component with the application menu of the platform; in the `zip` distribution, each is a runnable jar in the `bin` subdirectory (`Simulator.jar`, `Generator.jar`, and so on). The command-line tools print a summary of their options when invoked with `-h`.
+The native installers register each component with the application menu of the platform (since release 7.6.0); in the `zip` distribution, each is a runnable jar in the `bin` subdirectory (`Simulator.jar`, `Generator.jar`, and so on). The command-line tools print a summary of their options when invoked with `-h`.
 
 ## Downloading and installing
 
-Releases are published on [GitHub]({{site.groove_url}}/code/releases/latest); the current release is {{ page.release }}. The native installers bundle their own Java 25 runtime; the `zip` archive requires Java 21 or higher. See the [installation page](installing.html) for detailed instructions, and the [Maven Central coordinates](https://central.sonatype.com/artifact/nl.utwente.groove/groove) if you want to use GROOVE as a library.
+Releases are published on [GitHub]({{site.groove_url}}/code/releases/latest); the current release is {{ page.release }}. The native installers bundle their own Java 25 runtime (since release 8.0.0; releases 7.6.0 to 7.8.0 bundle Java 21); the `zip` archive requires Java 21 or higher. See the [installation page](installing.html) for detailed instructions, and the [Maven Central coordinates](https://central.sonatype.com/artifact/nl.utwente.groove/groove) if you want to use GROOVE as a library.
 
 ## How this manual is organised
 
