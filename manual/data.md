@@ -386,7 +386,7 @@ If your classes are a Maven project, the dependency is
 <dependency>
     <groupId>nl.utwente.groove</groupId>
     <artifactId>groove</artifactId>
-    <version>7.8.0</version>
+    <version>8.0.0</version>
 </dependency>
 ```
 

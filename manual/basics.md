@@ -200,7 +200,7 @@ Some of these deserve further explanation:
 
 - **Formatted output.** The `printFormat` text is written to standard output on every application of the rule; it may contain `String.format`-style format specifiers, which are instantiated with the rule parameters.
 
-- **Transition labels.** By default, transitions in the generated transition system are labelled with the name of the applied rule. A nonempty `transitionLabel` is used instead of the rule name — for instance to make different rules give rise to equally labelled transitions. Like `printFormat`, it may refer to rule parameters using a `String.format`-like syntax, except that format specifiers are restricted to `s` (for `String`) (since release 8.0.0).
+- **Transition labels.** By default, transitions in the generated transition system are labelled with the name of the applied rule. A nonempty `transitionLabel` is used instead of the rule name — for instance to make different rules give rise to equally labelled transitions. The label may refer to the rule parameters: `%s` stands for the value of the next parameter, in order of occurrence; `%i$s` for the value of the `i`-th parameter (counting from 1), which allows parameters to be reordered or repeated; and `%%` for a percent sign. Unlike `printFormat`, it does not admit the other format specifiers of `String.format`, such as `%d` or a width: any of those, or a reference to a parameter that the rule does not have, is an error in the rule (since release 8.0.0; earlier releases accept every `String.format` string, and silently fall back on the rule name if it cannot be instantiated).
 
 ## Rule systems, grammars and transition systems
 
