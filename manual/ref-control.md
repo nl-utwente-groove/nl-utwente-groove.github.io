@@ -18,7 +18,7 @@ keywords:
     control, grammar, syntax, reference
 ---
 
-*This page is generated from the GROOVE 7.8.1-SNAPSHOT source code by `manual/make-refs.sh`; do not edit it by hand.*
+*This page is generated from the GROOVE 8.0.0 source code by `manual/make-refs.sh`; do not edit it by hand.*
 
 The grammar of the control language (see the [Control language](manual_control.html) chapter), one nonterminal per section, as also shown in the help panel of the control editor in the Simulator. The first alternative of every nonterminal appears in the heading of its section.
 

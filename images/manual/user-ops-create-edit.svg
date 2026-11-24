@@ -12,7 +12,7 @@
       ><path d="M0 0 L0 27 L56 27 L56 0 Z"
       /></clipPath
       ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath3"
-      ><path d="M136 104 L136 131 L192 131 L192 104 Z"
+      ><path d="M161 104 L161 131 L217 131 L217 104 Z"
       /></clipPath
       ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath4"
       ><path d="M-27.5 -13.5 L-27.5 13.5 L28.5 13.5 L28.5 -13.5 Z"
@@ -55,14 +55,14 @@
     ><rect x="0" width="1168" height="532" y="0" clip-path="url(#clipPath1)" stroke="none"
     /></g
     ><g fill="rgb(0,178,0)" stroke-width="3" font-family="'Segoe UI'" transform="translate(-33,-34)" stroke-linecap="butt" stroke="rgb(0,178,0)"
-    ><polygon points=" 163 128 158 118 163 122 168 118" stroke="none" clip-path="url(#clipPath3)"
-      /><polygon fill="none" points=" 163 128 158 118 163 122 168 118" clip-path="url(#clipPath3)"
-      /><path fill="none" d="M163.5 107 L163 122 M163 122" clip-path="url(#clipPath3)"
+    ><polygon points=" 188 128 183 118 188 122 193 118" stroke="none" clip-path="url(#clipPath3)"
+      /><polygon fill="none" points=" 188 128 183 118 188 122 193 118" clip-path="url(#clipPath3)"
+      /><path fill="none" d="M188.5 107 L188 122 M188 122" clip-path="url(#clipPath3)"
     /></g
-    ><g fill="white" font-family="'Segoe UI'" transform="translate(130.5,83.5)" stroke="white"
+    ><g fill="white" font-family="'Segoe UI'" transform="translate(155.5,83.5)" stroke="white"
     ><rect x="-25" width="50" height="20" y="-10" clip-path="url(#clipPath4)" stroke="none"
     /></g
-    ><g fill="rgb(0,178,0)" font-size="13px" font-family="'Segoe UI'" transform="translate(106.5,74.5)" stroke="rgb(0,178,0)"
+    ><g fill="rgb(0,178,0)" font-size="13px" font-family="'Segoe UI'" transform="translate(131.5,74.5)" stroke="rgb(0,178,0)"
     ><text x="0" xml:space="preserve" y="14" clip-path="url(#clipPath5)" stroke="none"
       >birthday</text
     ></g

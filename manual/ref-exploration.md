@@ -18,7 +18,7 @@ keywords:
     exploration, configuration, strategy, acceptor, reference
 ---
 
-*This page is generated from the GROOVE 7.8.1-SNAPSHOT source code by `manual/make-refs.sh`; do not edit it by hand.*
+*This page is generated from the GROOVE 8.0.0 source code by `manual/make-refs.sh`; do not edit it by hand.*
 
 An exploration is configured by choosing a value for each of the *keys* below. Every key has a default (marked *), so only deviations need to be given. The vocabulary is shared by the exploration dialog of the Simulator, the `explore` settings resources of a grammar and the `-x` option of the Generator, where a configuration is written as a space-separated list of `key=value` pairs; see the [Exploration and verification](manual_verification.html) chapter. A value is the name of one of the alternatives of the key; if the alternative takes *content*, that follows the name after a colon, as in `bound=nodes:200`. Where the content column says so, the content may also be given on its own, as in `count=5`.
 
